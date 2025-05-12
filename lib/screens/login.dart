@@ -7,9 +7,6 @@ class TelaLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Segunda Tela'),
-      ),
       body: const Center(
         child: Text(
           'Você está na Segunda Tela!',
