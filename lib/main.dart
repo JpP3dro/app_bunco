@@ -30,10 +30,10 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Center( // Envolve a Column com Center
+          Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centraliza os filhos da Column verticalmente
-          mainAxisSize: MainAxisSize.min, // Faz a Column ocupar o mínimo de espaço vertical
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
              Padding(
               padding: EdgeInsets.all(20),
@@ -57,14 +57,15 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-          // Imagem no canto superior esquerdo
+
+          //Imagem no canto superior esquerdo
           Positioned(
             top: 30,
             left: 15,
             child: Image.asset(
-              'assets/images/mascote1.png', // Substitua pelo caminho da sua imagem de canto
-              width: 100, // Ajuste o tamanho conforme necessário
-              height: 100, // Ajuste o tamanho conforme necessário
+              'assets/images/mascote1.png',
+              width: 100,
+              height: 100,
             ),
           ),
 
@@ -73,9 +74,9 @@ class HomeScreen extends StatelessWidget {
             top: 30,
             right: 15,
             child: Image.asset(
-              'assets/images/mascote2.png', // Substitua pelo caminho da sua imagem de canto
-              width: 100, // Ajuste o tamanho conforme necessário
-              height: 100, // Ajuste o tamanho conforme necessário
+              'assets/images/mascote2.png',
+              width: 100,
+              height: 100,
             ),
           ),
 
@@ -84,9 +85,9 @@ class HomeScreen extends StatelessWidget {
             bottom: 30,
             left: 15,
             child: Image.asset(
-              'assets/images/mascote3.png', // Substitua pelo caminho da sua imagem de canto
-              width: 100, // Ajuste o tamanho conforme necessário
-              height: 100, // Ajuste o tamanho conforme necessário
+              'assets/images/mascote3.png',
+              width: 100,
+              height: 100,
             ),
           ),
 
@@ -95,9 +96,9 @@ class HomeScreen extends StatelessWidget {
             bottom: 30,
             right: 15,
             child: Image.asset(
-              'assets/images/mascote4.png', // Substitua pelo caminho da sua imagem de canto
-              width: 100, // Ajuste o tamanho conforme necessário
-              height: 100, // Ajuste o tamanho conforme necessário
+              'assets/images/mascote4.png',
+              width: 100,
+              height: 100,
             ),
           ),
     ]
