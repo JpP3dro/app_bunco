@@ -33,15 +33,10 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center, // Centraliza os filhos da Column verticalmente
           mainAxisSize: MainAxisSize.min, // Faz a Column ocupar o mínimo de espaço vertical
           children: [
-            const Padding(
+             Padding(
               padding: EdgeInsets.all(20),
-              child: Text(
-                'Bem-vindo ao Meu App!',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue
-                ),
+              child: Image.asset(
+                'assets/images/bunco.png',
               ),
             ),
             Padding(
