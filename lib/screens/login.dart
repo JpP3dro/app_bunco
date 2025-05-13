@@ -1,16 +1,139 @@
-// second_screen.dart
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import '../ip.dart';
+import 'package:http/http.dart' as http;
 
-class TelaLogin extends StatelessWidget {
+class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
+
+  @override
+  State<TelaLogin> createState() => _TelaLoginState();
+}
+
+class _TelaLoginState extends State<TelaLogin> {
+  bool _mostrarSenha = false;
+
+  final TextEditingController _controllerSenha = TextEditingController();
+  final TextEditingController _controllerUsername = TextEditingController();
+
+  Future<void> fazerLogin() async {
+    String ip = obterIP(); 
+    String url = "http://$ip/bunco_testes/login.php";
+
+    try {
+      http.Response res = await http.post(
+        Uri.parse(url),
+        body: {
+          "username": _controllerUsername.text,
+          "senha": _controllerSenha.text,
+        },
+      );
+      if (res.statusCode == 200) {
+        var user = jsonDecode(res.body);
+        if (user.isNotEmpty) {
+          await exibirResultado(titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
+        }
+        else {
+          await exibirResultado(titulo: "Não logado!", conteudo: "Usuário ou senha inválidos!");
+        }
+      }
+      else {
+        await exibirResultado(titulo: "Algo deu errado!", conteudo: "Erro: ${res.statusCode}");
+      }
+    } catch (error) {
+      await exibirResultado(titulo: "Catch", conteudo: "Erro: $error");
+    }
+  }
+
+  Future<void> exibirResultado({
+    required String titulo,
+    required String conteudo,
+  }) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(titulo),
+          content: Text(conteudo),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    // Limpa os controladores quando o widget é descartado
+    _controllerUsername.dispose();
+    _controllerSenha.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text(
-          'Você está na Segunda Tela!',
-          style: TextStyle(fontSize: 20),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Center(
+            child: Text("Fazer login")
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _controllerUsername,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  label: Text("Coloque um username:"),
+                  icon: Icon(Icons.person),
+                ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: TextFormField(
+                controller: _controllerSenha,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  label: const Text("Coloque uma senha:"),
+                  icon: const Icon(Icons.password),
+                  suffixIcon: GestureDetector(
+                    child: Icon(
+                      _mostrarSenha == false
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.blue,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _mostrarSenha = !_mostrarSenha;
+                      });
+                    },
+                  ),
+                ),
+                obscureText: _mostrarSenha == false ? true : false,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  fazerLogin();
+                },
+                child: const Text("Clique para fazer o login"),
+              ),
+            ),
+          ],
         ),
       ),
     );

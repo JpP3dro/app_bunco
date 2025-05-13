@@ -36,7 +36,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2), // Duração da animação
+      duration: const Duration(seconds: 3), // Duração da animação
       vsync: this,
     );
 
