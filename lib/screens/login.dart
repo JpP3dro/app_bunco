@@ -158,7 +158,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   context,
                   MaterialPageRoute(builder: (context) => const TelaCadastro()),
                 ),
-                child: const Text("Novo Botão Inferior"),
+                child: const Text("Não tem um usuário? Crie um agora!"),
               ),
             ),
           ),

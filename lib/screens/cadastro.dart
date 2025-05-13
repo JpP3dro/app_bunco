@@ -23,8 +23,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
     if (!(nome.text.isNotEmpty && username.text.isNotEmpty &&
         email.text.isNotEmpty && senha.text.isNotEmpty)) {
       await exibirResultado(
-          titulo: "Campos vazios", conteudo: "Preencha todos os campos");
-      return;
+          titulo: "Campos vazios", conteudo: "Preencha todos os campos!");
     } else {
       try {
         String ip = obterIP();
@@ -90,16 +89,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Criar um novo usuário'),
+            title: Center(
+              child: Text('Criar um novo usuário'),
+            ),
         automaticallyImplyLeading: false,
       ),
       body: Stack(
           fit: StackFit.expand,
           children: [
-      // Conteúdo principal (Column com campos de cadastro)
-      SingleChildScrollView(
-      child: Padding(
-      padding: const EdgeInsets.only(bottom: 80.0),
+            Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -170,8 +168,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
           ),
         ],
       ),
-    ),
-    ),
+            ),
+
 
 
     Positioned(
@@ -184,7 +182,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
             context,
             MaterialPageRoute(builder: (context) => const TelaLogin()),
           ),
-          child: const Text("Novo Botão Inferior"),
+          child: const Text("Já tem um usuário? Clique aqui para logar!"),
         ),
       ),
     ),
