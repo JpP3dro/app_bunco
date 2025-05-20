@@ -26,10 +26,19 @@ class _TelaCadastroState extends State<TelaCadastro> {
           titulo: "Campos vazios", conteudo: "Preencha todos os campos!");
     } else {
       try {
+        if (username.text.trim().contains(' ')) {
+          await exibirResultado(titulo: "Username com espaço!", conteudo: "A username não pode conter espaços!");
+          return;
+        }
+        final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
+        if (!regex.hasMatch(email.text)) {
+          await exibirResultado(titulo: "Email inválido!", conteudo: "Digite um email válido!");
+          return;
+        }
         String ip = obterIP();
         String url = "http://$ip/Bunco/api/inserir.php";
         var res = await http.post(Uri.parse(url), body: {
-          "username": username.text,
+          "username": username.text.trim(),
           "nome": nome.text,
           "email": email.text,
           "senha": senha.text
@@ -47,7 +56,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
       catch (e) {
         await exibirResultado(
           titulo: "Erro crítico",
-          conteudo: "Falha na conexão: ${e.toString()}",
+          conteudo: "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
         );
       }
     }
@@ -89,94 +98,91 @@ class _TelaCadastroState extends State<TelaCadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: const Center(
-              child: Text('Criar um novo usuário'),
-            ),
+        title: const Center(
+          child: Text('Criar um novo usuário'),
+        ),
         automaticallyImplyLeading: false,
       ),
-      body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: TextFormField(
-              controller: nome,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Coloque um nome:"),
-                icon: Icon(Icons.person),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: TextFormField(
-              controller: username,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Coloque um nome de usuário:"),
-                icon: Icon(Icons.switch_account),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: TextFormField(
-              controller: email,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                label: Text("Coloque um email:"),
-                icon: Icon(Icons.mark_email_read),
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: TextFormField(
-              controller: senha,
-              decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  label: const Text("Coloque uma senha:"),
-                  icon: const Icon(Icons.password),
-                  suffixIcon: GestureDetector(
-                    child: Icon(
-                      _mostrarSenha == false ? Icons.visibility_off : Icons
-                          .visibility, color: Colors.blue,),
-                    onTap: () {
-                      setState(() {
-                        _mostrarSenha = !_mostrarSenha;
-                      });
+      body: Center( // Adiciona o Center aqui para centralizar o conteúdo do SingleChildScrollView
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0), // Padding para espaçamento das bordas
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
+              mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço vertical necessário
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: nome,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Coloque um nome:"),
+                      icon: Icon(Icons.person),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: username,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Coloque um nome de usuário:"),
+                      icon: Icon(Icons.switch_account),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: email,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      label: Text("Coloque um email:"),
+                      icon: Icon(Icons.mark_email_read),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: senha,
+                    decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        label: const Text("Coloque uma senha:"),
+                        icon: const Icon(Icons.password),
+                        suffixIcon: GestureDetector(
+                          child: Icon(
+                            _mostrarSenha == false ? Icons.visibility_off : Icons
+                                .visibility, color: Colors.blue,),
+                          onTap: () {
+                            setState(() {
+                              _mostrarSenha = !_mostrarSenha;
+                            });
+                          },
+                        )
+                    ),
+                    obscureText: _mostrarSenha == false ? true : false,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      inserir();
                     },
-                  )
-              ),
-              obscureText: _mostrarSenha == false ? true : false,
+                    child: const Text("Clique para criar um novo usuário"),
+                  ),
+                ),
+              ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {
-                inserir();
-              },
-              child: const Text("Clique para criar um novo usuário"),
-            ),
-          ),
-        ],
+        ),
       ),
-            ),
-
-
-
-    Positioned(
-    bottom: 20,
-    left: 0,
-    right: 0,
-      child: Center(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () => Navigator.push(
             context,
@@ -184,9 +190,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
           ),
           child: const Text("Já tem um usuário? Clique aqui para logar!"),
         ),
-      ),
-    ),
-          ],
       ),
     );
   }
