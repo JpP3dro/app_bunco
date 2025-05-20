@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../ip.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
+import 'telainicial.dart';
 
 
 class TelaLogin extends StatefulWidget {
@@ -20,7 +21,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
   Future<void> fazerLogin() async {
     String ip = obterIP();
-    String url = "http://$ip/bunco_testes/login.php";
+    String url = "http://$ip/Bunco/api/login.php";
 
     try {
       if (_controllerSenha.text == "" || _controllerUsername.text == "") {
@@ -38,6 +39,10 @@ class _TelaLoginState extends State<TelaLogin> {
           var user = jsonDecode(res.body);
           if (user.isNotEmpty) {
             await exibirResultado(titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TelaInicial()),
+            );
           }
           else {
             await exibirResultado(titulo: "Não logado!", conteudo: "Usuário ou senha inválidos!");

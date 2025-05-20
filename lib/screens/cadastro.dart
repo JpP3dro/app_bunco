@@ -27,13 +27,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
     } else {
       try {
         String ip = obterIP();
-        String url = "http://$ip/bunco_testes/inserir.php";
+        String url = "http://$ip/Bunco/api/inserir.php";
         var res = await http.post(Uri.parse(url), body: {
           "username": username.text,
           "nome": nome.text,
           "email": email.text,
           "senha": senha.text
-        });
+        }).timeout(const Duration(minutes: 1));
         var response = jsonDecode(res.body);
         await exibirResultado(
           titulo: response["sucesso"] == "true"
@@ -41,7 +41,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               : "Erro!",
           conteudo: response["sucesso"] == "true"
               ? "Registro salvo com sucesso!"
-              : "Falha no cadastro",
+              : response["mensagem"],
         );
       }
       catch (e) {
@@ -89,7 +89,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-            title: Center(
+            title: const Center(
               child: Text('Criar um novo usuário'),
             ),
         automaticallyImplyLeading: false,
