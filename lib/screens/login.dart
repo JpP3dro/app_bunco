@@ -17,21 +17,21 @@ class _TelaLoginState extends State<TelaLogin> {
   bool _mostrarSenha = false;
 
   final TextEditingController _controllerSenha = TextEditingController();
-  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerLogin = TextEditingController();
 
   Future<void> fazerLogin() async {
     String ip = obterIP();
     String url = "http://$ip/Bunco/api/login.php";
 
     try {
-      if (_controllerSenha.text == "" || _controllerUsername.text == "") {
+      if (_controllerSenha.text == "" || _controllerLogin.text == "") {
         await exibirResultado(titulo: "Campos não preenchidos", conteudo: "Preencha todos os campos!");
       }
       else {
         http.Response res = await http.post(
           Uri.parse(url),
           body: {
-            "username": _controllerUsername.text,
+            "login": _controllerLogin.text,
             "senha": _controllerSenha.text,
           },
         );
@@ -82,7 +82,7 @@ class _TelaLoginState extends State<TelaLogin> {
   @override
   void dispose() {
     // Limpa os controladores quando o widget é descartado
-    _controllerUsername.dispose();
+    _controllerLogin.dispose();
     _controllerSenha.dispose();
     super.dispose();
   }
@@ -107,7 +107,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 Container(
                   margin: const EdgeInsets.all(10),
                   child: TextFormField(
-                    controller: _controllerUsername,
+                    controller: _controllerLogin,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       label: Text("Coloque um username ou um email:"),
