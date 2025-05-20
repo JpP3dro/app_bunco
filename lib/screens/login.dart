@@ -37,7 +37,7 @@ class _TelaLoginState extends State<TelaLogin> {
         );
         if (res.statusCode == 200) {
           var user = jsonDecode(res.body);
-          if (user.isNotEmpty) {
+          if (user["sucesso"] == "true") {
             await exibirResultado(titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
             Navigator.push(
               context,
@@ -45,7 +45,7 @@ class _TelaLoginState extends State<TelaLogin> {
             );
           }
           else {
-            await exibirResultado(titulo: "Não logado!", conteudo: "Usuário ou senha inválidos!");
+            await exibirResultado(titulo: "Login falho!", conteudo: user["mensagem"]);
           }
         }
         else {
