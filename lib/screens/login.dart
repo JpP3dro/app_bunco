@@ -91,16 +91,17 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Mantém a remoção do botão de voltar automático
         title: const Center(
             child: Text("Fazer login")
         ),
       ),
-      body: Stack( // Use Stack para sobrepor widgets
-        children: [
-          // Conteúdo original centralizado verticalmente
-          Center(
+      body: Center( // Para centralizar o SingleChildScrollView
+        child: SingleChildScrollView( // Para permitir rolagem se o conteúdo for grande ou o teclado aparecer
+          child: Padding(
+            padding: const EdgeInsets.all(16.0), // Adiciona padding ao redor do formulário
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
               mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
               children: [
                 Container(
@@ -109,7 +110,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     controller: _controllerUsername,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
-                      label: Text("Coloque um username:"),
+                      label: Text("Coloque um username ou um email:"),
                       icon: Icon(Icons.person),
                     ),
                   ),
@@ -151,23 +152,17 @@ class _TelaLoginState extends State<TelaLogin> {
               ],
             ),
           ),
-
-
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TelaCadastro()),
-                ),
-                child: const Text("Não tem um usuário? Crie um agora!"),
-              ),
-            ),
+        ),
+      ),
+      bottomNavigationBar: Padding( // Adiciona o botão aqui
+        padding: const EdgeInsets.all(16.0), // Adiciona padding ao redor do botão
+        child: ElevatedButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const TelaCadastro()),
           ),
-        ],
+          child: const Text("Não tem um usuário? Crie um agora!"),
+        ),
       ),
     );
   }
