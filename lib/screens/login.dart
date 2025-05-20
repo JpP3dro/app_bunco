@@ -53,7 +53,7 @@ class _TelaLoginState extends State<TelaLogin> {
   }
 
   Future<void> exibirResultado({
-    required String titulo,
+  required String titulo,
     required String conteudo,
   }) async {
     return showDialog<void>(
