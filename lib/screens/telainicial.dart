@@ -1,7 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../ip.dart';
-import 'package:http/http.dart' as http;
 
 
 class TelaInicial extends StatelessWidget {
