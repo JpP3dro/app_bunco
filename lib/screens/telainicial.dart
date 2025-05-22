@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
 
-class TelaInicial extends StatelessWidget {
-  const TelaInicial({super.key});
+class TelaInicial extends StatefulWidget {
+  final Map<String, dynamic> usuario;
+   TelaInicial({
+    super.key,
+    required this.usuario
+  });
+
+  @override
+  State<TelaInicial> createState() => _TelaInicialState();
+}
+
+class _TelaInicialState extends State<TelaInicial> {
 
   @override
   Widget build(BuildContext context) {

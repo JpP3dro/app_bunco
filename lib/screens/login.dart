@@ -41,7 +41,7 @@ class _TelaLoginState extends State<TelaLogin> {
             await exibirResultado(titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const TelaInicial()),
+              MaterialPageRoute(builder: (context) => TelaInicial(usuario: user)),
             );
           }
           else {
