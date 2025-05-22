@@ -85,7 +85,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                         MaterialPageRoute(builder: (context) => const TelaLogin()),
                       ),
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
+                        fixedSize: Size.fromWidth(300),
                       ),
                       child: const Text('Começar'),
                     ),
