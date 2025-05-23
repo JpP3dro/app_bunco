@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class TelaInicial extends StatefulWidget {
   final Map<String, dynamic> usuario;
-   TelaInicial({
+   const TelaInicial({
     super.key,
     required this.usuario
   });

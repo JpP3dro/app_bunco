@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../ip.dart';
 import 'login.dart';
+import '../tipo_dialogo.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});
@@ -23,16 +24,16 @@ class _TelaCadastroState extends State<TelaCadastro> {
     if (!(nome.text.isNotEmpty && username.text.isNotEmpty &&
         email.text.isNotEmpty && senha.text.isNotEmpty)) {
       await exibirResultado(
-          titulo: "Campos vazios", conteudo: "Preencha todos os campos!");
+          tipo: TipoDialogo.alerta, titulo: "Campos vazios", conteudo: "Preencha todos os campos!");
     } else {
       try {
         if (username.text.trim().contains(' ')) {
-          await exibirResultado(titulo: "Username com espaço!", conteudo: "A username não pode conter espaços!");
+          await exibirResultado(tipo: TipoDialogo.alerta, titulo: "Username com espaço!", conteudo: "A username não pode conter espaços!");
           return;
         }
         final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
         if (!regex.hasMatch(email.text)) {
-          await exibirResultado(titulo: "Email inválido!", conteudo: "Digite um email válido!");
+          await exibirResultado(tipo: TipoDialogo.alerta, titulo: "Email inválido!", conteudo: "Digite um email válido!");
           return;
         }
         String ip = obterIP();
@@ -45,6 +46,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
         }).timeout(const Duration(minutes: 1));
         var response = jsonDecode(res.body);
         await exibirResultado(
+          tipo: response["sucesso"] == "true"
+          ? TipoDialogo.sucesso
+          : TipoDialogo.erro,
           titulo: response["sucesso"] == "true"
               ? "Sucesso!"
               : "Erro!",
@@ -55,6 +59,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
       }
       catch (e) {
         await exibirResultado(
+          tipo: TipoDialogo.erro,
           titulo: "Erro crítico",
           conteudo: "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
         );
@@ -62,7 +67,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
     }
   }
 
-  Future<void> exibirResultado({
+  /*Future<void> exibirResultado({
     required String titulo,
     required String conteudo,
   }) async {
@@ -77,6 +82,94 @@ class _TelaCadastroState extends State<TelaCadastro> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }*/
+
+  Future<void> exibirResultado({
+    //required BuildContext context,
+    required TipoDialogo tipo,
+    required String titulo,
+    required String conteudo,
+  }) async {
+    IconData icone;
+    Color cor;
+
+    switch (tipo) {
+      case TipoDialogo.sucesso:
+        icone = Icons.check_circle;
+        cor = Colors.green.shade700;
+        break;
+      case TipoDialogo.alerta:
+        icone = Icons.warning_rounded;
+        cor = Colors.amber.shade800;
+        break;
+      case TipoDialogo.erro:
+        icone = Icons.error_outlined;
+        cor = Colors.red.shade700;
+        break;
+    }
+
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          alignment: Alignment.center,
+          iconPadding: const EdgeInsets.only(top: 20),
+          title: Center(
+            child: Text(
+              titulo,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: cor,
+              ),
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Icon(
+                icone,
+                size: 48,
+                color: cor,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                conteudo,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: cor,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
             ),
           ],
         );
