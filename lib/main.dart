@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Tela Inicial Animada',
+      title: 'Tela Inicial',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -79,16 +79,32 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.push(
+                    child: Directionality(
+                      textDirection: TextDirection.rtl,
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const TelaLogin()),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size.fromWidth(300),
+                      icon: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                        size: 25,
                       ),
-                      child: const Text('Começar'),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size.fromWidth(250),
+                        backgroundColor: Color(0xFF4EA5FF),
+                      ),
+                      label: const Text(
+                          'Começar',
+                        style: TextStyle(
+                            color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
+                  ),
                   ),
                 ],
               ),

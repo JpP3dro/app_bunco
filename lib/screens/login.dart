@@ -40,7 +40,7 @@ class _TelaLoginState extends State<TelaLogin> {
           var user = jsonDecode(res.body);
           if (user["sucesso"] == "true") {
             await exibirResultado(tipo: TipoDialogo.sucesso, titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => TelaInicial(usuario: user)),
             );
