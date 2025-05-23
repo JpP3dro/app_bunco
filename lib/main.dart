@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const AnimatedHomeScreen(), // Usaremos um StatefulWidget para a animação
+      home: const AnimatedHomeScreen(),
     );
   }
 }
@@ -43,7 +44,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
     _scaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOut, // Curva da animação (opcional)
+        curve: Curves.easeOut,
       ),
     );
 
@@ -60,10 +61,9 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Mantém a cor de fundo preta
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Conteúdo principal centralizado com animação
           Center(
             child: ScaleTransition( // Aplica a animação de escala à Column central
               scale: _scaleAnimation,
@@ -74,7 +74,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Image.asset(
-                      'assets/images/bunco.png', // Sua imagem centralizada
+                      'assets/images/bunco.png',
                     ),
                   ),
                   Padding(
@@ -93,25 +93,25 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                       ),
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size.fromWidth(250),
-                        backgroundColor: Color(0xFF4EA5FF),
+                        backgroundColor: const Color(0xFF4EA5FF),
                       ),
-                      label: const Text(
+                      label: Text(
                           'Começar',
-                        style: TextStyle(
-                            color: Colors.white,
+                        style: GoogleFonts.delius(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
+                        ),
                       ),
                     ),
-                  ),
                   ),
                 ],
               ),
             ),
           ),
 
-          // Imagem no canto superior esquerdo (sem animação)
+          // Imagem no canto superior esquerdo
           Positioned(
             top: 30,
             left: 15,
@@ -122,7 +122,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
             ),
           ),
 
-          // Imagem no canto superior direito (sem animação)
+          // Imagem no canto superior direito
           Positioned(
             top: 30,
             right: 15,
@@ -133,7 +133,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
             ),
           ),
 
-          // Imagem no canto inferior esquerdo (sem animação)
+          // Imagem no canto inferior esquerdo
           Positioned(
             bottom: 30,
             left: 15,
@@ -144,7 +144,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
             ),
           ),
 
-          // Imagem no canto inferior direito (sem animação)
+          // Imagem no canto inferior direito
           Positioned(
             bottom: 30,
             right: 15,
