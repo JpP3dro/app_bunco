@@ -42,9 +42,9 @@ class _TelaInicialState extends State<TelaInicial> {
           items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home", backgroundColor: Colors.lightBlueAccent),
         BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: "Ranking", backgroundColor: Colors.orange),
-            BottomNavigationBarItem(icon: Icon(Icons.terminal), label: "Terminal", backgroundColor: Colors.black),
+        BottomNavigationBarItem(icon: Icon(Icons.terminal), label: "Terminal", backgroundColor: Colors.black),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Perfil", backgroundColor: Colors.blueAccent),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Configurações", backgroundColor: Colors.green),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Configurações", backgroundColor: Colors.green),
           ],
       ),
     );

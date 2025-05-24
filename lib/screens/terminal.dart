@@ -13,6 +13,7 @@ class _TelaTerminalState extends State<TelaTerminal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Terminal"),
       ),
       body: const Center(

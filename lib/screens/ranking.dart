@@ -13,6 +13,7 @@ class _TelaRankingState extends State<TelaRanking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Ranking"),
       ),
       body: const Center(

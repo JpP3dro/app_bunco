@@ -13,6 +13,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Perfil"),
       ),
       body: const Center(
