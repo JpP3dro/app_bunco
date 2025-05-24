@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'screens/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -82,9 +83,13 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                     child: Directionality(
                       textDirection: TextDirection.rtl,
                     child: ElevatedButton.icon(
-                      onPressed: () => Navigator.pushReplacement(
+                      onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const TelaLogin()),
+                        PageTransition(
+                          child: const TelaLogin(),
+                          type: PageTransitionType.fade,
+                          duration: const Duration(milliseconds: 800),
+                        )
                       ),
                       icon: const Icon(
                           Icons.arrow_back_rounded,
