@@ -38,7 +38,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 3), // Duração da animação
+      duration: const Duration(seconds: 2), // Duração da animação
       vsync: this,
     );
 
@@ -83,12 +83,12 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                     child: Directionality(
                       textDirection: TextDirection.rtl,
                     child: ElevatedButton.icon(
-                      onPressed: () => Navigator.push(
+                      onPressed: () => Navigator.pushReplacement(
                         context,
                         PageTransition(
                           child: const TelaLogin(),
                           type: PageTransitionType.fade,
-                          duration: const Duration(milliseconds: 800),
+                          duration: const Duration(milliseconds: 1500),
                         )
                       ),
                       icon: const Icon(

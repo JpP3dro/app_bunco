@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'cadastro.dart';
 import 'telainicial.dart';
 import '../tipo_dialogo.dart';
+import 'package:page_transition/page_transition.dart';
 
 
 class TelaLogin extends StatefulWidget {
@@ -221,12 +222,16 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding( // Adiciona o botão aqui
-        padding: const EdgeInsets.all(16.0), // Adiciona padding ao redor do botão
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: () => Navigator.push(
+          onPressed: () => Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const TelaCadastro()),
+              PageTransition(
+                child: const TelaCadastro(),
+                type: PageTransitionType.rightToLeft,
+                duration: const Duration(milliseconds: 500),
+              )
           ),
           child: const Text("Não tem um usuário? Crie um agora!"),
         ),

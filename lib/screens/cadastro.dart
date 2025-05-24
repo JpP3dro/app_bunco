@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../ip.dart';
 import 'login.dart';
 import '../tipo_dialogo.dart';
+import 'package:page_transition/page_transition.dart';
 
 class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});
@@ -66,28 +67,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
       }
     }
   }
-
-  /*Future<void> exibirResultado({
-    required String titulo,
-    required String conteudo,
-  }) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(titulo),
-          content: Text(conteudo),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }*/
 
   Future<void> exibirResultado({
     //required BuildContext context,
@@ -199,7 +178,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
       body: Center( // Adiciona o Center aqui para centralizar o conteúdo do SingleChildScrollView
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0), // Padding para espaçamento das bordas
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
               mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço vertical necessário
@@ -279,7 +258,11 @@ class _TelaCadastroState extends State<TelaCadastro> {
         child: ElevatedButton(
           onPressed: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const TelaLogin()),
+              PageTransition(
+                child: const TelaLogin(),
+                type: PageTransitionType.leftToRight,
+                duration: const Duration(milliseconds: 500),
+              )
           ),
           child: const Text("Já tem um usuário? Clique aqui para logar!"),
         ),
