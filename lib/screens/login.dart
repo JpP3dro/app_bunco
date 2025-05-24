@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../ip.dart';
+import '../uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
 import 'telainicial.dart';
-import '../tipo_dialogo.dart';
+import '../uteis/tipo_dialogo.dart';
 import 'package:page_transition/page_transition.dart';
+import '../uteis/dialogo.dart';
 
 
 class TelaLogin extends StatefulWidget {
@@ -27,7 +28,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
     try {
       if (_controllerSenha.text == "" || _controllerLogin.text == "") {
-        await exibirResultado(tipo: TipoDialogo.alerta, titulo: "Campos não preenchidos", conteudo: "Preencha todos os campos!");
+        await exibirResultado(context: context, tipo: TipoDialogo.alerta, titulo: "Campos não preenchidos", conteudo: "Preencha todos os campos!");
       }
       else {
         http.Response res = await http.post(
@@ -40,111 +41,23 @@ class _TelaLoginState extends State<TelaLogin> {
         if (res.statusCode == 200) {
           var user = jsonDecode(res.body);
           if (user["sucesso"] == "true") {
-            await exibirResultado(tipo: TipoDialogo.sucesso, titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
+            await exibirResultado(context: context, tipo: TipoDialogo.sucesso, titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => TelaInicial(usuario: user)),
             );
           }
           else {
-            await exibirResultado(tipo: TipoDialogo.erro, titulo: "Login falho!", conteudo: user["mensagem"]);
+            await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Login falho!", conteudo: user["mensagem"]);
           }
         }
         else {
-          await exibirResultado(tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Erro: ${res.statusCode}");
+          await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Erro: ${res.statusCode}");
         }
       }
     } catch (error) {
-      await exibirResultado(tipo: TipoDialogo.erro, titulo: "Catch", conteudo: "Erro: $error");
+      await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Catch", conteudo: "Erro: $error");
     }
-  }
-
-  Future<void> exibirResultado({
-    //required BuildContext context,
-    required TipoDialogo tipo,
-    required String titulo,
-    required String conteudo,
-  }) async {
-    IconData icone;
-    Color cor;
-
-    switch (tipo) {
-      case TipoDialogo.sucesso:
-        icone = Icons.check_circle;
-        cor = Colors.green.shade700;
-        break;
-      case TipoDialogo.alerta:
-        icone = Icons.warning_rounded;
-        cor = Colors.amber.shade800;
-        break;
-      case TipoDialogo.erro:
-        icone = Icons.error_outlined;
-        cor = Colors.red.shade700;
-        break;
-    }
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          alignment: Alignment.center,
-          iconPadding: const EdgeInsets.only(top: 20),
-          title: Center(
-            child: Text(
-              titulo,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: cor,
-              ),
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Icon(
-                icone,
-                size: 48,
-                color: cor,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                conteudo,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  height: 1.4,
-                ),
-              ),
-            ],
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: cor,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 25,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text(
-                  'OK',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
