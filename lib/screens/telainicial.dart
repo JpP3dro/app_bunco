@@ -1,3 +1,8 @@
+import 'package:app_bunco/screens/configuracoes.dart';
+import 'package:app_bunco/screens/curso.dart';
+import 'package:app_bunco/screens/perfil.dart';
+import 'package:app_bunco/screens/ranking.dart';
+import 'package:app_bunco/screens/terminal.dart';
 import 'package:flutter/material.dart';
 
 class TelaInicial extends StatefulWidget {
@@ -13,18 +18,18 @@ class TelaInicial extends StatefulWidget {
 
 class _TelaInicialState extends State<TelaInicial> {
   int myIndex = 0;
+  List<Widget> telas = const [
+    TelaCurso(),
+    TelaRanking(),
+    TelaTerminal(),
+    TelaPerfil(),
+    TelaConfiguracoes(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tela Inicial"),
-        automaticallyImplyLeading: false, // Remove botão de voltar
-      ),
-      body: const Center(
-        child: Text(
-          "Bem-vindo à Tela Inicial!",
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Center(
+        child: telas[myIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
