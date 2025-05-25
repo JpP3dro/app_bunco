@@ -94,7 +94,7 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                       icon: const Icon(
                           Icons.arrow_back_rounded,
                           color: Colors.white,
-                        size: 25,
+                        size: 30,
                       ),
                       style: ElevatedButton.styleFrom(
                         fixedSize: const Size.fromWidth(250),
@@ -102,10 +102,10 @@ class _AnimatedHomeScreenState extends State<AnimatedHomeScreen> with SingleTick
                       ),
                       label: Text(
                           'Começar',
-                        style: GoogleFonts.delius(
+                        style: GoogleFonts.baloo2(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 25,
                         ),
                         ),
                       ),

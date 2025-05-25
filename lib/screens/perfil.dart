@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TelaPerfil extends StatefulWidget {
   const TelaPerfil({super.key});
@@ -14,7 +15,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("Perfil"),
+        title: Text(
+          "Perfil",
+          style: GoogleFonts.baloo2(
+            color: Colors.black,
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: const Center(
         child: Text("Teste"),
