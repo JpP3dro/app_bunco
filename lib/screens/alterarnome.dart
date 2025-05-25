@@ -23,7 +23,6 @@ class TelaAlterarNome extends StatefulWidget {
 
 class _TelaAlterarNomeState extends State<TelaAlterarNome> {
   late TextEditingController _controllerNome;
-  late String nome;
   bool _botaoHabilitado = false;
 
   Future<void> alterarNome() async {
@@ -44,7 +43,7 @@ class _TelaAlterarNomeState extends State<TelaAlterarNome> {
       if (response["sucesso"] == "true") {
         Navigator.pushReplacement(
             context, 
-            MaterialPageRoute(builder: (context) => MyApp())
+            MaterialPageRoute(builder: (context) => const MyApp())
         );
       }
     } 
@@ -63,7 +62,6 @@ class _TelaAlterarNomeState extends State<TelaAlterarNome> {
   void initState() {
     super.initState();
     _controllerNome = TextEditingController(text: widget.nome);
-    nome = widget.nome;
 
     _controllerNome.addListener(() {
       setState(() {

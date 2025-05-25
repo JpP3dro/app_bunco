@@ -46,7 +46,7 @@ class TelaConfiguracoes extends StatefulWidget {
                     color: Colors.black87,
                   ),
                 ),
-                SizedBox(width: 8,),
+                const SizedBox(width: 8,),
                 Icon(icone),
               ],
             ),
@@ -66,7 +66,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.green,
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Text("Sim"),
                           Icon(
@@ -80,7 +80,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         if (acao == "sair") {
                           Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => MyApp())
+                              MaterialPageRoute(builder: (context) => const MyApp())
                           );
                         }
                         else if (acao == "excluir") {
@@ -94,7 +94,7 @@ class TelaConfiguracoes extends StatefulWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.red,
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text("Não"),
                         Icon(
@@ -132,7 +132,7 @@ class TelaConfiguracoes extends StatefulWidget {
         if (response["sucesso"] == "true") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => MyApp())
+            MaterialPageRoute(builder: (context) => const MyApp())
           );
         }
       }
@@ -150,7 +150,7 @@ class TelaConfiguracoes extends StatefulWidget {
       super.initState();
       opcoes = [
         {"label": "Alterar o nome", "page": TelaAlterarNome(nome: widget.usuario["nome"], username: widget.usuario["username"],)},
-        {"label": "Alterar o username", "page": const TelaAlterarUsername()},
+        {"label": "Alterar o username", "page": TelaAlterarUsername(id: widget.usuario["id"], username: widget.usuario["username"],)},
         {"label": "Alterar o email", "page": const TelaAlterarEmail()},
         {"label": "Alterar a senha", "page": const TelaAlterarSenha()},
         {"label": "Adicionar links para as redes sociais", "page": const TelaAlterarLinks()},

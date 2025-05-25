@@ -38,6 +38,10 @@ class _TelaCadastroState extends State<TelaCadastro> {
           await exibirResultado(context: context, tipo: TipoDialogo.alerta, titulo: "Email inválido!", conteudo: "Digite um email válido!");
           return;
         }
+        if (nome.text.trim().length < 4 || username.text.trim().length < 4) {
+          await exibirResultado(context: context, tipo: TipoDialogo.alerta, titulo: "Nome ou username muito pequeno", conteudo: "O nome e o username precisam ter no mínimo 4 caracteres!");
+          return;
+        }
         String ip = obterIP();
         String url = "http://$ip/bunco/api/inserir.php";
         var res = await http.post(Uri.parse(url), body: {
