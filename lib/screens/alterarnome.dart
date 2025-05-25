@@ -55,7 +55,6 @@ class _TelaAlterarNomeState extends State<TelaAlterarNome> {
           conteudo: "Tente de novo daqui a pouco!"
       );
     }
-
   }
 
   @override

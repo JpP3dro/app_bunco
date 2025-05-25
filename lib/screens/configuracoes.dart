@@ -151,7 +151,7 @@ class TelaConfiguracoes extends StatefulWidget {
       opcoes = [
         {"label": "Alterar o nome", "page": TelaAlterarNome(nome: widget.usuario["nome"], username: widget.usuario["username"],)},
         {"label": "Alterar o username", "page": TelaAlterarUsername(id: widget.usuario["id"], username: widget.usuario["username"],)},
-        {"label": "Alterar o email", "page": const TelaAlterarEmail()},
+        {"label": "Alterar o email", "page": TelaAlterarEmail(email: widget.usuario["email"], username: widget.usuario["username"],)},
         {"label": "Alterar a senha", "page": const TelaAlterarSenha()},
         {"label": "Adicionar links para as redes sociais", "page": const TelaAlterarLinks()},
       ];
