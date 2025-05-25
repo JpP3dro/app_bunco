@@ -23,7 +23,7 @@ class _TelaInicialState extends State<TelaInicial> {
     TelaRanking(),
     TelaTerminal(),
     TelaPerfil(),
-    TelaConfiguracoes(),
+    TelaConfiguracoes(username: widget.usuario["username"]),
   ];
   @override
   Widget build(BuildContext context) {

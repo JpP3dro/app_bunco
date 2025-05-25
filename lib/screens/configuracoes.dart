@@ -5,9 +5,14 @@ import 'package:app_bunco/screens/alterarusername.dart';
 import 'package:app_bunco/screens/alteraremail.dart';
 import 'package:app_bunco/screens/alterarsenha.dart';
 import 'package:app_bunco/screens/alterarlinks.dart';
+import 'package:app_bunco/main.dart';
 
 class TelaConfiguracoes extends StatefulWidget {
-  const TelaConfiguracoes({super.key});
+  final String username;
+  const TelaConfiguracoes({
+    super.key,
+    required this.username,
+  });
 
   @override
   State<TelaConfiguracoes> createState() => _TelaConfiguracoesState();
@@ -16,12 +21,106 @@ class TelaConfiguracoes extends StatefulWidget {
   class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
 
     final List<Map<String, dynamic>> opcoes = [
-      {"label": "Alterar o nome", "page": TelaAlterarNome()},
-      {"label": "Alterar o username", "page": TelaAlterarUsername()},
-      {"label": "Alterar o email", "page": TelaAlterarEmail()},
-      {"label": "Alterar a senha", "page": TelaAlterarSenha()},
-      {"label": "Adicionar links para as redes sociais", "page": TelaAlterarLinks()},
+      {"label": "Alterar o nome", "page": const TelaAlterarNome()},
+      {"label": "Alterar o username", "page": const TelaAlterarUsername()},
+      {"label": "Alterar o email", "page": const TelaAlterarEmail()},
+      {"label": "Alterar a senha", "page": const TelaAlterarSenha()},
+      {"label": "Adicionar links para as redes sociais", "page": const TelaAlterarLinks()},
     ];
+
+    Future<void> certeza({
+      required String titulo,
+      required IconData icone,
+      required String acao,
+    }) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            alignment: Alignment.center,
+            title: Row(
+              children: [
+                Text(
+                  titulo,
+                  style: GoogleFonts.baloo2(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(width: 8,),
+                Icon(icone),
+              ],
+            ),
+            content: Text(
+                "Você tem certeza?",
+              style: GoogleFonts.workSans(
+                fontSize: 16,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            actions: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.green,
+                      ),
+                      child: Row(
+                        children: [
+                          Text("Sim"),
+                          Icon(
+                            Icons.check,
+                            color: Colors.green,
+                            size: 20,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        if (acao == "sair") {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyApp())
+                          );
+                        }
+                        else if (acao == "excluir") {
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  ),
+
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                    child: Row(
+                      children: [
+                        Text("Não"),
+                        Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    Future<void> excluirConta() {
+
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +149,14 @@ class TelaConfiguracoes extends StatefulWidget {
                   );
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  padding: EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: Colors.grey[900],
                       border: Border.all(color: Colors.grey, width: 1),
                       borderRadius: BorderRadius.vertical(
-                        top: index == 0 ? Radius.circular(20) : Radius.circular(0),
-                        bottom: index == 4 ? Radius.circular(20) : Radius.circular(0),
+                        top: index == 0 ? const Radius.circular(20) : const Radius.circular(0),
+                        bottom: index == 4 ? const Radius.circular(20) : const Radius.circular(0),
                       )
                   ),
                   child: Row(
@@ -71,7 +170,7 @@ class TelaConfiguracoes extends StatefulWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Icon(Icons.arrow_forward_ios,
+                      const Icon(Icons.arrow_forward_ios,
                           color: Colors.white, size: 18),
                     ],
                   ),
@@ -89,7 +188,7 @@ class TelaConfiguracoes extends StatefulWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-
+                      certeza(titulo: "Sair da conta", icone: Icons.logout, acao: "sair",);
                     },
                     icon: const Icon(
                       Icons.logout,
@@ -105,7 +204,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50),
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       side: const BorderSide(
@@ -114,10 +213,10 @@ class TelaConfiguracoes extends StatefulWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   ElevatedButton.icon(
                     onPressed: () {
-
+                      certeza(titulo: "Excluir a conta", icone: Icons.delete_forever, acao: "excluir",);
                     },
                     icon: const Icon(
                       Icons.delete,
@@ -133,7 +232,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: const Size(double.infinity, 50),
                       backgroundColor: Colors.red,
                     ),
                   ),

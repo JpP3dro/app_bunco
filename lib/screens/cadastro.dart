@@ -39,7 +39,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
           return;
         }
         String ip = obterIP();
-        String url = "http://$ip/Bunco/api/inserir.php";
+        String url = "http://$ip/bunco/api/inserir.php";
         var res = await http.post(Uri.parse(url), body: {
           "username": username.text.trim(),
           "nome": nome.text,
