@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_bunco/screens/alterarnome.dart';
@@ -6,6 +7,10 @@ import 'package:app_bunco/screens/alteraremail.dart';
 import 'package:app_bunco/screens/alterarsenha.dart';
 import 'package:app_bunco/screens/alterarlinks.dart';
 import 'package:app_bunco/main.dart';
+import 'package:app_bunco/uteis/ip.dart';
+import 'package:http/http.dart' as http;
+import 'package:app_bunco/uteis/dialogo.dart';
+import 'package:app_bunco/uteis/tipo_dialogo.dart';
 
 class TelaConfiguracoes extends StatefulWidget {
   final String username;
@@ -86,7 +91,7 @@ class TelaConfiguracoes extends StatefulWidget {
                           );
                         }
                         else if (acao == "excluir") {
-                          Navigator.pop(context);
+                          excluirConta();
                         }
                       },
                     ),
@@ -118,8 +123,33 @@ class TelaConfiguracoes extends StatefulWidget {
       );
     }
 
-    Future<void> excluirConta() {
-
+    Future<void> excluirConta() async {
+      try {
+        String ip = obterIP();
+        String url = "http://$ip/bunco/api/excluir.php";
+        var res = await http.post(Uri.parse(url), body: {
+          "username": widget.username
+        }).timeout(const Duration(minutes: 1));
+        var response = jsonDecode(res.body);
+        await exibirResultado(context: context,
+            tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
+            titulo: response["sucesso"] == "true" ? "Sucesso!" : "Algo deu errado!",
+            conteudo: response["mensagem"]
+        );
+        if (response["sucesso"] == "true") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MyApp())
+          );
+        }
+      }
+      catch(e) {
+        await exibirResultado(context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Erro do servidor",
+            conteudo: e.toString()
+        );
+      }
     }
 
   @override

@@ -18,13 +18,19 @@ class TelaInicial extends StatefulWidget {
 
 class _TelaInicialState extends State<TelaInicial> {
   int myIndex = 0;
-  List<Widget> telas = const [
-    TelaCurso(),
-    TelaRanking(),
-    TelaTerminal(),
-    TelaPerfil(),
-    TelaConfiguracoes(username: widget.usuario["username"]),
-  ];
+  late List<Widget> telas;
+
+  @override
+  void initState() {
+    super.initState();
+    telas = [
+      const TelaCurso(),
+      const TelaRanking(),
+      const TelaTerminal(),
+      const TelaPerfil(),
+      TelaConfiguracoes(username: widget.usuario["username"]),
+    ];
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
