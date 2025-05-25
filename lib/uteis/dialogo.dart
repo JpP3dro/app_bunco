@@ -38,6 +38,7 @@ Future<void> exibirResultado({
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w600,
               color: cor,
+              fontSize: 20
             ),
           ),
         ),

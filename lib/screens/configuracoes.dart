@@ -13,10 +13,10 @@ import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 
 class TelaConfiguracoes extends StatefulWidget {
-  final String username;
+  final Map<String, dynamic> usuario;
   const TelaConfiguracoes({
     super.key,
-    required this.username,
+    required this.usuario,
   });
 
   @override
@@ -24,14 +24,7 @@ class TelaConfiguracoes extends StatefulWidget {
   }
   
   class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
-
-    final List<Map<String, dynamic>> opcoes = [
-      {"label": "Alterar o nome", "page": const TelaAlterarNome()},
-      {"label": "Alterar o username", "page": const TelaAlterarUsername()},
-      {"label": "Alterar o email", "page": const TelaAlterarEmail()},
-      {"label": "Alterar a senha", "page": const TelaAlterarSenha()},
-      {"label": "Adicionar links para as redes sociais", "page": const TelaAlterarLinks()},
-    ];
+    late List<Map<String, dynamic>> opcoes;
 
     Future<void> certeza({
       required String titulo,
@@ -128,7 +121,7 @@ class TelaConfiguracoes extends StatefulWidget {
         String ip = obterIP();
         String url = "http://$ip/bunco/api/excluir.php";
         var res = await http.post(Uri.parse(url), body: {
-          "username": widget.username
+          "username": widget.usuario["username"]
         }).timeout(const Duration(minutes: 1));
         var response = jsonDecode(res.body);
         await exibirResultado(context: context,
@@ -150,6 +143,18 @@ class TelaConfiguracoes extends StatefulWidget {
             conteudo: e.toString()
         );
       }
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      opcoes = [
+        {"label": "Alterar o nome", "page": TelaAlterarNome(nome: widget.usuario["nome"], username: widget.usuario["username"],)},
+        {"label": "Alterar o username", "page": const TelaAlterarUsername()},
+        {"label": "Alterar o email", "page": const TelaAlterarEmail()},
+        {"label": "Alterar a senha", "page": const TelaAlterarSenha()},
+        {"label": "Adicionar links para as redes sociais", "page": const TelaAlterarLinks()},
+      ];
     }
 
   @override
