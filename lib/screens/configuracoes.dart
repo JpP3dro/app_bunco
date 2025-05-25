@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:app_bunco/screens/alterarnome.dart';
+import 'package:app_bunco/screens/alterarusername.dart';
+import 'package:app_bunco/screens/alteraremail.dart';
+import 'package:app_bunco/screens/alterarsenha.dart';
+import 'package:app_bunco/screens/alterarlinks.dart';
 
 class TelaConfiguracoes extends StatefulWidget {
   const TelaConfiguracoes({super.key});
@@ -11,11 +16,11 @@ class TelaConfiguracoes extends StatefulWidget {
   class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
 
     final List<Map<String, dynamic>> opcoes = [
-      {"label": "Alterar o nome", "page": 'pagina'},
-      {"label": "Alterar o username", "page": 'pagina'},
-      {"label": "Alterar o email", "page": 'pagina'},
-      {"label": "Alterar a senha", "page": 'pagina'},
-      {"label": "Adicionar links para as redes sociais", "page": 'pagina'},
+      {"label": "Alterar o nome", "page": TelaAlterarNome()},
+      {"label": "Alterar o username", "page": TelaAlterarUsername()},
+      {"label": "Alterar o email", "page": TelaAlterarEmail()},
+      {"label": "Alterar a senha", "page": TelaAlterarSenha()},
+      {"label": "Adicionar links para as redes sociais", "page": TelaAlterarLinks()},
     ];
 
   @override
@@ -88,12 +93,25 @@ class TelaConfiguracoes extends StatefulWidget {
                     },
                     icon: const Icon(
                       Icons.logout,
-                      color: Colors.white,
+                      color: Colors.red,
                       size: 30,
                     ),
-                    label: const Text("Sair da conta"),
+                    label: Text(
+                        "Sair da conta",
+                      style: GoogleFonts.baloo2(
+                        color: Colors.red,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50), // botão largo
+                      minimumSize: Size(double.infinity, 50),
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      side: const BorderSide(
+                        width: 2,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                   SizedBox(height: 12),
@@ -106,9 +124,17 @@ class TelaConfiguracoes extends StatefulWidget {
                       color: Colors.white,
                       size: 30,
                     ),
-                    label: const Text("Excluir a conta"),
+                    label: Text(
+                        "Excluir a conta",
+                      style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50), // botão largo
+                      minimumSize: Size(double.infinity, 50),
+                      backgroundColor: Colors.red,
                     ),
                   ),
                 ],
