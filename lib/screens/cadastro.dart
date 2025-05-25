@@ -94,13 +94,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Center( // Adiciona o Center aqui para centralizar o conteúdo do SingleChildScrollView
+      body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
-              mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço vertical necessário
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   margin: const EdgeInsets.all(10),

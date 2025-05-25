@@ -86,7 +86,7 @@ class _TelaAlterarEmailState extends State<TelaAlterarEmail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Alterar nome",
+          "Alterar email",
           style: GoogleFonts.baloo2(
             fontSize: 20,
             color: Colors.black,
