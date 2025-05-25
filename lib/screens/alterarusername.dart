@@ -86,7 +86,7 @@ class _TelaAlterarUsernameState extends State<TelaAlterarUsername> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Alterar nome",
+          "Alterar username",
           style: GoogleFonts.baloo2(
             fontSize: 20,
             color: Colors.black,
