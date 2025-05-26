@@ -66,7 +66,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.green,
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
                           Text("Sim"),
                           Icon(
@@ -94,7 +94,7 @@ class TelaConfiguracoes extends StatefulWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.red,
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Text("Não"),
                         Icon(
