@@ -38,6 +38,24 @@ dependencies:
   google_fonts: ^6.2.1
   page_transition: ^2.1.0
   flutter_svg: ^2.0.10
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/icone/icone.png"
+  adaptive_icon_background: "#0d141f"
+  adaptive_icon_foreground: "assets/images/icone/icone.png"
+  web:
+    generate: true
+    image_path: "assets/images/icone/icone.png"
+  windows:
+    generate: true
+    image_path: "assets/images/icone/icone.png"
+  macos:
+    generate: true
+    image_path: "assets/images/icone/icone.png"
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +81,7 @@ flutter:
 
   assets:
     - assets/images/telainicial/
+    - assets/images/icone/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
