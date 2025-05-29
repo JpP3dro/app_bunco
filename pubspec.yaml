@@ -83,6 +83,7 @@ flutter:
   assets:
     - assets/images/telainicial/
     - assets/images/icone/
+    - assets/images/perfil/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

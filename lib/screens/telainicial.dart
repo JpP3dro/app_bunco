@@ -27,7 +27,7 @@ class _TelaInicialState extends State<TelaInicial> {
       const TelaCurso(),
       const TelaRanking(),
       const TelaTerminal(),
-      const TelaPerfil(),
+      TelaPerfil(usuario: widget.usuario),
       TelaConfiguracoes(usuario: widget.usuario),
     ];
   }

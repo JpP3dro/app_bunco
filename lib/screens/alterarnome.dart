@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TelaAlterarNome extends StatefulWidget {
   final String nome;
@@ -107,7 +108,7 @@ class _TelaAlterarNomeState extends State<TelaAlterarNome> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       label: Text("Coloque o seu novo nome:"),
-                      icon: Icon(Icons.badge_outlined),
+                      icon: FaIcon(FontAwesomeIcons.signature),
                     ),
                   ),
                 ),
@@ -120,10 +121,10 @@ class _TelaAlterarNomeState extends State<TelaAlterarNome> {
         child: Directionality(
             textDirection: TextDirection.rtl,
           child: ElevatedButton.icon(
-            icon: const Icon(
-              Icons.badge_outlined,
+            icon: const FaIcon(
+              FontAwesomeIcons.signature,
               color: Colors.white,
-              size: 30,
+              size: 25,
             ),
             onPressed: _botaoHabilitado ? () {
               alterarNome();
