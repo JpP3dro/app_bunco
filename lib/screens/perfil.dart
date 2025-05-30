@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../uteis/tipo_dialogo.dart';
+import '../uteis/dialogo.dart';
 
 class TelaPerfil extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -14,6 +17,41 @@ class TelaPerfil extends StatefulWidget {
 }
 
 class _TelaPerfilState extends State<TelaPerfil> {
+  late List<_Cards> cards;
+  late String exibirDias;
+  late String exibirVidas;
+
+  Future abrirLink({
+    required String url,
+}) async {
+    Uri link = Uri.parse(url);
+    if (await canLaunchUrl(link)) {
+      await launchUrl(
+        link,
+        mode: LaunchMode.externalApplication,
+      );
+    }
+    else {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Erro ao abrir link",
+          conteudo: "Link não abriu. Tente novamente mais tarde!"
+      );
+    }
+}
+
+  @override
+  void initState() {
+    super.initState();
+    exibirDias = widget.usuario['ofensiva'] == 1 ? "dia" : "dias";
+    exibirVidas = widget.usuario['vidas'] == 1 ? "vida" : "vidas";
+    cards = [
+      _Cards(imagePath: 'assets/images/icone/icone-github.png', titulo: '${widget.usuario['xp']} XP', subtitulo: 'Quantidade de XP'),
+      _Cards(imagePath: 'assets/images/icone/icone-instagram.png', titulo: '${widget.usuario['ofensiva']} $exibirDias', subtitulo: 'Dias de ofensiva'),
+      _Cards(imagePath: 'assets/images/icone/icone-linkedin.png', titulo: '${widget.usuario['vidas']} $exibirVidas', subtitulo: 'Quantidade de vidas'),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +71,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // 1) Foto circular + dois botões nas laterais (vermelhos)
+            // 1) Foto circular + dois botões nas laterais
             Row(
               children: [
                 Stack(
@@ -41,10 +79,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
                   children: [
                     // Círculo da foto
                     CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage('assets/images/perfil/undefined.jpg'),
+                      radius: 60,
+                      backgroundColor: Colors.red,
+                      child: Image.asset(
+                        'assets/images/icone/icone-transparente.png',
+                        height: 130,
+                        width: 130,
+                      ),
                     ),
-                    // Botão à esquerda
                     Positioned(
                       left: -10,
                       bottom: -25,
@@ -58,7 +100,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         ),
                       ),
                     ),
-                    // Botão à direita
                     Positioned(
                       right: -10,
                       bottom: -25,
@@ -96,74 +137,126 @@ class _TelaPerfilState extends State<TelaPerfil> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Image(
-                    image: AssetImage("assets/images/icone/icone-github.png"),
-                    height: 40,
-                    width: 40,
+                if ((widget.usuario['link_github'] ?? "").isNotEmpty) ...[
+                  IconButton(
+                    onPressed: () {
+                      abrirLink(url: widget.usuario['link_github']);
+                    },
+                    icon: Image(
+                      image: AssetImage("assets/images/icone/icone-github.png"),
+                      height: 40,
+                      width: 40,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                IconButton(
-                  onPressed: () {},
-                  icon: Image(
-                    image: AssetImage("assets/images/icone/icone-instagram.png"),
-                    height: 40,
-                    width: 40,
+                  const SizedBox(width: 16),
+                ],
+                if ((widget.usuario['link_instagram'] ?? "").isNotEmpty) ...[
+                  IconButton(
+                    onPressed: () {
+                      abrirLink(url: widget.usuario['link_instagram']);
+                    },
+                    icon: Image(
+                      image: AssetImage("assets/images/icone/icone-instagram.png"),
+                      height: 40,
+                      width: 40,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                IconButton(
-                  onPressed: () {},
-                  icon: Image(
-                    image: AssetImage("assets/images/icone/icone-linkedin.png"),
-                    height: 40,
-                    width: 40,
+                  const SizedBox(width: 16),
+                ],
+                if ((widget.usuario['link_linkedin'] ?? "").isNotEmpty) ...[
+                  IconButton(
+                    onPressed: () {
+                      abrirLink(url: widget.usuario['link_linkedin']);
+                    },
+                    icon: Image(
+                      image: AssetImage("assets/images/icone/icone-linkedin.png"),
+                      height: 40,
+                      width: 40,
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 16),
+                ],
               ],
             ),
 
             const SizedBox(height: 32),
 
-            // 4) Três cards verdes, cada um com imagem e texto
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 3,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                children: List.generate(3, (index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.green, width: 2),
-                      borderRadius: BorderRadius.circular(12),
+      ListView.builder(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(16),
+        itemCount: cards.length,
+        itemBuilder: (context, index) {
+          final item = cards[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.black87, width: 1.5),
+              ),
+              child: Container(
+                height: 100,
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    // Quadrado da imagem
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        item.imagePath,
+                        width: 76,  // largura fixa
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Imagem no topo
-                        Image.asset(
-                          'assets/images/item_$index.png',
-                          width: 48,
-                          height: 48,
-                          fit: BoxFit.contain,
-                        ),
-                        const SizedBox(height: 8),
-                        // Texto embaixo
-                        Text(
-                          'Item ${index + 1}',
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
+
+                    const SizedBox(width: 16),
+
+                    // Espaço para os textos
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            item.titulo,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            item.subtitulo,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                }),
+                  ],
+                ),
               ),
             ),
-          ],
+          );
+        },
+      ),
+    ],
         ),
       ),
     );
   }
+}
+
+class _Cards {
+  final String imagePath;
+  final String titulo;
+  final String subtitulo;
+  const _Cards({
+    required this.imagePath,
+    required this.titulo,
+    required this.subtitulo,
+  });
 }
