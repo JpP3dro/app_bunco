@@ -25,13 +25,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
     required String url,
 }) async {
     Uri link = Uri.parse(url);
-    if (await canLaunchUrl(link)) {
-      await launchUrl(
-        link,
-        mode: LaunchMode.externalApplication,
-      );
-    }
-    else {
+    if (!await launchUrl(link)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
@@ -181,29 +175,45 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
             const SizedBox(height: 32),
 
+      //4) Cards com as informações
       ListView.builder(
         shrinkWrap: true,
         padding: const EdgeInsets.all(16),
         itemCount: cards.length,
         itemBuilder: (context, index) {
-          final item = cards[index];
+          final card = cards[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.black87, width: 1.5),
+                side: BorderSide(
+                    color: Color(0xFF1CB0F6),
+                    width: 1.5,
+              ),
               ),
               child: Container(
                 height: 100,
                 padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xAA1CB0F6),
+                      spreadRadius: 2,
+                      blurRadius: 12,
+                      offset: const Offset(5, 13), // sombra pra baixo
+                    ),
+                  ],
+                ),
                 child: Row(
                   children: [
                     // Quadrado da imagem
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset(
-                        item.imagePath,
+                        card.imagePath,
                         width: 76,  // largura fixa
                         height: double.infinity,
                         fit: BoxFit.cover,
@@ -219,7 +229,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            item.titulo,
+                            card.titulo,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -227,7 +237,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            item.subtitulo,
+                            card.subtitulo,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.grey[700],
