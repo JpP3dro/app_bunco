@@ -1,14 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-
 import '../main.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
-//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TelaAlterarLinks extends StatefulWidget {
   final String github;
@@ -122,11 +120,10 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text("Coloque o seu link do GitHub:"),
-                    //icon: FaIcon(FontAwesomeIcons.github),
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-github.png"),
-                      width: 30,
-                      height: 30,
+                    icon: Icon(
+                      FontAwesomeIcons.github,
+                      color: Colors.black,
+                      size: 30,
                     ),
                   ),
                 ),
@@ -139,10 +136,10 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
                     border: OutlineInputBorder(),
                     label: Text("Coloque o seu link do Instagram:"),
                     //icon: FaIcon(FontAwesomeIcons.instagram),
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-instagram.png"),
-                      width: 30,
-                      height: 30,
+                    icon: Icon(
+                      FontAwesomeIcons.instagram,
+                      color: Colors.pink,
+                      size: 30,
                     ),
                   ),
                 ),
@@ -155,10 +152,10 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
                     border: OutlineInputBorder(),
                     label: Text("Coloque o seu link do Linkedin:"),
                     //icon: FaIcon(FontAwesomeIcons.linkedin),
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-linkedin.png"),
-                      width: 30,
-                      height: 30,
+                    icon: Icon(
+                      FontAwesomeIcons.linkedin,
+                      color: Colors.blueAccent,
+                      size: 30,
                     ),
                   ),
                 ),

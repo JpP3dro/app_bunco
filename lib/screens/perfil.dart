@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../uteis/tipo_dialogo.dart';
 import '../uteis/dialogo.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TelaPerfil extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -53,7 +54,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "Perfil",
+          "Meu Perfil",
           style: GoogleFonts.baloo2(
             color: Colors.black,
             fontSize: 25,
@@ -76,7 +77,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       radius: 60,
                       backgroundColor: Colors.red,
                       child: Image.asset(
-                        'assets/images/icone/icone-transparente.png',
+                        'assets/images/perfil/undefined.jpg',
                         height: 130,
                         width: 130,
                       ),
@@ -132,48 +133,89 @@ class _TelaPerfilState extends State<TelaPerfil> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if ((widget.usuario['link_github'] ?? "").isNotEmpty) ...[
-                  IconButton(
+                  TextButton(
                     onPressed: () {
                       abrirLink(url: widget.usuario['link_github']);
                     },
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-github.png"),
-                      height: 40,
-                      width: 40,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.github,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        const SizedBox(height: 4),
+                         Text(
+                            "GitHub",
+                          style: GoogleFonts.quicksand(
+                            color: Color(0xFF000000),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 16),
                 ],
                 if ((widget.usuario['link_instagram'] ?? "").isNotEmpty) ...[
-                  IconButton(
+                  TextButton(
                     onPressed: () {
                       abrirLink(url: widget.usuario['link_instagram']);
                     },
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-instagram.png"),
-                      height: 40,
-                      width: 40,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.instagram,
+                          color: Colors.pink,
+                          size: 40,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Instagram",
+                          style: GoogleFonts.quicksand(
+                              color: Color(0xFF000000),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 16),
                 ],
                 if ((widget.usuario['link_linkedin'] ?? "").isNotEmpty) ...[
-                  IconButton(
+                  TextButton(
                     onPressed: () {
                       abrirLink(url: widget.usuario['link_linkedin']);
                     },
-                    icon: Image(
-                      image: AssetImage("assets/images/icone/icone-linkedin.png"),
-                      height: 40,
-                      width: 40,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.linkedin,
+                          color: Colors.blueAccent,
+                          size: 40,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Linkedin",
+                          style: GoogleFonts.quicksand(
+                              color: Color(0xFF000000),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 16),
                 ],
               ],
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 20),
 
       //4) Cards com as informações
       ListView.builder(
