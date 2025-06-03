@@ -35,7 +35,7 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
   Future<void> alterarLinks() async {
     try {
       String ip = obterIP();
-      String url = "http://$ip/bunco_testes/api/alterarLinks.php";
+      String url = "http://$ip//api/alterarLinks.php";
       var res = await http.post(Uri.parse(url), body: {
         "username": widget.username,
         "github": _controllerGithub.text.trim(),

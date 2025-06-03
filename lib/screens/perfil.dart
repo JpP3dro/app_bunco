@@ -1,9 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 import '../uteis/dialogo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../uteis/escolherfoto.dart';
+import '../uteis/escolhercor.dart';
 
 class TelaPerfil extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -21,6 +26,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
   late List<_Cards> cards;
   late String exibirDias;
   late String exibirVidas;
+  late String fotoSelecionada;
+  late Color corFundo;
 
   Future abrirLink({
     required String url,
@@ -36,9 +43,63 @@ class _TelaPerfilState extends State<TelaPerfil> {
     }
 }
 
+  Future<void> alterarFoto() async {
+    try {
+      String ip = obterIP();
+      String url = "http://$ip/bunco/api/alterarFoto.php";
+      var res = await http.post(Uri.parse(url), body: {
+        "username": widget.usuario['username'],
+        "foto": widget.usuario['foto']
+      }).timeout(const Duration(minutes: 1));
+      var response = jsonDecode(res.body);
+      await exibirResultado(
+          context: context,
+          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
+          titulo: response["sucesso"] == "true" ? "Foto alerada com sucesso!" : "Algo deu errado!",
+          conteudo: response["mensagem"]
+      );
+    }
+    catch(e) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Erro ao colocar a foto nova no servidor",
+          conteudo: "Tente de novo daqui a pouco!"
+      );
+    }
+  }
+
+  Future<void> alterarCor() async {
+    try {
+      String ip = obterIP();
+      String url = "http://$ip/bunco/api/alterarCor.php";
+      var res = await http.post(Uri.parse(url), body: {
+        "username": widget.usuario['username'],
+        "cor": widget.usuario['cor']
+      }).timeout(const Duration(minutes: 1));
+      var response = jsonDecode(res.body);
+      await exibirResultado(
+          context: context,
+          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
+          titulo: response["sucesso"] == "true" ? "Cor alerada com sucesso!" : "Algo deu errado!",
+          conteudo: response["mensagem"]
+      );
+    }
+    catch(e) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Erro ao colocar a cor nova no servidor",
+          conteudo: "Tente de novo daqui a pouco!"
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    fotoSelecionada = 'assets/images/perfil/${widget.usuario['foto']}';
+    corFundo = Color(int.parse("0xFF${widget.usuario['cor']}"));
     exibirDias = widget.usuario['ofensiva'] == 1 ? "dia" : "dias";
     exibirVidas = widget.usuario['vidas'] == 1 ? "vida" : "vidas";
     cards = [
@@ -72,21 +133,52 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    // Círculo da foto
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.red,
-                      child: Image.asset(
-                        'assets/images/perfil/undefined.jpg',
-                        height: 130,
-                        width: 130,
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.blue,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xAA1CB0F6),
+                            spreadRadius: 2,
+                            blurRadius: 12,
+                            offset: const Offset(5, 13),
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: corFundo,
+                        child: ClipOval(
+                          child: Image.asset(
+                            fotoSelecionada,
+                            height: 130,
+                            width: 130,
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
                       left: -10,
                       bottom: -25,
                       child: IconButton(
-                        onPressed: () { /* ação */ },
+                        onPressed: () async {
+                          final escolha = await mostrarSeletorDeFotoDePerfil(
+                              context,
+                              fotoAtual: fotoSelecionada,
+                              corFundo: corFundo
+                          );
+                          if (escolha != null) {
+                            setState(() {
+                              fotoSelecionada = escolha;
+                              widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "");
+                            });
+                            alterarFoto();
+                          }
+                        },
                         icon: const Icon(Icons.camera_alt),
                         color: Colors.white,
                         iconSize: 24,
@@ -99,7 +191,29 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       right: -10,
                       bottom: -25,
                       child: IconButton(
-                        onPressed: () { /* ação */ },
+                        onPressed: () async {
+                          if (fotoSelecionada == "assets/images/perfil/undefined.png") {
+                            await exibirResultado(
+                                context: context,
+                                tipo: TipoDialogo.alerta,
+                                titulo: "Selecione uma foto!",
+                                conteudo: "Coloque uma foto antes de alterar a cor de fundo!");
+                            return;
+                          }
+                          final escolha = await mostrarSeletorDeCor(
+                              context,
+                              fotoAtual: fotoSelecionada,
+                              corAtual: corFundo,
+                          );
+                          if (escolha != null) {
+                            setState(() {
+                              int teste = escolha.toARGB32();
+                              corFundo = escolha;
+                              widget.usuario['cor'] = teste.toRadixString(16).substring(2);
+                            });
+                            alterarCor();
+                          }
+                        },
                         icon: const Icon(Icons.edit),
                         color: Colors.white,
                         iconSize: 24,
@@ -123,7 +237,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 22),
             Divider(
               color: Colors.black,
             ),
@@ -214,8 +328,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 ],
               ],
             ),
-
-            const SizedBox(height: 20),
 
       //4) Cards com as informações
       ListView.builder(

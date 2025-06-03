@@ -47,7 +47,7 @@ class _TelaAlterarSenhaState extends State<TelaAlterarSenha> {
         return;
       }
       String ip = obterIP();
-      String url = "http://$ip/bunco_testes/api/alterarSenha.php";
+      String url = "http://$ip/bunco/api/alterarSenha.php";
       var res = await http.post(Uri.parse(url), body: {
         "username": widget.username,
         "senhanova": _controllerSenhaNova.text.trim(),

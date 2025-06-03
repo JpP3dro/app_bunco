@@ -29,7 +29,7 @@ class _TelaAlterarEmailState extends State<TelaAlterarEmail> {
   Future<void> alterarEmail() async {
     try {
       String ip = obterIP();
-      String url = "http://$ip/bunco_testes/api/alterarEmail.php";
+      String url = "http://$ip/bunco/api/alterarEmail.php";
       var res = await http.post(Uri.parse(url), body: {
         "username": widget.username,
         "email": _controllerEmail.text.trim()
