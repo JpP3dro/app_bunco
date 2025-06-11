@@ -1,6 +1,6 @@
 import 'package:app_bunco/screens/configuracoes.dart';
 import 'package:app_bunco/screens/curso.dart';
-import 'package:app_bunco/screens/perfil.dart';
+import 'package:app_bunco/screens/meuperfil.dart';
 import 'package:app_bunco/screens/ranking.dart';
 import 'package:app_bunco/screens/terminal.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _TelaInicialState extends State<TelaInicial> {
     super.initState();
     telas = [
       const TelaCurso(),
-      const TelaRanking(),
+      TelaRanking(usuario: widget.usuario,),
       const TelaTerminal(),
       TelaPerfil(usuario: widget.usuario),
       TelaConfiguracoes(usuario: widget.usuario),
