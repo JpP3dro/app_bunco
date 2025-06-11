@@ -133,13 +133,13 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                         // Retorna o caminho selecionado para quem chamou o diálogo
                         Navigator.of(context).pop(selectedImage);
                       },
-                      child: const Text('Confirmar'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: const Text('Confirmar'),
                     ),
                   ),
                 ),

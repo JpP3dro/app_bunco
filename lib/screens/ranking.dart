@@ -38,7 +38,7 @@ class _TelaRankingState extends State<TelaRanking> {
   Future<void> carregarRanking() async {
     try {
       String ip = obterIP();
-      String url = "http://$ip/bunco_testes/api/ranking.php";
+      String url = "http://$ip/bunco/api/ranking.php";
       var res = await http.post(Uri.parse(url), body: {
         "username": widget.usuario['username']
       }).timeout(const Duration(minutes: 1));
@@ -141,6 +141,11 @@ class _TelaRankingState extends State<TelaRanking> {
           leading: Stack(
             alignment: Alignment.topRight,
             children: [
+              CircleAvatar(
+                radius: 24,
+                backgroundImage:
+                AssetImage('assets/images/perfil/$username.jpg'),
+              ),
               if (medal != null)
                 Icon(FontAwesomeIcons.medal, color: medal, size: 30),
             ],
