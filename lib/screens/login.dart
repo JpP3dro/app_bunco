@@ -55,8 +55,8 @@ class _TelaLoginState extends State<TelaLogin> {
           await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Erro: ${res.statusCode}");
         }
       }
-    } catch (error) {
-      await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Catch", conteudo: "Erro: $error");
+    } catch (e) {
+      await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Erro ao fazer o login", conteudo: "Conexão com o servidor falhou. Tente novamente daqui a pouco!");
     }
   }
 

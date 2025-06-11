@@ -140,7 +140,7 @@ class TelaConfiguracoes extends StatefulWidget {
         await exibirResultado(context: context,
             tipo: TipoDialogo.erro,
             titulo: "Erro do servidor",
-            conteudo: e.toString()
+            conteudo: "Talvez seja um sinal para você continuar com a gente"
         );
       }
     }

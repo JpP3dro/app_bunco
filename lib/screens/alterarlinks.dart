@@ -33,6 +33,7 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
   bool _botaoHabilitado = false;
 
   Future<void> alterarLinks() async {
+    if (!await verificarLinks()) return;
     try {
       String ip = obterIP();
       String url = "http://$ip//api/alterarLinks.php";
@@ -64,6 +65,37 @@ class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
           conteudo: "Tente de novo daqui a pouco!"
       );
     }
+  }
+
+  Future<bool> verificarLinks() async {
+    final regexGithub = RegExp(r'^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$');
+    final regexInstagram = RegExp(r'^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$');
+    final regexLinkedin = RegExp(r'^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_%]+\/?$');
+    if (!regexGithub.hasMatch(_controllerGithub.text.trim())) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Link do Github inválido!",
+          conteudo: "O link que você colocou no Github está inválido!");
+      return false;
+    }
+    else if (!regexInstagram.hasMatch(_controllerInstagram.text.trim())) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Link do Instagram inválido!",
+          conteudo: "O link que você colocou no Instagram está inválido!");
+      return false;
+    }
+    else if (!regexLinkedin.hasMatch(_controllerLinkedin.text.trim())) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Link do Linkedin inválido!",
+          conteudo: "O link que você colocou no Linkedin está inválido!");
+      return false;
+    }
+    return true;
   }
 
   void verificarCampos() {

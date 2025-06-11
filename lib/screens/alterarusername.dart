@@ -51,7 +51,7 @@ class _TelaAlterarUsernameState extends State<TelaAlterarUsername> {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.erro,
-          titulo: "Erro ao cadastrar o nome novo",
+          titulo: "Erro ao cadastrar o username novo",
           conteudo: e.toString()
       );
     }
