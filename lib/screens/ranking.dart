@@ -1,12 +1,10 @@
 import 'dart:convert';
-
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-
 import '../uteis/ip.dart';
 import 'outroperfil.dart';
 
@@ -57,12 +55,12 @@ class _TelaRankingState extends State<TelaRanking> {
     }
   }
 
-  Color? _medalColor(int index) {
+  Color? _corMedalha(int index) {
     switch (index) {
       case 0:
-        return Colors.amber; // ouro
+        return Colors.amberAccent; // ouro
       case 1:
-        return Colors.grey; // prata
+        return Color(0xFF686868); // prata
       case 2:
         return Colors.brown; // bronze
       default:
@@ -79,13 +77,24 @@ class _TelaRankingState extends State<TelaRanking> {
     }
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            "Ranking",
-            style: GoogleFonts.baloo2(
-              fontSize: 20,
-              color: Colors.black,
-              fontWeight: FontWeight.w700,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Ranking",
+                style: GoogleFonts.baloo2(
+                  fontSize: 25,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  carregarRanking();
+                },
+              ),
+            ],
           ),
           ),
       body: ListView.builder(
@@ -94,39 +103,42 @@ class _TelaRankingState extends State<TelaRanking> {
         itemBuilder: (ctx, i) {
           // Se for depois do top15 e seu you.position >15, desenha seu card
           if (i == primeiros.length && voce!['position']! > 15) {
-            return _buildTile(
+            return _buildRanking(
               index: voce!['position']! - 1,
-              username: voce!['username']!,
+              nome: voce!['nome']!,
               xp: voce!['xp']!,
               isYou: true,
+              dados: voce
             );
           }
           // Senão, é um dos top
           final entry = primeiros[i];
-          return _buildTile(
+          return _buildRanking(
             index: i,
-            username: entry['username'],
+            nome: entry['nome'],
             xp: entry['xp'],
             isYou: (entry['username'] == widget.usuario['username']),
+            dados: entry
           );
         },
       ),
     );
   }
 
-  Widget _buildTile({
+  Widget _buildRanking({
     required int index,
-    required String username,
+    required String nome,
     required int xp,
     bool isYou = false,
+    required Map<String, dynamic>? dados,
   }) {
-    final medal = _medalColor(index);
+    final medalha = _corMedalha(index);
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => OutroPerfil(usuario: username),
+            builder: (_) => TelaOutroPerfil(usuario: dados)
           ),
         );
       },
@@ -134,29 +146,57 @@ class _TelaRankingState extends State<TelaRanking> {
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: isYou ? Colors.blueAccent : Colors.black87, width: 1.5),
+            color: isYou ? Colors.blueAccent : Colors.black87,
+            width: 2,
+          ),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: ListTile(
-          leading: Stack(
-            alignment: Alignment.topRight,
-            children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundImage:
-                AssetImage('assets/images/perfil/$username.jpg'),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          child: ListTile(
+            leading: SizedBox(
+              width: 48,
+              height: 48,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: isYou
+                        ? AssetImage('assets/images/perfil/${widget.usuario['foto']}')
+                        : AssetImage('assets/images/perfil/${dados!['foto']}'),
+                    backgroundColor: isYou
+                        ? Color(int.parse("0xFF${widget.usuario['cor']}"))
+                        : Color(int.parse("0xFF${dados!['cor']}")),
+                  ),
+                  if (medalha != null)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Icon(
+                        FontAwesomeIcons.medal,
+                        color: medalha,
+                        size: 22,
+                      ),
+                    ),
+                ],
               ),
-              if (medal != null)
-                Icon(FontAwesomeIcons.medal, color: medal, size: 30),
-            ],
-          ),
-          title: Text(
-            isYou ? '$username (você)' : username,
-            style: TextStyle(
-              fontWeight: isYou ? FontWeight.bold : FontWeight.normal,
+            ),
+            title: Text(
+              isYou ? '$nome (você)' : nome,
+              style: GoogleFonts.quicksand(
+                fontSize: 18,
+                fontWeight: isYou ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+            trailing: Text(
+                '$xp XP',
+              style: GoogleFonts.baloo2(
+                fontSize: 18,
+                fontWeight: FontWeight.w400
+              ),
             ),
           ),
-          trailing: Text('$xp XP'),
         ),
       ),
     );

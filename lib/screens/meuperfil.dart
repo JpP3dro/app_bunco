@@ -123,291 +123,293 @@ class _TelaPerfilState extends State<TelaPerfil> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // 1) Foto circular + dois botões nas laterais
-            Row(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.blue,
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xAA1CB0F6),
-                            spreadRadius: 2,
-                            blurRadius: 12,
-                            offset: const Offset(5, 13),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // 1) Foto circular + dois botões nas laterais
+              Row(
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.blue,
+                            width: 1,
                           ),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: corFundo,
-                        child: ClipOval(
-                          child: Image.asset(
-                            fotoSelecionada,
-                            height: 130,
-                            width: 130,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xAA1CB0F6),
+                              spreadRadius: 2,
+                              blurRadius: 12,
+                              offset: const Offset(5, 13),
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: corFundo,
+                          child: ClipOval(
+                            child: Image.asset(
+                              fotoSelecionada,
+                              height: 130,
+                              width: 130,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      left: -10,
-                      bottom: -25,
-                      child: IconButton(
-                        onPressed: () async {
-                          final escolha = await mostrarSeletorDeFotoDePerfil(
-                              context,
-                              fotoAtual: fotoSelecionada,
-                              corFundo: corFundo
-                          );
-                          if (escolha != null) {
-                            setState(() {
-                              fotoSelecionada = escolha;
-                              widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "");
-                            });
-                            alterarFoto();
-                          }
-                        },
-                        icon: const Icon(Icons.camera_alt),
-                        color: Colors.white,
-                        iconSize: 24,
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                      Positioned(
+                        left: -10,
+                        bottom: -25,
+                        child: IconButton(
+                          onPressed: () async {
+                            final escolha = await mostrarSeletorDeFotoDePerfil(
+                                context,
+                                fotoAtual: fotoSelecionada,
+                                corFundo: corFundo
+                            );
+                            if (escolha != null) {
+                              setState(() {
+                                fotoSelecionada = escolha;
+                                widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "");
+                              });
+                              alterarFoto();
+                            }
+                          },
+                          icon: const Icon(Icons.camera_alt),
+                          color: Colors.white,
+                          iconSize: 24,
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                          ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      right: -10,
-                      bottom: -25,
-                      child: IconButton(
-                        onPressed: () async {
-                          if (fotoSelecionada == "assets/images/perfil/undefined.png") {
-                            await exibirResultado(
-                                context: context,
-                                tipo: TipoDialogo.alerta,
-                                titulo: "Selecione uma foto!",
-                                conteudo: "Coloque uma foto antes de alterar a cor de fundo!");
-                            return;
-                          }
-                          final escolha = await mostrarSeletorDeCor(
+                      Positioned(
+                        right: -10,
+                        bottom: -25,
+                        child: IconButton(
+                          onPressed: () async {
+                            if (fotoSelecionada == "assets/images/perfil/undefined.png") {
+                              await exibirResultado(
+                                  context: context,
+                                  tipo: TipoDialogo.alerta,
+                                  titulo: "Selecione uma foto!",
+                                  conteudo: "Coloque uma foto antes de alterar a cor de fundo!");
+                              return;
+                            }
+                            final escolha = await mostrarSeletorDeCor(
                               context,
                               fotoAtual: fotoSelecionada,
                               corAtual: corFundo,
-                          );
-                          if (escolha != null) {
-                            setState(() {
-                              int teste = escolha.toARGB32();
-                              corFundo = escolha;
-                              widget.usuario['cor'] = teste.toRadixString(16).substring(2);
-                            });
-                            alterarCor();
-                          }
-                        },
-                        icon: const Icon(Icons.edit),
-                        color: Colors.white,
-                        iconSize: 24,
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.blueAccent,
+                            );
+                            if (escolha != null) {
+                              setState(() {
+                                int teste = escolha.toARGB32();
+                                corFundo = escolha;
+                                widget.usuario['cor'] = teste.toRadixString(16).substring(2);
+                              });
+                              alterarCor();
+                            }
+                          },
+                          icon: const Icon(Icons.edit),
+                          color: Colors.white,
+                          iconSize: 24,
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 16),
-                // 2) Texto ao lado da foto
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.usuario["nome"],
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 4),
-                    Text('@${widget.usuario["username"]}', style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 22),
-            Divider(
-              color: Colors.black,
-            ),
-
-            // 3) Botões sociais (círculos azuis)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if ((widget.usuario['link_github'] ?? "").isNotEmpty) ...[
-                  TextButton(
-                    onPressed: () {
-                      abrirLink(url: widget.usuario['link_github']);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.github,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        const SizedBox(height: 4),
-                         Text(
-                            "GitHub",
-                          style: GoogleFonts.quicksand(
-                            color: Color(0xFF000000),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700
-                          ),
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
                   const SizedBox(width: 16),
-                ],
-                if ((widget.usuario['link_instagram'] ?? "").isNotEmpty) ...[
-                  TextButton(
-                    onPressed: () {
-                      abrirLink(url: widget.usuario['link_instagram']);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.instagram,
-                          color: Colors.pink,
-                          size: 40,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "Instagram",
-                          style: GoogleFonts.quicksand(
-                              color: Color(0xFF000000),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                ],
-                if ((widget.usuario['link_linkedin'] ?? "").isNotEmpty) ...[
-                  TextButton(
-                    onPressed: () {
-                      abrirLink(url: widget.usuario['link_linkedin']);
-                    },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.linkedin,
-                          color: Colors.blueAccent,
-                          size: 40,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          "Linkedin",
-                          style: GoogleFonts.quicksand(
-                              color: Color(0xFF000000),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700
-                          ),
-                        ),
-                      ],
-                    ),
+                  // 2) Texto ao lado da foto
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.usuario["nome"],
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 4),
+                      Text('@${widget.usuario["username"]}', style: TextStyle(fontSize: 16, color: Colors.grey)),
+                    ],
                   ),
                 ],
-              ],
-            ),
-
-      //4) Cards com as informações
-      ListView.builder(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16),
-        itemCount: cards.length,
-        itemBuilder: (context, index) {
-          final card = cards[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(
-                    color: Color(0xFF1CB0F6),
-                    width: 1.5,
               ),
+              const SizedBox(height: 22),
+              Divider(
+                color: Colors.black,
               ),
-              child: Container(
-                height: 100,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0xAA1CB0F6),
-                      spreadRadius: 2,
-                      blurRadius: 12,
-                      offset: const Offset(5, 13), // sombra pra baixo
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    // Quadrado da imagem
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        card.imagePath,
-                        width: 76,  // largura fixa
-                        height: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
 
-                    const SizedBox(width: 16),
-
-                    // Espaço para os textos
-                    Expanded(
+              // 3) Botões sociais (círculos azuis)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if ((widget.usuario['link_github'] ?? "").isNotEmpty) ...[
+                    TextButton(
+                      onPressed: () {
+                        abrirLink(url: widget.usuario['link_github']);
+                      },
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            card.titulo,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Icon(
+                            FontAwesomeIcons.github,
+                            color: Colors.black,
+                            size: 40,
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            card.subtitulo,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey[700],
+                            "GitHub",
+                            style: GoogleFonts.quicksand(
+                                color: Color(0xFF000000),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                  ],
+                  if ((widget.usuario['link_instagram'] ?? "").isNotEmpty) ...[
+                    TextButton(
+                      onPressed: () {
+                        abrirLink(url: widget.usuario['link_instagram']);
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.instagram,
+                            color: Colors.pink,
+                            size: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Instagram",
+                            style: GoogleFonts.quicksand(
+                                color: Color(0xFF000000),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                  ],
+                  if ((widget.usuario['link_linkedin'] ?? "").isNotEmpty) ...[
+                    TextButton(
+                      onPressed: () {
+                        abrirLink(url: widget.usuario['link_linkedin']);
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.linkedin,
+                            color: Colors.blueAccent,
+                            size: 40,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            "Linkedin",
+                            style: GoogleFonts.quicksand(
+                                color: Color(0xFF000000),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700
                             ),
                           ),
                         ],
                       ),
                     ),
                   ],
-                ),
+                ],
               ),
-            ),
-          );
-        },
-      ),
-    ],
+
+              //4) Cards com as informações
+              ListView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(16),
+                itemCount: cards.length,
+                itemBuilder: (context, index) {
+                  final card = cards[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(
+                          color: Color(0xFF1CB0F6),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Container(
+                        height: 100,
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xAA1CB0F6),
+                              spreadRadius: 2,
+                              blurRadius: 12,
+                              offset: const Offset(5, 13), // sombra pra baixo
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            // Quadrado da imagem
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                card.imagePath,
+                                width: 76,  // largura fixa
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                            const SizedBox(width: 16),
+
+                            // Espaço para os textos
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    card.titulo,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    card.subtitulo,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
