@@ -98,30 +98,30 @@ class _TelaRankingState extends State<TelaRanking> {
           ),
           ),
       body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: primeiros.length + ((voce?['position'] ?? 0) > 15 ? 1 : 0),
-        itemBuilder: (ctx, i) {
-          // Se for depois do top15 e seu you.position >15, desenha seu card
-          if (i == primeiros.length && voce!['position']! > 15) {
+          padding: const EdgeInsets.all(16),
+          itemCount: primeiros.length + ((voce?['position'] ?? 0) > 15 ? 1 : 0),
+          itemBuilder: (ctx, i) {
+            // Se for depois do top15 e seu you.position >15, desenha seu card
+            if (i == primeiros.length && voce!['position']! > 15) {
+              return _buildRanking(
+                  index: voce!['position']! - 1,
+                  nome: voce!['nome']!,
+                  xp: voce!['xp']!,
+                  isYou: true,
+                  dados: voce
+              );
+            }
+            // Senão, é um dos top
+            final entry = primeiros[i];
             return _buildRanking(
-              index: voce!['position']! - 1,
-              nome: voce!['nome']!,
-              xp: voce!['xp']!,
-              isYou: true,
-              dados: voce
+                index: i,
+                nome: entry['nome'],
+                xp: entry['xp'],
+                isYou: (entry['username'] == widget.usuario['username']),
+                dados: entry
             );
-          }
-          // Senão, é um dos top
-          final entry = primeiros[i];
-          return _buildRanking(
-            index: i,
-            nome: entry['nome'],
-            xp: entry['xp'],
-            isYou: (entry['username'] == widget.usuario['username']),
-            dados: entry
-          );
-        },
-      ),
+          },
+        ),
     );
   }
 

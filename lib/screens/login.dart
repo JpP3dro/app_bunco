@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
@@ -72,83 +73,168 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Mantém a remoção do botão de voltar automático
-        title: const Center(
-            child: Text("Fazer login")
+        automaticallyImplyLeading: false,
+        backgroundColor: Color(0xFF0D141F),
+        title: Center(
+          child: Image.asset('assets/images/telainicial/login.png'),
         ),
+        toolbarHeight: 250,
       ),
-      body: Center( // Para centralizar o SingleChildScrollView
-        child: SingleChildScrollView( // Para permitir rolagem se o conteúdo for grande ou o teclado aparecer
-          child: Padding(
-            padding: const EdgeInsets.all(16.0), // Adiciona padding ao redor do formulário
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
-              mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: _controllerLogin,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Text("Coloque um username ou um email:"),
-                      icon: Icon(Icons.person),
+      body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height -
+                MediaQuery.of(context).padding.top -
+                kToolbarHeight,
+            color: Color(0xFF586892),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
+                mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
+                children: [
+                  Text(
+                    "Login",
+                    style: GoogleFonts.baloo2(
+                      fontSize: 48,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    controller: _controllerSenha,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      label: const Text("Coloque uma senha:"),
-                      icon: const Icon(Icons.password),
-                      suffixIcon: GestureDetector(
-                        child: Icon(
-                          _mostrarSenha == false
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Colors.blue,
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      cursorColor: Color(0xFF1cB0F6),
+                      style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      controller: _controllerLogin,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        onTap: () {
-                          setState(() {
-                            _mostrarSenha = !_mostrarSenha;
-                          });
-                        },
+                        filled: true,
+                        fillColor: Color(0xFF111928),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1CB0F6),
+                            width: 2,
+                          ),
+                        ),
+                        label: Text(
+                            "Digite o username ou email:",
+                          style: GoogleFonts.baloo2(
+                              fontSize: 20,
+                              color: Color(0xFFB0C2DE),
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.person,
+                          color: Color(0xFF0D141F),
+                        ),
                       ),
                     ),
-                    obscureText: _mostrarSenha == false ? true : false,
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      fazerLogin();
-                    },
-                    child: const Text("Fazer o login"),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      cursorColor: Color(0xFF1cB0F6),
+                      style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      controller: _controllerSenha,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF111928),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1CB0F6),
+                            width: 2,
+                          ),
+                        ),
+                        label: Text(
+                          "Digite sua senha:",
+                          style: GoogleFonts.baloo2(
+                            fontSize: 20,
+                            color: Color(0xFFB0C2DE),
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        icon: const Icon(
+                          Icons.password,
+                          color: Color(0xFF0D141F),
+                        ),
+                        suffixIcon: GestureDetector(
+                          child: Icon(
+                            _mostrarSenha == false
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Color(0xFF1CB0F6),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _mostrarSenha = !_mostrarSenha;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: _mostrarSenha == false ? true : false,
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50),
+                        textStyle: GoogleFonts.baloo2(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                        backgroundColor: Color(0xFF111928),
+                        foregroundColor: Color(0xFF1453A3),
+                      ),
+                      onPressed: () {
+                        fazerLogin();
+                      },
+                      child: const Text("Fazer o login"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          onPressed: () => Navigator.pushReplacement(
-            context,
-              PageTransition(
-                child: const TelaCadastro(),
-                type: PageTransitionType.rightToLeft,
-                duration: const Duration(milliseconds: 500),
-              )
+      bottomNavigationBar: Container(
+          color: Color(0xFF586892),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                textStyle: GoogleFonts.baloo2(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                backgroundColor: Color(0xFF0D141F),
+                foregroundColor: Color(0xFF1CB0F6)
+            ),
+            onPressed: () => Navigator.pushReplacement(
+                context,
+                PageTransition(
+                  child: const TelaCadastro(),
+                  type: PageTransitionType.rightToLeft,
+                  duration: const Duration(milliseconds: 500),
+                )
+            ),
+            child: const Text("Não tem um usuário? Crie um agora!"),
           ),
-          child: const Text("Não tem um usuário? Crie um agora!"),
-        ),
-      ),
+        ), 
+
     );
   }
 }
