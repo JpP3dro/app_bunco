@@ -78,12 +78,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
-  }
-
-  @override
   void dispose() {
     // Limpa os controladores quando o widget é descartado
     _controllerNome.dispose();
