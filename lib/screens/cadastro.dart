@@ -94,16 +94,24 @@ class _TelaCadastroState extends State<TelaCadastro> {
       backgroundColor: Color(0xFF0D141F),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF0D141F),
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/telainicial/fundo.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         title: Center(
           child: Image.asset('assets/images/telainicial/cadastro.png'),
         ),
         toolbarHeight: 250,
       ),
       body: Container(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.of(context).size.height,
-            ),
+        height: MediaQuery.of(context).size.height -
+            MediaQuery.of(context).padding.top -
+            kToolbarHeight,
             decoration: BoxDecoration(
               color: Color(0xFF586892),
               borderRadius: const BorderRadius.only(

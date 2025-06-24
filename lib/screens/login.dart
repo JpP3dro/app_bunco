@@ -76,7 +76,15 @@ class _TelaLoginState extends State<TelaLogin> {
       backgroundColor: Color(0xFF0D141F),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF0D141F),
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/telainicial/fundo.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         title: Center(
           child: Image.asset('assets/images/telainicial/login.png'),
         ),
