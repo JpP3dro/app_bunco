@@ -72,6 +72,7 @@ class _TelaLoginState extends State<TelaLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF0D141F),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF0D141F),
@@ -85,11 +86,15 @@ class _TelaLoginState extends State<TelaLogin> {
             height: MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top -
                 kToolbarHeight,
-            color: Color(0xFF586892),
+            decoration: BoxDecoration(
+              color: Color(0xFF586892),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(70),
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente se houver espaço
                 mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
                 children: [
                   Text(
@@ -189,6 +194,9 @@ class _TelaLoginState extends State<TelaLogin> {
                       obscureText: _mostrarSenha == false ? true : false,
                     ),
                   ),
+                  SizedBox(
+                    height: 50,
+                  ),
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: ElevatedButton(
@@ -213,28 +221,42 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
         ),
       bottomNavigationBar: Container(
-          color: Color(0xFF586892),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                textStyle: GoogleFonts.baloo2(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+        height: 80,
+        color: Color(0xFF586892),
+        child: Align(
+            alignment: Alignment.bottomCenter,
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  textStyle: GoogleFonts.baloo2(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                  backgroundColor: Color(0xFF0D141F),
+                  foregroundColor: Color(0xFF1CB0F6),
+                  minimumSize: const Size.fromHeight(50),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                  ),
                 ),
-                backgroundColor: Color(0xFF0D141F),
-                foregroundColor: Color(0xFF1CB0F6)
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    PageTransition(
+                      child: const TelaCadastro(),
+                      type: PageTransitionType.rightToLeft,
+                      duration: const Duration(milliseconds: 500),
+                    )
+                ),
+                child: const Text("Não tem um usuário? Crie um agora!"),
+              ),
             ),
-            onPressed: () => Navigator.pushReplacement(
-                context,
-                PageTransition(
-                  child: const TelaCadastro(),
-                  type: PageTransitionType.rightToLeft,
-                  duration: const Duration(milliseconds: 500),
-                )
-            ),
-            child: const Text("Não tem um usuário? Crie um agora!"),
           ),
-        ), 
-
+          ),
     );
   }
 }
