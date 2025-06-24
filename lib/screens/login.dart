@@ -72,6 +72,7 @@ class _TelaLoginState extends State<TelaLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF0D141F),
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -81,8 +82,7 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
         toolbarHeight: 250,
       ),
-      body: SingleChildScrollView(
-          child: Container(
+      body: Container(
             height: MediaQuery.of(context).size.height -
                 MediaQuery.of(context).padding.top -
                 kToolbarHeight,
@@ -219,7 +219,6 @@ class _TelaLoginState extends State<TelaLogin> {
               ),
             ),
           ),
-        ),
       bottomNavigationBar: Container(
         height: 80,
         color: Color(0xFF586892),
