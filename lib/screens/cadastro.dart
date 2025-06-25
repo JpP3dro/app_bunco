@@ -21,9 +21,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
   TextEditingController _controllerUsername = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-
   bool _mostrarSenha = false;
 
+  //Função que faz o cadastro
   Future<void> fazerCadastro() async {
     if (!(_controllerNome.text.isNotEmpty && _controllerUsername.text.isNotEmpty &&
         _controllerEmail.text.isNotEmpty && _controllerSenha.text.isNotEmpty)) {
@@ -62,7 +62,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ? "Sucesso!"
               : "Erro!",
           conteudo: response["sucesso"] == "true"
-              ? "Registro salvo com sucesso!"
+              ? "Usuário criado com sucesso!"
               : response["mensagem"],
         );
       }
@@ -305,7 +305,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
-                        backgroundColor: Color(0xFF111928),
+                        backgroundColor: Color(0xFFF0F5F7),
                         foregroundColor: Color(0xFF1453A3),
                       ),
                       onPressed: () {

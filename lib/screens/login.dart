@@ -19,10 +19,10 @@ class TelaLogin extends StatefulWidget {
 
 class _TelaLoginState extends State<TelaLogin> {
   bool _mostrarSenha = false;
-
   final TextEditingController _controllerSenha = TextEditingController();
   final TextEditingController _controllerLogin = TextEditingController();
 
+  //Função que faz o login
   Future<void> fazerLogin() async {
     String ip = obterIP();
     String url = "http://$ip/bunco/api/login.php";
@@ -105,6 +105,7 @@ class _TelaLoginState extends State<TelaLogin> {
               child: Column(
                 mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
                 children: [
+                  //Texto
                   Text(
                     "Login",
                     style: GoogleFonts.baloo2(
@@ -112,6 +113,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       fontWeight: FontWeight.bold
                     ),
                   ),
+                  //Container que guarda o local do login
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: TextFormField(
@@ -150,6 +152,8 @@ class _TelaLoginState extends State<TelaLogin> {
                       ),
                     ),
                   ),
+
+                  //Container que guarda a senha
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: TextFormField(
@@ -202,9 +206,12 @@ class _TelaLoginState extends State<TelaLogin> {
                       obscureText: _mostrarSenha == false ? true : false,
                     ),
                   ),
+
                   SizedBox(
                     height: 50,
                   ),
+
+                  //Container que guarda o botão
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: ElevatedButton(
@@ -214,7 +221,7 @@ class _TelaLoginState extends State<TelaLogin> {
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
-                        backgroundColor: Color(0xFF111928),
+                        backgroundColor: Color(0xFFF0F5F7),
                         foregroundColor: Color(0xFF1453A3),
                       ),
                       onPressed: () {
@@ -227,6 +234,8 @@ class _TelaLoginState extends State<TelaLogin> {
               ),
             ),
           ),
+
+      //Botão que direciona para a página de cadastro
       bottomNavigationBar: Container(
         height: 80,
         color: Color(0xFF586892),
