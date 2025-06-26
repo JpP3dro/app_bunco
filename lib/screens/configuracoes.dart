@@ -153,7 +153,7 @@ class TelaConfiguracoes extends StatefulWidget {
         {"label": "Alterar o username", "page": TelaAlterarUsername(id: widget.usuario["id"], username: widget.usuario["username"],)},
         {"label": "Alterar o email", "page": TelaAlterarEmail(email: widget.usuario["email"], username: widget.usuario["username"],)},
         {"label": "Alterar a senha", "page": TelaAlterarSenha(username: widget.usuario["username"],)},
-        {"label": "Adicionar links para as redes sociais", "page": TelaAlterarLinks(
+        {"label": "Adicionar links para redes sociais", "page": TelaAlterarLinks(
           username: widget.usuario["username"],
           github: widget.usuario["link_github"] ?? "",
            instagram: widget.usuario["link_instagram"] ?? "",
@@ -165,122 +165,215 @@ class TelaConfiguracoes extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF29A2DB),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-            "Configurações",
-          style: GoogleFonts.baloo2(
-            color: Colors.black,
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+        backgroundColor: Color(0xFF29A2DB),
+        title: Icon(
+          Icons.settings,
+          color: Color(0xFF0D141F),
+          size: 60,
+        ),
+        centerTitle: true,
+        toolbarHeight: 80,
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height -
+            MediaQuery.of(context).padding.top -
+            kToolbarHeight,
+        decoration: BoxDecoration(
+          color: Color(0xFF0D141F),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(70),
+            topRight: Radius.circular(70),
           ),
         ),
-      ),
-      body: Stack(
-        children: [
-          ListView.builder(
-            itemCount: opcoes.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => opcoes[index]['page']),
-                  );
-                },
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      border: Border.all(color: Colors.grey, width: 1),
-                      borderRadius: BorderRadius.vertical(
-                        top: index == 0 ? const Radius.circular(20) : const Radius.circular(0),
-                        bottom: index == 4 ? const Radius.circular(20) : const Radius.circular(0),
-                      )
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        opcoes[index]['label'],
-                        style: GoogleFonts.baloo2(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios,
-                          color: Colors.white, size: 18),
-                    ],
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  "Configurações",
+                  style: GoogleFonts.baloo2(
+                    fontSize: 25,
+                    color: Color(0xFF29A2DB),
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-              );
-            },
-          ),
-          Positioned(
-            bottom: 10,
-            left: 15,
-            right: 15,
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Column(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      certeza(titulo: "Sair da conta", icone: Icons.logout, acao: "sair",);
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.red,
-                      size: 30,
-                    ),
-                    label: Text(
-                        "Sair da conta",
-                      style: GoogleFonts.baloo2(
-                        color: Colors.red,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: Colors.transparent,
-                      elevation: 0,
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      certeza(titulo: "Excluir a conta", icone: Icons.delete_forever, acao: "excluir",);
-                    },
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    label: Text(
-                        "Excluir a conta",
-                      style: GoogleFonts.baloo2(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: Colors.red,
-                    ),
-                  ),
-                ],
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/icone/icone-claro.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Claro",
+                          style: GoogleFonts.baloo2(
+                            color: Color(0xFF586892),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 32),
+                    Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/icone/icone-escuro.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Escuro",
+                          style: GoogleFonts.baloo2(
+                            color: Color(0xFF586892),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    ListView.builder(
+                      itemCount: opcoes.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => opcoes[index]['page'],
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Color(0xFF1A263D), width: 3),
+                              borderRadius: BorderRadius.vertical(
+                                top: index == 0
+                                    ? const Radius.circular(20)
+                                    : const Radius.circular(0),
+                                bottom: index == 4
+                                    ? const Radius.circular(20)
+                                    : const Radius.circular(0),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  opcoes[index]['label'],
+                                  style: GoogleFonts.baloo2(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+
+                    // ✅ Botões fixos no fundo
+                    Positioned(
+                      bottom: 10,
+                      left: 15,
+                      right: 15,
+                      child: Column(
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              certeza(
+                                titulo: "Sair da conta",
+                                icone: Icons.logout,
+                                acao: "sair",
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                              color: Colors.red,
+                              size: 30,
+                            ),
+                            label: Text(
+                              "Sair da conta",
+                              style: GoogleFonts.baloo2(
+                                color: Colors.red,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                              side: const BorderSide(
+                                width: 2,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              certeza(
+                                titulo: "Excluir a conta",
+                                icone: Icons.delete_forever,
+                                acao: "excluir",
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            label: Text(
+                              "Excluir a conta",
+                              style: GoogleFonts.baloo2(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(double.infinity, 50),
+                              backgroundColor: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

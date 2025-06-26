@@ -4,6 +4,7 @@ import 'package:app_bunco/screens/meuperfil.dart';
 import 'package:app_bunco/screens/ranking.dart';
 import 'package:app_bunco/screens/terminal.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TelaInicial extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -38,21 +39,25 @@ class _TelaInicialState extends State<TelaInicial> {
         child: telas[myIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        onTap: (index){
-          setState(() {
-            myIndex = index;
-          });
-        },
+          type: BottomNavigationBarType.shifting,
+          onTap: (index){
+            setState(() {
+              myIndex = index;
+            });
+          },
           currentIndex: myIndex,
-          items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home", backgroundColor: Colors.lightBlueAccent),
-        BottomNavigationBarItem(icon: Icon(Icons.emoji_events), label: "Ranking", backgroundColor: Colors.orange),
-        BottomNavigationBarItem(icon: Icon(Icons.terminal), label: "Terminal", backgroundColor: Colors.black),
-        BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Perfil", backgroundColor: Colors.blueAccent),
-        BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Configurações", backgroundColor: Colors.green),
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home, size: 30,), label: "Home", backgroundColor: Color(0xFF1CB0F6)),
+            BottomNavigationBarItem(icon: Icon(Icons.emoji_events, size: 30,), label: "Ranking", backgroundColor: Color(0xFF1CB0F6)),
+            BottomNavigationBarItem(icon: Icon(Icons.terminal, size: 30,), label: "Terminal", backgroundColor: Color(0xFF1CB0F6)),
+            BottomNavigationBarItem(icon: Icon(Icons.account_circle, size: 30,), label: "Perfil", backgroundColor: Color(0xFF1CB0F6)),
+            BottomNavigationBarItem(icon: Icon(Icons.settings, size: 30,), label: "Configurações", backgroundColor: Color(0xFF1CB0F6)),
           ],
-      ),
+        unselectedItemColor: Color(0xFF0D141F),
+        selectedLabelStyle: GoogleFonts.baloo2(
+          fontWeight: FontWeight.w700
+        ),
+        ),
     );
   }
 }
