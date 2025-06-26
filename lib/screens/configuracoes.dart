@@ -270,10 +270,10 @@ class TelaConfiguracoes extends StatefulWidget {
                               border: Border.all(color: Color(0xFF1A263D), width: 3),
                               borderRadius: BorderRadius.vertical(
                                 top: index == 0
-                                    ? const Radius.circular(20)
+                                    ? const Radius.circular(30)
                                     : const Radius.circular(0),
                                 bottom: index == 4
-                                    ? const Radius.circular(20)
+                                    ? const Radius.circular(30)
                                     : const Radius.circular(0),
                               ),
                             ),
@@ -290,8 +290,8 @@ class TelaConfiguracoes extends StatefulWidget {
                                 ),
                                 const Icon(
                                   Icons.arrow_forward_ios,
-                                  color: Colors.white,
-                                  size: 18,
+                                  color: Color(0xFF1CB0F6),
+                                  size: 25,
                                 ),
                               ],
                             ),
