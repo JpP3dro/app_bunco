@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Abre um diálogo para o usuário escolher uma cor de fundo para o CircleAvatar.
 /// - [context]: BuildContext do widget chamador.
@@ -11,23 +12,24 @@ Future<Color?> mostrarSeletorDeCor(
       required String fotoAtual,
       required Color corAtual,
     }) {
+  bool botaoPressionado = false;
   // 1) Defina aqui a paleta de cores que o usuário poderá escolher:
   final List<Color> colorOptions = [
-    Color(0xFFF44336),
-    Colors.pink,
-    Colors.purple,
-    Colors.deepPurple,
-    Colors.indigo,
-    Colors.blue,
-    Colors.cyan,
-    Colors.teal,
-    Colors.green,
-    Colors.lime,
-    Colors.yellow,
-    Colors.orange,
-    Colors.brown,
-    Colors.grey,
-    Colors.black,
+    Color(0xFF586892),
+    Color(0xFF0E898B),
+    Color(0xFF7AF0F2),
+    Color(0xFFBBF2FF),
+    Color(0xFFFF9600),
+    Color(0xFFFFC800),
+    Color(0xFFE5A259),
+    Color(0xFFEA2B2B),
+    Color(0xFF9069CD),
+    Color(0xFFFFAADE),
+    Color(0xFF5EB200),
+    Color(0xFFA5ED6E),
+    Color(0xFF8E8E93),
+    Color(0xFF000000),
+    Color(0xFFFFFFFF),
   ];
 
   // 2) Começamos com a cor atual, se ela estiver na paleta; senão, usamos a primeira da lista
@@ -36,9 +38,9 @@ Future<Color?> mostrarSeletorDeCor(
 
   return showDialog<Color>(
     context: context,
-    barrierDismissible: false, // pra forçar a escolha ou o “X”
     builder: (buildContext) {
       return Dialog(
+        backgroundColor: Color(0xFF333333),
         insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
@@ -46,27 +48,41 @@ Future<Color?> mostrarSeletorDeCor(
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ======== 1) BARRA DE TÍTULO COM “X” ========
+                // ======== 1) BARRA DE TÍTULO ========
                 Container(
                   padding:
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
+                    color: Color(0xFF4D4D4D),
                     borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 48),
-                      const Text(
-                        'Escolha a cor de fundo',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFFFF4B4B),
+                        radius: 7,
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.of(context).pop(null),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFFFFB100),
+                        radius: 7,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFF58CC02),
+                        radius: 7,
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        'Escolha a cor de fundo',
+                        style: GoogleFonts.baloo2(
+                            fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white),
                       ),
                     ],
                   ),
@@ -75,18 +91,17 @@ Future<Color?> mostrarSeletorDeCor(
                 const SizedBox(height: 12),
 
                 // ======== 2) PREVIEW DO CircleAvatar ========
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: selectedColor,
-                  backgroundImage: AssetImage(fotoAtual),
-                ),
+                 CircleAvatar(
+                    radius: 50,
+                    backgroundColor: selectedColor,
+                    backgroundImage: AssetImage(fotoAtual),
+                  ),
 
                 const SizedBox(height: 16),
 
-                // ======== 3) PALETA DE CORES DISPONÍVEIS ========
                 // Vamos colocar num SizedBox para limitar altura e permitir scroll, se necessário
                 SizedBox(
-                  height: 120,
+                  height: 150,
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
@@ -130,21 +145,48 @@ Future<Color?> mostrarSeletorDeCor(
                 const SizedBox(height: 16),
 
                 // ======== 4) BOTÃO DE CONFIRMAR ========
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(selectedColor);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: GestureDetector(
+                    onTapDown: (_) =>
+                        setState(() => botaoPressionado = true),
+                    onTapUp: (_) {
+                      setState(() => botaoPressionado = false);
+                      Navigator.of(context).pop(selectedColor);
+                    },
+                    onTapCancel: () =>
+                        setState(() => botaoPressionado = false),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      transform: Matrix4.identity()
+                        ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1CB0F6),
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: botaoPressionado
+                            ? null
+                            : [
+                          BoxShadow(
+                            color: Color(0xFF1453A3),
+                            offset: const Offset(6, 6),
+                            blurRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "Alterar a cor",
+                            style: GoogleFonts.baloo2(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                      child: const Text('Confirmar'),
                     ),
                   ),
                 ),

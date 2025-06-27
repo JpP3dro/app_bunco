@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/ip.dart';
@@ -17,11 +16,12 @@ class TelaCadastro extends StatefulWidget {
 }
 
 class _TelaCadastroState extends State<TelaCadastro> {
-  TextEditingController _controllerNome = TextEditingController();
-  TextEditingController _controllerUsername = TextEditingController();
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerSenha = TextEditingController();
+  final TextEditingController _controllerNome = TextEditingController();
+  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerSenha = TextEditingController();
   bool _mostrarSenha = false;
+  bool _botaoPressionado = false;
 
   //Função que faz o cadastro
   Future<void> fazerCadastro() async {
@@ -296,22 +296,50 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       obscureText: _mostrarSenha == false ? true : false,
                     ),
                   ),
+
                   Container(
                     margin: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50),
-                        textStyle: GoogleFonts.baloo2(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                        backgroundColor: Color(0xFFF0F5F7),
-                        foregroundColor: Color(0xFF1453A3),
-                      ),
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTapDown: (_) =>
+                          setState(() => _botaoPressionado = true),
+                      onTapUp: (_) {
+                        setState(() => _botaoPressionado = false);
                         fazerCadastro();
                       },
-                      child: const Text("Criar um novo usuário"),
+                      onTapCancel: () =>
+                          setState(() => _botaoPressionado = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        transform: Matrix4.identity()
+                          ..translate(0.0, _botaoPressionado ? 5.0 : 0.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F5F7),
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: _botaoPressionado
+                              ? null
+                              : [
+                            BoxShadow(
+                              color: Color(0xFF2D466C),
+                              offset: const Offset(6, 6),
+                              blurRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              "Criar um novo usuário",
+                              style: GoogleFonts.baloo2(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: const Color(0xFF1453A3),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],

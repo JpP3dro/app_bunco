@@ -141,8 +141,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           child: ClipOval(
                             child: Image.asset(
                               fotoSelecionada,
-                              height: 130,
-                              width: 130,
+                              height: 160,
+                              width: 160,
                             ),
                           ),
                         ),

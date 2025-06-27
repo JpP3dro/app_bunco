@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Este método abre um diálogo “full screen” (ou quase — você pode ajustar tamanho)
 /// e, quando o usuário confirmar, retorna o caminho do asset selecionado.
@@ -7,22 +8,29 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
   required String fotoAtual,
   required Color corFundo
 }) {
+  bool botaoPressionado = false;
   // 1) Defina aqui a lista de caminhos de imagens em assets/profile_pics/
   final List<String> imagePaths = [
     'assets/images/perfil/undefined.png',
     'assets/images/perfil/foto1.png',
     'assets/images/perfil/foto2.png',
     'assets/images/perfil/foto3.png',
+    'assets/images/perfil/foto4.png',
+    'assets/images/perfil/foto5.png',
+    'assets/images/perfil/foto6.png',
+    'assets/images/perfil/foto7.png',
+    'assets/images/perfil/foto8.png',
+    'assets/images/perfil/foto9.png',
   ];
 
   String selectedImage = imagePaths.contains(fotoAtual) ? fotoAtual : imagePaths.first;
 
   return showDialog<String>(
     context: context,
-    barrierDismissible: false, // evita fechar clicando fora do diálogo
     builder: (context) {
       return Dialog(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        backgroundColor: Color(0xFF333333),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           // StatefulBuilder permite usar setState _dentro_ do builder do diálogo
@@ -30,25 +38,41 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ========== 1) BARRA DE TÍTULO COM “X” ==========
+                // ========== 1) BARRA DE TÍTULO ==========
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    color: Color(0xFF4D4D4D),
+                    borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 48), // só pra centralizar o título
-                      const Text(
-                        'Escolha uma foto',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFFFF4B4B),
+                        radius: 7,
                       ),
-                      // Botão “X” para fechar
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => Navigator.of(context).pop(null),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFFFFB100),
+                        radius: 7,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      CircleAvatar(
+                        backgroundColor: Color(0xFF58CC02),
+                        radius: 7,
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        'Escolha a foto de perfil',
+                        style: GoogleFonts.baloo2(
+                            fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white),
                       ),
                     ],
                   ),
@@ -68,7 +92,7 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                 // ========== 3) GRID COM AS IMAGENS DISPONÍVEIS ==========
                 // Vamos travar a altura do Grid para não estourar a tela
                 SizedBox(
-                  height: 240,
+                  height: 340,
                   child: GridView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -93,6 +117,8 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                           children: [
                             // Container com borda para indicar seleção
                             Container(
+                              height: 110,
+                              width: 110,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: isSelected ? Colors.blue : Colors.grey.shade300,
@@ -123,23 +149,49 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
 
                 const SizedBox(height: 16),
 
-                // ========== 4) BOTÃO DE CONFIRMAR ==========
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Retorna o caminho selecionado para quem chamou o diálogo
-                        Navigator.of(context).pop(selectedImage);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                // ======== 4) BOTÃO DE CONFIRMAR ========
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: GestureDetector(
+                    onTapDown: (_) =>
+                        setState(() => botaoPressionado = true),
+                    onTapUp: (_) {
+                      setState(() => botaoPressionado = false);
+                      Navigator.of(context).pop(selectedImage);
+                    },
+                    onTapCancel: () =>
+                        setState(() => botaoPressionado = false),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      transform: Matrix4.identity()
+                        ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1CB0F6),
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: botaoPressionado
+                            ? null
+                            : [
+                          BoxShadow(
+                            color: Color(0xFF1453A3),
+                            offset: const Offset(6, 6),
+                            blurRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "Alterar a foto",
+                            style: GoogleFonts.baloo2(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
-                      child: const Text('Confirmar'),
                     ),
                   ),
                 ),
