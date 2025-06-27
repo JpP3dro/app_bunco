@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_bunco/screens/alterarnome.dart';
-import 'package:app_bunco/screens/alterarusername.dart';
-import 'package:app_bunco/screens/alteraremail.dart';
-import 'package:app_bunco/screens/alterarsenha.dart';
-import 'package:app_bunco/screens/alterarlinks.dart';
 import 'package:app_bunco/main.dart';
 import 'package:app_bunco/uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
+import 'alterarnome.dart' show TelaAlterarNome;
+import 'alterarusername.dart' show TelaAlterarUsername;
+import 'alteraremail.dart' show TelaAlterarEmail;
+import 'alterarsenha.dart' show TelaAlterarSenha;
+import 'alterarlinks.dart' show TelaAlterarLinks;
 
 class TelaConfiguracoes extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -149,17 +149,53 @@ class TelaConfiguracoes extends StatefulWidget {
     void initState() {
       super.initState();
       opcoes = [
-        {"label": "Alterar o nome", "page": TelaAlterarNome(nome: widget.usuario["nome"], username: widget.usuario["username"],)},
-        {"label": "Alterar o username", "page": TelaAlterarUsername(id: widget.usuario["id"], username: widget.usuario["username"],)},
-        {"label": "Alterar o email", "page": TelaAlterarEmail(email: widget.usuario["email"], username: widget.usuario["username"],)},
-        {"label": "Alterar a senha", "page": TelaAlterarSenha(username: widget.usuario["username"],)},
-        {"label": "Adicionar links para redes sociais", "page": TelaAlterarLinks(
-          username: widget.usuario["username"],
-          github: widget.usuario["link_github"] ?? "",
-           instagram: widget.usuario["link_instagram"] ?? "",
-          linkedin: widget.usuario["link_linkedin"] ?? "",
-        )},
+        {"label": "Alterar o nome", "tipo": "nome"},
+        {"label": "Alterar o username", "tipo": "username"},
+        {"label": "Alterar o email", "tipo": "email"},
+        {"label": "Alterar a senha", "tipo": "senha"},
+        {"label": "Adicionar links para redes sociais", "tipo": "links"},
       ];
+    }
+
+    void _abrirDialogo(String tipo) {
+      switch (tipo) {
+        case "nome":
+          TelaAlterarNome(
+            context: context,
+            nome: widget.usuario["nome"],
+            username: widget.usuario["username"],
+          );
+          break;
+        case "username":
+          TelaAlterarUsername(
+            context: context,
+            username: widget.usuario["username"],
+            id: widget.usuario["id"],
+          );
+          break;
+        case "email":
+          TelaAlterarEmail(
+            context: context,
+            email: widget.usuario["email"],
+            username: widget.usuario["username"],
+          );
+          break;
+        case "senha":
+          TelaAlterarSenha(
+            context: context,
+            username: widget.usuario["username"],
+          );
+          break;
+        case "links":
+          TelaAlterarLinks(
+            context: context,
+            username: widget.usuario["username"],
+            github: widget.usuario["link_github"] ?? "",
+            instagram: widget.usuario["link_instagram"] ?? "",
+            linkedin: widget.usuario["link_linkedin"] ?? "",
+          );
+          break;
+      }
     }
 
   @override
@@ -255,14 +291,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       itemCount: opcoes.length,
                       itemBuilder: (context, index) {
                         return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => opcoes[index]['page'],
-                              ),
-                            );
-                          },
+                          onTap: () => _abrirDialogo(opcoes[index]['tipo']),
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             padding: const EdgeInsets.all(15),

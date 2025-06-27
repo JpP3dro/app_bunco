@@ -8,221 +8,356 @@ import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class TelaAlterarLinks extends StatefulWidget {
-  final String github;
-  final String instagram;
-  final String linkedin;
-  final String username;
-  const TelaAlterarLinks({
-    super.key,
-    required this.username,
-    required this.github,
-    required this.instagram,
-    required this.linkedin
-  });
+Future<void> TelaAlterarLinks({
+  required BuildContext context,
+  required String username,
+  required String github,
+  required String instagram,
+  required String linkedin,
+}) {
 
+  final TextEditingController controllerGithub = TextEditingController(text: github);
+  final TextEditingController controllerInstagram = TextEditingController(text: instagram);
+  final TextEditingController controllerLinkedin = TextEditingController(text: linkedin);
 
-  @override
-  State<TelaAlterarLinks> createState() => _TelaAlterarLinksState();
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+
+          bool botaoPressionado = false;
+          bool botaoHabilitado = controllerGithub.text.trim() != github ||
+              controllerInstagram.text.trim() != instagram ||
+              controllerLinkedin.text.trim() != linkedin;
+          void validarCampos() {
+            final novoEstado = controllerGithub.text.trim() != github ||
+                controllerInstagram.text.trim() != instagram ||
+                controllerLinkedin.text.trim() != linkedin;
+            if (botaoHabilitado != novoEstado) {
+              setState(() {
+                botaoHabilitado = novoEstado;
+              });
+            }
+          }
+          controllerGithub.addListener(validarCampos);
+          controllerInstagram.addListener(validarCampos);
+          controllerLinkedin.addListener(validarCampos);
+
+          return Dialog(
+            backgroundColor: const Color(0xFF333333),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // ======== 1) BARRA DE TÍTULO ========
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4D4D4D),
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: const Color(0xFFFF4B4B),
+                          radius: 7,
+                        ),
+                        const SizedBox(width: 8),
+                        CircleAvatar(
+                          backgroundColor: const Color(0xFFFFB100),
+                          radius: 7,
+                        ),
+                        const SizedBox(width: 8),
+                        CircleAvatar(
+                          backgroundColor: const Color(0xFF58CC02),
+                          radius: 7,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          'Alterar Links',
+                          style: GoogleFonts.baloo2(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ======== 2) CAMPOS DE LINKS ========
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      children: [
+                        // Campo GitHub
+                        TextFormField(
+                          cursorColor: Color(0xFF1cB0F6),
+                          controller: controllerGithub,
+                          style: GoogleFonts.baloo2(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFF4D4D4D),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            labelText: "Link do GitHub:",
+                            labelStyle: GoogleFonts.baloo2(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                            ),
+                            icon: const Icon(
+                              FontAwesomeIcons.github,
+                              color: Color(0xFF1CB0F6),
+                              size: 30,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Campo Instagram
+                        TextFormField(
+                          cursorColor: Color(0xFF1cB0F6),
+                          controller: controllerInstagram,
+                          style: GoogleFonts.baloo2(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFF4D4D4D),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            labelText: "Link do Instagram:",
+                            labelStyle: GoogleFonts.baloo2(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                            ),
+                            icon: const Icon(
+                              FontAwesomeIcons.instagram,
+                              color: Color(0xFF1CB0F6),
+                              size: 30,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Campo LinkedIn
+                        TextFormField(
+                          cursorColor: Color(0xFF1cB0F6),
+                          controller: controllerLinkedin,
+                          style: GoogleFonts.baloo2(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600
+                          ),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFF4D4D4D),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            labelText: "Link do LinkedIn:",
+                            labelStyle: GoogleFonts.baloo2(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700
+                            ),
+                            icon: const Icon(
+                              FontAwesomeIcons.linkedin,
+                              color: Color(0xFF1CB0F6),
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // ======== 3) BOTÃO DE CONFIRMAR ========
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTapDown: (_) {
+                        if (botaoHabilitado) {
+                          setState(() => botaoPressionado = true);
+                        }
+                      },
+                      onTapUp: (_) {
+                        setState(() => botaoPressionado = false);
+                        if (botaoHabilitado) {
+                          _alterarLinks(
+                              context,
+                              username,
+                              controllerGithub.text.trim(),
+                              controllerInstagram.text.trim(),
+                              controllerLinkedin.text.trim()
+                          );
+                        }
+                      },
+                      onTapCancel: () => setState(() => botaoPressionado = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        transform: Matrix4.identity()
+                          ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
+                        decoration: BoxDecoration(
+                          color: botaoHabilitado ? const Color(0xFF1CB0F6) : Colors.grey,
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: botaoPressionado || !botaoHabilitado
+                              ? null
+                              : [
+                            BoxShadow(
+                              color: const Color(0xFF1453A3),
+                              offset: const Offset(6, 6),
+                              blurRadius: 0,
+                            )
+                          ],
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              "Alterar Links",
+                              style: GoogleFonts.baloo2(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 26,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
 }
 
-class _TelaAlterarLinksState extends State<TelaAlterarLinks> {
-  late TextEditingController _controllerGithub = TextEditingController();
-  late TextEditingController _controllerInstagram = TextEditingController();
-  late TextEditingController _controllerLinkedin = TextEditingController();
-  bool _botaoHabilitado = false;
-
-  Future<void> alterarLinks() async {
-    if (!await verificarLinks()) return;
-    try {
-      String ip = obterIP();
-      String url = "http://$ip//api/alterarLinks.php";
-      var res = await http.post(Uri.parse(url), body: {
-        "username": widget.username,
-        "github": _controllerGithub.text.trim(),
-        "instagram": _controllerInstagram.text.trim(),
-        "linkedin": _controllerLinkedin.text.trim(),
-      }).timeout(const Duration(minutes: 1));
-      var response = jsonDecode(res.body);
-      await exibirResultado(
-          context: context,
-          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-          titulo: response["sucesso"] == "true" ? "Links alterados com sucesso!" : "Algo deu errado!",
-          conteudo: response["mensagem"]
-      );
-      if (response["sucesso"] == "true") {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const MyApp())
-        );
-      }
-    }
-    catch(e) {
-      await exibirResultado(
-          context: context,
-          tipo: TipoDialogo.erro,
-          titulo: "Erro ao atualizar os links novos",
-          conteudo: "Tente de novo daqui a pouco!"
-      );
-    }
-  }
-
-  Future<bool> verificarLinks() async {
+// Função para alterar os links (extraída da classe original)
+Future<void> _alterarLinks(
+    BuildContext context,
+    String username,
+    String github,
+    String instagram,
+    String linkedin
+    ) async {
+  try {
+    // Verificar os links com regex
     final regexGithub = RegExp(r'^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$');
     final regexInstagram = RegExp(r'^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$');
-    final regexLinkedin = RegExp(r'^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9-_%]+\/?$');
-    if (!regexGithub.hasMatch(_controllerGithub.text.trim())) {
+    final regexLinkedin = RegExp(
+      r"^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9À-ÿ\-_%]+\/?$",
+      caseSensitive: false,
+    );
+
+    if (!regexGithub.hasMatch(github)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Github inválido!",
-          conteudo: "O link que você colocou no Github está inválido!");
-      return false;
+          conteudo: "O link que você colocou no Github está inválido!"
+      );
+      return;
     }
-    else if (!regexInstagram.hasMatch(_controllerInstagram.text.trim())) {
+    else if (!regexInstagram.hasMatch(instagram)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Instagram inválido!",
-          conteudo: "O link que você colocou no Instagram está inválido!");
-      return false;
+          conteudo: "O link que você colocou no Instagram está inválido!"
+      );
+      return;
     }
-    else if (!regexLinkedin.hasMatch(_controllerLinkedin.text.trim())) {
+    else if (!regexLinkedin.hasMatch(linkedin)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Linkedin inválido!",
-          conteudo: "O link que você colocou no Linkedin está inválido!");
-      return false;
+          conteudo: "O link que você colocou no Linkedin está inválido!"
+      );
+      return;
     }
-    return true;
-  }
 
-  void verificarCampos() {
-    setState(() {
-      _botaoHabilitado = _controllerGithub.text.trim() != widget.github
-          || _controllerInstagram.text.trim() != widget.instagram
-          || _controllerLinkedin.text.trim() != widget.linkedin;
-    });
-  }
+    String ip = obterIP();
+    String url = "http://$ip/bunco/api/alterarLinks.php";
+    var res = await http.post(Uri.parse(url), body: {
+      "username": username,
+      "github": github,
+      "instagram": instagram,
+      "linkedin": linkedin,
+    }).timeout(const Duration(minutes: 1));
 
-  @override
-  void initState() {
-    super.initState();
-    _controllerGithub = TextEditingController(text: widget.github);
-    _controllerInstagram = TextEditingController(text: widget.instagram);
-    _controllerLinkedin = TextEditingController(text: widget.linkedin);
-    _controllerGithub.addListener(verificarCampos);
-    _controllerInstagram.addListener(verificarCampos);
-    _controllerLinkedin.addListener(verificarCampos);
-  }
+    var response = jsonDecode(res.body);
+    await exibirResultado(
+        context: context,
+        tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
+        titulo: response["sucesso"] == "true" ? "Links alterados com sucesso!" : "Algo deu errado!",
+        conteudo: response["mensagem"]
+    );
 
-  @override
-  void dispose() {
-    _controllerGithub.dispose();
-    _controllerInstagram.dispose();
-    _controllerLinkedin.dispose();
-    super.dispose();
+    if (response["sucesso"] == "true") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MyApp())
+      );
+    }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Adiconar ou alterar links",
-          style: GoogleFonts.baloo2(
-            fontSize: 20,
-            color: Colors.black,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: _controllerGithub,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Coloque o seu link do GitHub:"),
-                    icon: Icon(
-                      FontAwesomeIcons.github,
-                      color: Colors.black,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: _controllerInstagram,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Coloque o seu link do Instagram:"),
-                    //icon: FaIcon(FontAwesomeIcons.instagram),
-                    icon: Icon(
-                      FontAwesomeIcons.instagram,
-                      color: Colors.pink,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: _controllerLinkedin,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Coloque o seu link do Linkedin:"),
-                    //icon: FaIcon(FontAwesomeIcons.linkedin),
-                    icon: Icon(
-                      FontAwesomeIcons.linkedin,
-                      color: Colors.blueAccent,
-                      size: 30,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: ElevatedButton.icon(
-            icon: const Icon(
-              Icons.badge_outlined,
-              color: Colors.white,
-              size: 30,
-            ),
-            onPressed: _botaoHabilitado ? () {
-              alterarLinks();
-            } : null,
-            label: Text(
-              "Clique aqui para alterar os links",
-              style: GoogleFonts.baloo2(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _botaoHabilitado ? Colors.blue : const Color(0x2196F3A8),
-            ),
-          ),
-        ),
-      ),
+  catch(e) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Erro ao atualizar os links novos",
+        conteudo: "Tente de novo daqui a pouco!"
     );
   }
 }

@@ -7,142 +7,217 @@ import '../uteis/dialogo.dart';
 import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 
-class TelaAlterarEmail extends StatefulWidget {
-  final String email;
-  final String username;
-  const TelaAlterarEmail({
-    super.key,
-    required this.email,
-    required this.username
-  });
+Future<void> TelaAlterarEmail({
+  required BuildContext context,
+  required String email,
+  required String username,
+}) {
+  TextEditingController controllerEmail = TextEditingController(text: email);
 
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: const Color(0xFF333333),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
+            bool botaoPressionado = false;
+            bool botaoHabilitado = controllerEmail.text.trim().isNotEmpty &&
+                controllerEmail.text != email &&
+                controllerEmail.text.trim().length >= 4 &&
+                regex.hasMatch(controllerEmail.text);
+            void validarCampo() {
+              final novoEstado = controllerEmail.text.trim().isNotEmpty &&
+                  controllerEmail.text != email &&
+                  controllerEmail.text.trim().length >= 4 &&
+                  regex.hasMatch(controllerEmail.text);
 
-  @override
-  State<TelaAlterarEmail> createState() => _TelaAlterarEmailState();
-}
+              if (botaoHabilitado != novoEstado) {
+                setState(() {
+                  botaoHabilitado = novoEstado;
+                });
+              }
+            }
+            controllerEmail.addListener(validarCampo);
 
-class _TelaAlterarEmailState extends State<TelaAlterarEmail> {
-  late TextEditingController _controllerEmail;
-  bool _botaoHabilitado = false;
-  final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
-
-  Future<void> alterarEmail() async {
-    try {
-      String ip = obterIP();
-      String url = "http://$ip/bunco/api/alterarEmail.php";
-      var res = await http.post(Uri.parse(url), body: {
-        "username": widget.username,
-        "email": _controllerEmail.text.trim()
-      }).timeout(const Duration(minutes: 1));
-      var response = jsonDecode(res.body);
-      await exibirResultado(
-          context: context,
-          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-          titulo: response["sucesso"] == "true" ? "Email alterado com sucesso!" : "Algo deu errado!",
-          conteudo: response["mensagem"]
-      );
-      if (response["sucesso"] == "true") {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const MyApp())
-        );
-      }
-    }
-    catch(e) {
-      await exibirResultado(
-          context: context,
-          tipo: TipoDialogo.erro,
-          titulo: "Erro ao cadastrar o email novo",
-          conteudo: "Tente de novo daqui a pouco!"
-      );
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controllerEmail = TextEditingController(text: widget.email);
-
-    _controllerEmail.addListener(() {
-      setState(() {
-        _botaoHabilitado = _controllerEmail.text
-            .trim()
-            .isNotEmpty && _controllerEmail.text != widget.email &&
-            _controllerEmail.text
-                .trim()
-                .length >= 4 && regex.hasMatch(_controllerEmail.text);
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _controllerEmail.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Alterar email",
-          style: GoogleFonts.baloo2(
-            fontSize: 20,
-            color: Colors.black,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: TextFormField(
-                  controller: _controllerEmail,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Coloque o seu novo email:"),
-                    icon: Icon(Icons.email),
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ======== 1) BARRA DE TÍTULO ========
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF4D4D4D),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFFFF4B4B),
+                        radius: 7,
+                      ),
+                      const SizedBox(width: 8),
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFFFFB100),
+                        radius: 7,
+                      ),
+                      const SizedBox(width: 8),
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFF58CC02),
+                        radius: 7,
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        'Alterar Email',
+                        style: GoogleFonts.baloo2(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
+
+                const SizedBox(height: 20),
+
+                // ======== 2) CAMPO DE TEXTO ========
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TextFormField(
+                    cursorColor: Color(0xFF1cB0F6),
+                    controller: controllerEmail,
+                    style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0xFF4D4D4D),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: Color(0xFF1CB0F6),
+                          width: 2,
+                        ),
+                      ),
+                      labelText: "Coloque o seu novo email:",
+                      labelStyle: GoogleFonts.baloo2(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700
+                      ),
+                      icon: const Icon(
+                        Icons.email,
+                        color: Color(0xFF1CB0F6),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // ======== 3) BOTÃO DE CONFIRMAR ========
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: GestureDetector(
+                    onTapDown: (_) {
+                      if (botaoHabilitado) {
+                        setState(() => botaoPressionado = true);
+                      }
+                    },
+                    onTapUp: (_) {
+                      setState(() => botaoPressionado = false);
+                      if (botaoHabilitado) {
+                        _alterarEmail(context, username, controllerEmail.text.trim());
+                      }
+                    },
+                    onTapCancel: () => setState(() => botaoPressionado = false),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      transform: Matrix4.identity()
+                        ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
+                      decoration: BoxDecoration(
+                        color: botaoHabilitado ? const Color(0xFF1CB0F6) : Colors.grey,
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: botaoPressionado || !botaoHabilitado
+                            ? null
+                            : [
+                          BoxShadow(
+                            color: const Color(0xFF1453A3),
+                            offset: const Offset(6, 6),
+                            blurRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            "Alterar Email",
+                            style: GoogleFonts.baloo2(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
+            );
+          },
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: ElevatedButton.icon(
-            icon: const Icon(
-              Icons.email,
-              color: Colors.white,
-              size: 30,
-            ),
-            onPressed: _botaoHabilitado ? () {
-              alterarEmail();
-            } : null,
-            label: Text(
-              "Clique aqui para alterar o email",
-              style: GoogleFonts.baloo2(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white
-              ),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _botaoHabilitado ? Colors.blue : const Color(0x2196F3A8),
-            ),
-          ),
-        ),
-      ),
+      );
+    },
+  );
+}
+
+// Função para alterar o email (extraída da classe original)
+Future<void> _alterarEmail(BuildContext context, String username, String novoEmail) async {
+  try {
+    String ip = obterIP();
+    String url = "http://$ip/bunco/api/alterarEmail.php";
+    var res = await http.post(Uri.parse(url), body: {
+      "username": username,
+      "email": novoEmail
+    }).timeout(const Duration(minutes: 1));
+
+    var response = jsonDecode(res.body);
+    await exibirResultado(
+        context: context,
+        tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
+        titulo: response["sucesso"] == "true" ? "Email alterado com sucesso!" : "Algo deu errado!",
+        conteudo: response["mensagem"]
+    );
+
+    if (response["sucesso"] == "true") {
+      // Recarrega o app
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MyApp())
+      );
+    }
+  }
+  catch(e) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Erro ao cadastrar o email novo",
+        conteudo: "Tente de novo daqui a pouco!"
     );
   }
 }
