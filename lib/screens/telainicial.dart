@@ -8,9 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class TelaInicial extends StatefulWidget {
   final Map<String, dynamic> usuario;
+  final bool parametroModoEscuro;
    const TelaInicial({
     super.key,
     required this.usuario,
+     required this.parametroModoEscuro,
   });
 
   @override
@@ -18,18 +20,26 @@ class TelaInicial extends StatefulWidget {
 }
 
 class _TelaInicialState extends State<TelaInicial> {
+  late bool modoEscuro;
   int myIndex = 0;
   late List<Widget> telas;
 
   @override
   void initState() {
     super.initState();
+    modoEscuro = widget.parametroModoEscuro;
     telas = [
       const TelaCurso(),
       TelaRanking(usuario: widget.usuario,),
       const TelaTerminal(),
       TelaPerfil(usuario: widget.usuario),
-      TelaConfiguracoes(usuario: widget.usuario),
+      TelaConfiguracoes(usuario: widget.usuario,
+        parametroModoEscuro: modoEscuro,
+        onModoEscuroChanged: (novoValor) {
+        setState(() {
+          modoEscuro = novoValor;
+        });
+      },),
     ];
   }
   @override

@@ -14,9 +14,13 @@ import 'alterarlinks.dart' show TelaAlterarLinks;
 
 class TelaConfiguracoes extends StatefulWidget {
   final Map<String, dynamic> usuario;
+  final bool parametroModoEscuro;
+  final void Function(bool) onModoEscuroChanged;
   const TelaConfiguracoes({
     super.key,
     required this.usuario,
+    required this.parametroModoEscuro,
+    required this.onModoEscuroChanged,
   });
 
   @override
@@ -25,6 +29,7 @@ class TelaConfiguracoes extends StatefulWidget {
   
   class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
     late List<Map<String, dynamic>> opcoes;
+    late bool modoEscuro;
 
     Future<void> certeza({
       required String titulo,
@@ -148,6 +153,7 @@ class TelaConfiguracoes extends StatefulWidget {
     @override
     void initState() {
       super.initState();
+      modoEscuro = widget.parametroModoEscuro;
       opcoes = [
         {"label": "Alterar o nome", "tipo": "nome"},
         {"label": "Alterar o username", "tipo": "username"},
@@ -246,10 +252,18 @@ class TelaConfiguracoes extends StatefulWidget {
                   children: [
                     Column(
                       children: [
-                        Image.asset(
-                          'assets/images/icone/icone-claro.png',
-                          width: 80,
-                          height: 80,
+                        GestureDetector(
+                          child: Image.asset(
+                            'assets/images/icone/icone-claro.png',
+                            width: 80,
+                            height: 80,
+                          ),
+                          onTap: (){
+                            setState(() {
+                              modoEscuro = false;
+                              widget.onModoEscuroChanged(modoEscuro);
+                            });
+                          },
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -265,10 +279,18 @@ class TelaConfiguracoes extends StatefulWidget {
                     const SizedBox(width: 32),
                     Column(
                       children: [
-                        Image.asset(
-                          'assets/images/icone/icone-escuro.png',
-                          width: 80,
-                          height: 80,
+                        GestureDetector(
+                          child: Image.asset(
+                            'assets/images/icone/icone-escuro.png',
+                            width: 80,
+                            height: 80,
+                          ),
+                          onTap: (){
+                            setState(() {
+                              modoEscuro = true;
+                              widget.onModoEscuroChanged(modoEscuro);
+                            });
+                          },
                         ),
                         const SizedBox(height: 8),
                         Text(
