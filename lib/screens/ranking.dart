@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/ip.dart';
@@ -55,16 +54,29 @@ class _TelaRankingState extends State<TelaRanking> {
     }
   }
 
-  Color? _corMedalha(int index) {
+  Color _corFundo(int index) {
     switch (index) {
       case 0:
-        return Colors.amberAccent; // ouro
+        return Color(0xFFFDF0AB);
       case 1:
-        return Color(0xFF686868); // prata
+        return Color(0xFFFFFFFF);
       case 2:
-        return Colors.brown; // bronze
+        return Color(0xFFFFDBA8);
       default:
-        return null;
+        return Color(0xFF0D141F);
+    }
+  }
+
+  Color _corTexto(int index) {
+    switch (index) {
+      case 0:
+        return Color(0xFFFFC800);
+      case 1:
+        return Color(0xFFC0C0C0);
+      case 2:
+        return Color(0xFFCD7F32);
+      default:
+        return Color(0xFF1CB0F6);
     }
   }
 
@@ -76,7 +88,9 @@ class _TelaRankingState extends State<TelaRanking> {
       );
     }
     return Scaffold(
+      backgroundColor: Color(0xFF0D141F),
       appBar: AppBar(
+        backgroundColor: Color(0xFF0D141F),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -84,12 +98,12 @@ class _TelaRankingState extends State<TelaRanking> {
                 "Ranking",
                 style: GoogleFonts.baloo2(
                   fontSize: 25,
-                  color: Colors.black,
+                  color: Color(0xFFB0C2DE),
                   fontWeight: FontWeight.w700,
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.refresh),
+                icon: Icon(Icons.refresh, color: Color(0xFF1CB0F6), size: 30,),
                 onPressed: () {
                   carregarRanking();
                 },
@@ -97,31 +111,40 @@ class _TelaRankingState extends State<TelaRanking> {
             ],
           ),
           ),
-      body: ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: primeiros.length + ((voce?['position'] ?? 0) > 15 ? 1 : 0),
-          itemBuilder: (ctx, i) {
-            // Se for depois do top15 e seu you.position >15, desenha seu card
-            if (i == primeiros.length && voce!['position']! > 15) {
-              return _buildRanking(
-                  index: voce!['position']! - 1,
-                  nome: voce!['nome']!,
-                  xp: voce!['xp']!,
-                  isYou: true,
-                  dados: voce
-              );
-            }
-            // Senão, é um dos top
-            final entry = primeiros[i];
-            return _buildRanking(
-                index: i,
-                nome: entry['nome'],
-                xp: entry['xp'],
-                isYou: (entry['username'] == widget.usuario['username']),
-                dados: entry
-            );
-          },
+      body: Center(
+        child: Column(
+          children: [
+            Image.asset('assets/images/icone/trofeu.png'),
+            Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: primeiros.length + ((voce?['position'] ?? 0) > 15 ? 1 : 0),
+                  itemBuilder: (ctx, i) {
+                    // Se for depois do top15 e seu you.position >15, desenha seu card
+                    if (i == primeiros.length && voce!['position']! > 15) {
+                      return _buildRanking(
+                          index: voce!['position']! - 1,
+                          nome: voce!['nome']!,
+                          xp: voce!['xp']!,
+                          isYou: true,
+                          dados: voce
+                      );
+                    }
+                    // Senão, é um dos top
+                    final entry = primeiros[i];
+                    return _buildRanking(
+                        index: i,
+                        nome: entry['nome'],
+                        xp: entry['xp'],
+                        isYou: (entry['username'] == widget.usuario['username']),
+                        dados: entry
+                    );
+                  },
+                ),
+            ),
+          ],
         ),
+      ),
     );
   }
 
@@ -132,7 +155,8 @@ class _TelaRankingState extends State<TelaRanking> {
     bool isYou = false,
     required Map<String, dynamic>? dados,
   }) {
-    final medalha = _corMedalha(index);
+    final corFundo = _corFundo(index);
+    final corTexto = _corTexto(index);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -143,57 +167,53 @@ class _TelaRankingState extends State<TelaRanking> {
         );
       },
       child: Card(
+        color: corFundo,
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: isYou ? Colors.blueAccent : Colors.black87,
-            width: 2,
+            color: isYou ? Colors.blueAccent : Colors.blue,
+            width: index <= 2 ? 0 : 2,
           ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: corFundo,
+            boxShadow: index <= 2 ? [
+              BoxShadow(
+                color: corTexto,
+                spreadRadius: 2, // quanto a sombra se espalha
+                blurRadius: 0, // quanto a sombra é borrada
+                offset: const Offset(3, 3), // posição da sombra (x, y)
+              ),
+            ] : null,
+          ),
+          height: 80,
           padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           child: ListTile(
-            leading: SizedBox(
-              width: 48,
-              height: 48,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: isYou
-                        ? AssetImage('assets/images/perfil/${widget.usuario['foto']}')
-                        : AssetImage('assets/images/perfil/${dados!['foto']}'),
-                    backgroundColor: isYou
-                        ? Color(int.parse("0xFF${widget.usuario['cor']}"))
-                        : Color(int.parse("0xFF${dados!['cor']}")),
-                  ),
-                  if (medalha != null)
-                    Positioned(
-                      right: 0,
-                      bottom: 0,
-                      child: Icon(
-                        FontAwesomeIcons.medal,
-                        color: medalha,
-                        size: 22,
-                      ),
-                    ),
-                ],
-              ),
+            leading: Text(
+              "${(index + 1).toString()}.",
+              style: GoogleFonts.baloo2(
+                  fontSize: 45,
+                  fontWeight: FontWeight.w700,
+                color: corTexto
+            ),
             ),
             title: Text(
               isYou ? '$nome (você)' : nome,
-              style: GoogleFonts.quicksand(
-                fontSize: 18,
-                fontWeight: isYou ? FontWeight.bold : FontWeight.normal,
+              style: GoogleFonts.baloo2(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: corTexto
               ),
             ),
             trailing: Text(
                 '$xp XP',
               style: GoogleFonts.baloo2(
-                fontSize: 18,
-                fontWeight: FontWeight.w400
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                  color: corTexto
               ),
             ),
           ),
