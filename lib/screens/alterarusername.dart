@@ -13,6 +13,8 @@ Future<void> TelaAlterarUsername({
   required int id,
 }) {
   TextEditingController controllerUsername = TextEditingController(text: username);
+  bool botaoPressionado = false;
+  bool botaoHabilitado = false;
 
   return showDialog<void>(
     context: context,
@@ -23,11 +25,6 @@ Future<void> TelaAlterarUsername({
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           builder: (context, setState) {
-
-            bool botaoPressionado = false;
-            bool botaoHabilitado = controllerUsername.text.trim().isNotEmpty &&
-                controllerUsername.text != username &&
-                controllerUsername.text.trim().length >= 4;
             void validarCampo() {
               final novoEstado = controllerUsername.text.trim().isNotEmpty &&
                   controllerUsername.text != username &&

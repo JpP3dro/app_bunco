@@ -19,17 +19,14 @@ Future<void> TelaAlterarLinks({
   final TextEditingController controllerGithub = TextEditingController(text: github);
   final TextEditingController controllerInstagram = TextEditingController(text: instagram);
   final TextEditingController controllerLinkedin = TextEditingController(text: linkedin);
+  bool botaoPressionado = false;
+  bool botaoHabilitado = false;
 
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
         builder: (context, setState) {
-
-          bool botaoPressionado = false;
-          bool botaoHabilitado = controllerGithub.text.trim() != github ||
-              controllerInstagram.text.trim() != instagram ||
-              controllerLinkedin.text.trim() != linkedin;
           void validarCampos() {
             final novoEstado = controllerGithub.text.trim() != github ||
                 controllerInstagram.text.trim() != instagram ||

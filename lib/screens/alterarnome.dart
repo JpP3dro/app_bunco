@@ -14,6 +14,8 @@ Future<void> TelaAlterarNome({
   required String username,
 }) {
   final TextEditingController controllerNome = TextEditingController(text: nome);
+  bool botaoPressionado = false;
+  bool botaoHabilitado = false;
 
   return showDialog<void>(
     context: context,
@@ -24,13 +26,6 @@ Future<void> TelaAlterarNome({
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           builder: (context, setState) {
-            // Variáveis de estado dentro do StatefulBuilder
-            bool botaoPressionado = false;
-            bool botaoHabilitado = controllerNome.text.trim().isNotEmpty &&
-                controllerNome.text != nome &&
-                controllerNome.text.trim().length >= 4;
-
-            // Função para validar o campo (agora dentro do builder)
             void validarCampo() {
               final novoEstado = controllerNome.text.trim().isNotEmpty &&
                   controllerNome.text != nome &&

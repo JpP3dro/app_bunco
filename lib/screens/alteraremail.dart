@@ -13,6 +13,9 @@ Future<void> TelaAlterarEmail({
   required String username,
 }) {
   TextEditingController controllerEmail = TextEditingController(text: email);
+  final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
+  bool botaoPressionado = false;
+  bool botaoHabilitado = false;
 
   return showDialog<void>(
     context: context,
@@ -23,12 +26,6 @@ Future<void> TelaAlterarEmail({
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           builder: (context, setState) {
-            final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
-            bool botaoPressionado = false;
-            bool botaoHabilitado = controllerEmail.text.trim().isNotEmpty &&
-                controllerEmail.text != email &&
-                controllerEmail.text.trim().length >= 4 &&
-                regex.hasMatch(controllerEmail.text);
             void validarCampo() {
               final novoEstado = controllerEmail.text.trim().isNotEmpty &&
                   controllerEmail.text != email &&

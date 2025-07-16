@@ -16,20 +16,18 @@ Future<void> TelaAlterarSenha({
   final TextEditingController controllerSenhaNova = TextEditingController();
   final TextEditingController controllerSenhaConfirmada = TextEditingController();
 
+  bool mostrarSenhaAtual = false;
+  bool mostrarSenhaNova = false;
+  bool mostrarSenhaConfirmada = false;
+  bool botaoPressionado = false;
+  bool botaoHabilitado = false;
+
 
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
         builder: (context, setState) {
-
-          bool botaoPressionado = false;
-          bool botaoHabilitado = controllerSenhaAtual.text.trim().isNotEmpty &&
-              controllerSenhaNova.text.trim().isNotEmpty &&
-              controllerSenhaConfirmada.text.trim().isNotEmpty;;
-          bool mostrarSenhaAtual = false;
-          bool mostrarSenhaNova = false;
-          bool mostrarSenhaConfirmada = false;
           void validarCampos() {
             final novoEstado = controllerSenhaAtual.text.trim().isNotEmpty &&
                 controllerSenhaNova.text.trim().isNotEmpty &&
