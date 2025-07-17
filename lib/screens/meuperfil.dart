@@ -98,7 +98,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
   @override
   void initState() {
     super.initState();
-    fotoSelecionada = 'assets/images/perfil/${widget.usuario['foto']}';
+    fotoSelecionada = 'assets/images/perfil/${widget.usuario['foto']}.png';
     corFundo = Color(int.parse("0xFF${widget.usuario['cor']}"));
     exibirDias = widget.usuario['ofensiva'] == 1 ? "dia" : "dias";
     exibirVidas = widget.usuario['vidas'] == 1 ? "vida" : "vidas";
@@ -183,7 +183,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           if (escolha != null) {
                             setState(() {
                               fotoSelecionada = escolha;
-                              widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "");
+                              widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
                             });
                             alterarFoto();
                           }
@@ -201,14 +201,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       ),
                       IconButton(
                         onPressed: () async {
-                          if (fotoSelecionada == "assets/images/perfil/undefined.png") {
-                            await exibirResultado(
-                                context: context,
-                                tipo: TipoDialogo.alerta,
-                                titulo: "Selecione uma foto!",
-                                conteudo: "Coloque uma foto antes de alterar a cor de fundo!");
-                            return;
-                          }
                           final escolha = await mostrarSeletorDeCor(
                             context,
                             fotoAtual: fotoSelecionada,

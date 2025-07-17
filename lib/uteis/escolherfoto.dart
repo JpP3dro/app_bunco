@@ -11,16 +11,17 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
   bool botaoPressionado = false;
   // 1) Defina aqui a lista de caminhos de imagens em assets/profile_pics/
   final List<String> imagePaths = [
-    'assets/images/perfil/undefined.png',
-    'assets/images/perfil/foto1.png',
-    'assets/images/perfil/foto2.png',
-    'assets/images/perfil/foto3.png',
-    'assets/images/perfil/foto4.png',
-    'assets/images/perfil/foto5.png',
-    'assets/images/perfil/foto6.png',
-    'assets/images/perfil/foto7.png',
-    'assets/images/perfil/foto8.png',
-    'assets/images/perfil/foto9.png',
+    'assets/images/perfil/buncodefault.png',
+    'assets/images/perfil/buncoandroid.png',
+    'assets/images/perfil/buncoapple.png',
+    'assets/images/perfil/buncocavalheiro.png',
+    'assets/images/perfil/buncodetetive.png',
+    'assets/images/perfil/buncoduolingo.png',
+    'assets/images/perfil/buncofazendeiro.png',
+    'assets/images/perfil/buncoformando.png',
+    'assets/images/perfil/buncolegal.png',
+    'assets/images/perfil/buncomimo.png',
+    'assets/images/perfil/buncoromantico.png',
   ];
 
   String selectedImage = imagePaths.contains(fotoAtual) ? fotoAtual : imagePaths.first;

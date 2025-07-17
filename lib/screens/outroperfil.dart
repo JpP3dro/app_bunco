@@ -41,7 +41,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   @override
   void initState() {
     super.initState();
-    fotoSelecionada = 'assets/images/perfil/${widget.usuario!['foto']}';
+    fotoSelecionada = 'assets/images/perfil/${widget.usuario!['foto']}.png';
     corFundo = Color(int.parse("0xFF${widget.usuario!['cor']}"));
     exibirDias = widget.usuario!['ofensiva'] == 1 ? "dia" : "dias";
     exibirVidas = widget.usuario!['vidas'] == 1 ? "vida" : "vidas";
