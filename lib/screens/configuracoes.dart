@@ -28,8 +28,10 @@ class TelaConfiguracoes extends StatefulWidget {
   }
   
   class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
+    late bool _botaoClaroPressionado;
     late List<Map<String, dynamic>> opcoes;
     late bool modoEscuro;
+    late bool _botaoEscuroPressionado;
 
     Future<void> certeza({
       required String titulo,
@@ -154,6 +156,8 @@ class TelaConfiguracoes extends StatefulWidget {
     void initState() {
       super.initState();
       modoEscuro = widget.parametroModoEscuro;
+      _botaoClaroPressionado = false;
+      _botaoEscuroPressionado = false;
       opcoes = [
         {"label": "Alterar o nome", "tipo": "nome"},
         {"label": "Alterar o username", "tipo": "username"},
@@ -253,17 +257,37 @@ class TelaConfiguracoes extends StatefulWidget {
                     Column(
                       children: [
                         GestureDetector(
-                          child: Image.asset(
-                            'assets/images/icone/icone-claro.png',
-                            width: 80,
-                            height: 80,
-                          ),
-                          onTap: (){
+                          onTapDown: (_) => setState(() => _botaoClaroPressionado = true),
+                          onTapUp: (_) {
+                            setState(() => _botaoClaroPressionado = false);
                             setState(() {
                               modoEscuro = false;
                               widget.onModoEscuroChanged(modoEscuro);
                             });
                           },
+                          onTapCancel: () => setState(() => _botaoClaroPressionado = false),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            transform: Matrix4.identity()
+                              ..translate(0.0, _botaoClaroPressionado ? 5.0 : 0.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: _botaoClaroPressionado
+                                  ? null
+                                  : [
+                                BoxShadow(
+                                  color: Color(0xFF4B4B4B),
+                                  offset: const Offset(4, 4),
+                                  blurRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: Image.asset(
+                              'assets/images/icone/icone-claro.png',
+                              width: 80,
+                              height: 80,
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -280,17 +304,37 @@ class TelaConfiguracoes extends StatefulWidget {
                     Column(
                       children: [
                         GestureDetector(
-                          child: Image.asset(
-                            'assets/images/icone/icone-escuro.png',
-                            width: 80,
-                            height: 80,
-                          ),
-                          onTap: (){
+                          onTapDown: (_) => setState(() => _botaoEscuroPressionado = true),
+                          onTapUp: (_) {
+                            setState(() => _botaoEscuroPressionado = false);
                             setState(() {
                               modoEscuro = true;
                               widget.onModoEscuroChanged(modoEscuro);
                             });
                           },
+                          onTapCancel: () => setState(() => _botaoEscuroPressionado = false),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 150),
+                            transform: Matrix4.identity()
+                              ..translate(0.0, _botaoEscuroPressionado ? 5.0 : 0.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              boxShadow: _botaoEscuroPressionado
+                                  ? null
+                                  : [
+                                BoxShadow(
+                                  color: Color(0xFF4B4B4B),
+                                  offset: const Offset(4, 4),
+                                  blurRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: Image.asset(
+                                'assets/images/icone/icone-escuro.png',
+                                width: 80,
+                                height: 80,
+                              ),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
