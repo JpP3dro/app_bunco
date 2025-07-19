@@ -100,7 +100,7 @@ Future<void> TelaAlterarUsername({
                       ),
                       labelText: "Coloque o seu novo username:",
                       labelStyle: GoogleFonts.baloo2(
-                          color: Colors.white,
+                          color: Color(0xFF878787),
                           fontSize: 20,
                           fontWeight: FontWeight.w700
                       ),
@@ -135,7 +135,7 @@ Future<void> TelaAlterarUsername({
                       transform: Matrix4.identity()
                         ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                       decoration: BoxDecoration(
-                        color: botaoHabilitado ? const Color(0xFF1CB0F6) : Colors.grey,
+                        color: botaoHabilitado ? const Color(0xFF1CB0F6) : Color(0xFF505050),
                         borderRadius: BorderRadius.circular(40),
                         boxShadow: botaoPressionado || !botaoHabilitado
                             ? null
@@ -156,7 +156,7 @@ Future<void> TelaAlterarUsername({
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
-                              color: Colors.white,
+                              color: botaoHabilitado ? Colors.white : Color(0xFF333333),
                             ),
                           ),
                         ),
