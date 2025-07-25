@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_bunco/main.dart';
 import 'package:app_bunco/uteis/ip.dart';
@@ -217,8 +218,15 @@ class TelaConfiguracoes extends StatefulWidget {
         backgroundColor: Color(0xFF29A2DB),
         title: Icon(
           Icons.settings,
-          color: Color(0xFF0D141F),
+          color: modoEscuro ? Color(0xFF0D141F) : Colors.white,
           size: 60,
+          shadows: [
+            Shadow(
+              color: Color(0x55000000),
+              offset: Offset(4, 4),
+              blurRadius: 12
+            ),
+          ],
         ),
         centerTitle: true,
         toolbarHeight: 80,
@@ -228,7 +236,7 @@ class TelaConfiguracoes extends StatefulWidget {
             MediaQuery.of(context).padding.top -
             kToolbarHeight,
         decoration: BoxDecoration(
-          color: Color(0xFF0D141F),
+          color: modoEscuro ? Color(0xFF0D141F) : Colors.white,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(70),
             topRight: Radius.circular(70),
@@ -267,7 +275,7 @@ class TelaConfiguracoes extends StatefulWidget {
                           },
                           onTapCancel: () => setState(() => _botaoClaroPressionado = false),
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
+                            duration: const Duration(milliseconds: 70),
                             transform: Matrix4.identity()
                               ..translate(0.0, _botaoClaroPressionado ? 5.0 : 0.0),
                             decoration: BoxDecoration(
@@ -276,9 +284,8 @@ class TelaConfiguracoes extends StatefulWidget {
                                   ? null
                                   : [
                                 BoxShadow(
-                                  color: Color(0xFF4B4B4B),
-                                  offset: const Offset(4, 4),
-                                  blurRadius: 2,
+                                  color: Color(0xFF2C4168),
+                                  offset: const Offset(2.5, 2.5),
                                 ),
                               ],
                             ),
@@ -293,9 +300,9 @@ class TelaConfiguracoes extends StatefulWidget {
                         Text(
                           "Claro",
                           style: GoogleFonts.baloo2(
-                            color: Color(0xFF586892),
+                            color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
@@ -314,7 +321,7 @@ class TelaConfiguracoes extends StatefulWidget {
                           },
                           onTapCancel: () => setState(() => _botaoEscuroPressionado = false),
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
+                            duration: const Duration(milliseconds: 70),
                             transform: Matrix4.identity()
                               ..translate(0.0, _botaoEscuroPressionado ? 5.0 : 0.0),
                             decoration: BoxDecoration(
@@ -323,9 +330,8 @@ class TelaConfiguracoes extends StatefulWidget {
                                   ? null
                                   : [
                                 BoxShadow(
-                                  color: Color(0xFF4B4B4B),
-                                  offset: const Offset(4, 4),
-                                  blurRadius: 2,
+                                  color: Color(0xFF2C4168),
+                                  offset: const Offset(2.5, 2.5),
                                 ),
                               ],
                             ),
@@ -340,9 +346,9 @@ class TelaConfiguracoes extends StatefulWidget {
                         Text(
                           "Escuro",
                           style: GoogleFonts.baloo2(
-                            color: Color(0xFF586892),
+                            color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
@@ -362,7 +368,7 @@ class TelaConfiguracoes extends StatefulWidget {
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFF1A263D), width: 3),
+                              border: Border.all(color: modoEscuro ? Color(0xFF1A263D) : Color(0xFFE5E5E5), width: 3),
                               borderRadius: BorderRadius.vertical(
                                 top: index == 0
                                     ? const Radius.circular(30)
@@ -378,7 +384,7 @@ class TelaConfiguracoes extends StatefulWidget {
                                 Text(
                                   opcoes[index]['label'],
                                   style: GoogleFonts.baloo2(
-                                    color: Colors.white,
+                                    color: modoEscuro ? Colors.white : Color(0xFF7A7A7A),
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                   ),
