@@ -267,7 +267,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         GestureDetector(
                           onTapDown: (_) => setState(() => _botaoClaroPressionado = true),
                           onTapUp: (_) {
-                            setState(() => _botaoClaroPressionado = false);
+                            setState(() => _botaoEscuroPressionado = false);
                             setState(() {
                               modoEscuro = false;
                               widget.onModoEscuroChanged(modoEscuro);
@@ -281,7 +281,7 @@ class TelaConfiguracoes extends StatefulWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: _botaoClaroPressionado
-                                  ? null
+                                  ? null : !modoEscuro ? null
                                   : [
                                 BoxShadow(
                                   color: Color(0xFF2C4168),
@@ -298,7 +298,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Claro",
+                          "Claro ${!modoEscuro ? "(atual)" : ""}",
                           style: GoogleFonts.baloo2(
                             color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,
@@ -313,7 +313,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         GestureDetector(
                           onTapDown: (_) => setState(() => _botaoEscuroPressionado = true),
                           onTapUp: (_) {
-                            setState(() => _botaoEscuroPressionado = false);
+                            setState(() => _botaoClaroPressionado = false);
                             setState(() {
                               modoEscuro = true;
                               widget.onModoEscuroChanged(modoEscuro);
@@ -328,7 +328,7 @@ class TelaConfiguracoes extends StatefulWidget {
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: _botaoEscuroPressionado
                                   ? null
-                                  : [
+                                  : modoEscuro ? null : [
                                 BoxShadow(
                                   color: Color(0xFF2C4168),
                                   offset: const Offset(2.5, 2.5),
@@ -344,7 +344,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Escuro",
+                          "Escuro ${modoEscuro ? "(atual)" : ""}",
                           style: GoogleFonts.baloo2(
                             color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,

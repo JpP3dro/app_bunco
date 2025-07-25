@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -12,9 +13,11 @@ import '../uteis/escolhercor.dart';
 
 class TelaPerfil extends StatefulWidget {
   final Map<String, dynamic> usuario;
+  final bool modoEscuro;
   const TelaPerfil({
     super.key,
     required this.usuario,
+    required this.modoEscuro
   });
 
 
@@ -112,14 +115,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0D141F),
+      backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0D141F),
+        backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
         automaticallyImplyLeading: false,
         title: Text(
           "Meu Perfil",
           style: GoogleFonts.baloo2(
-            color: Color(0xFFB0C2DE),
+            color: widget.modoEscuro ? Color(0xFFB0C2DE) : Color(0xFF1CB0F6),
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
@@ -134,8 +137,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                      Container(
-                        child: CircleAvatar(
+                       CircleAvatar(
                           radius: 60,
                           backgroundColor: corFundo,
                           child: ClipOval(
@@ -146,7 +148,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             ),
                           ),
                         ),
-                      ),
+
                   // 2) Texto ao lado da foto
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +157,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           style: GoogleFonts.baloo2(
                             fontWeight: FontWeight.w700,
                             fontSize: 22,
-                            color: Colors.white
+                            color: widget.modoEscuro ? Colors.white : Color(0xFf7A7A7A)
                           ),
                       ),
                       SizedBox(height: 4),
@@ -164,7 +166,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           style: GoogleFonts.baloo2(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF586892)
+                            color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFFC9C9C9)
                           ),
                       ),
                     ],
@@ -173,56 +175,81 @@ class _TelaPerfilState extends State<TelaPerfil> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        onPressed: () async {
-                          final escolha = await mostrarSeletorDeFotoDePerfil(
-                              context,
-                              fotoAtual: fotoSelecionada,
-                              corFundo: corFundo
-                          );
-                          if (escolha != null) {
-                            setState(() {
-                              fotoSelecionada = escolha;
-                              widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
-                            });
-                            alterarFoto();
-                          }
-                        },
-                        icon: const Icon(Icons.camera_alt),
-                        color: Color(0xFF0D141F),
-                        iconSize: 24,
-                        style: IconButton.styleFrom(
-                          fixedSize: Size(40, 40),
-                          backgroundColor: Color(0xFF1CB0F6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF2C4168),
+                                offset: Offset(2.7, 2.8),
+                              spreadRadius: -1
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          onPressed: () async {
+                            final escolha = await mostrarSeletorDeFotoDePerfil(
+                                context,
+                                fotoAtual: fotoSelecionada,
+                                corFundo: corFundo
+                            );
+                            if (escolha != null) {
+                              setState(() {
+                                fotoSelecionada = escolha;
+                                widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
+                              });
+                              alterarFoto();
+                            }
+                          },
+                          icon: const Icon(Icons.camera_alt),
+                          color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
+                          iconSize: 24,
+                          style: IconButton.styleFrom(
+                            fixedSize: Size(40, 40),
+                            backgroundColor: Color(0xFF1CB0F6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () async {
-                          final escolha = await mostrarSeletorDeCor(
-                            context,
-                            fotoAtual: fotoSelecionada,
-                            corAtual: corFundo,
-                          );
-                          if (escolha != null) {
-                            setState(() {
-                              int teste = escolha.toARGB32();
-                              corFundo = escolha;
-                              widget.usuario['cor'] = teste.toRadixString(16).substring(2);
-                            });
-                            alterarCor();
-                          }
-                        },
-                        icon: const Icon(Icons.edit),
-                        color: Color(0xFF0D141F),
-                        iconSize: 24,
-                        style: IconButton.styleFrom(
-                          fixedSize: Size(40, 40),
-                          backgroundColor: Color(0xFF1CB0F6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0),
+                      const SizedBox(height: 15),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color(0xFF2C4168),
+                                offset: Offset(2.7, 2.8),
+                                spreadRadius: -1
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          onPressed: () async {
+                            final escolha = await mostrarSeletorDeCor(
+                              context,
+                              fotoAtual: fotoSelecionada,
+                              corAtual: corFundo,
+                            );
+                            if (escolha != null) {
+                              setState(() {
+                                int teste = escolha.toARGB32();
+                                corFundo = escolha;
+                                widget.usuario['cor'] = teste.toRadixString(16).substring(2);
+                              });
+                              alterarCor();
+                            }
+                          },
+                          icon: const Icon(Icons.edit),
+                          color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
+                          iconSize: 24,
+                          style: IconButton.styleFrom(
+                            fixedSize: Size(40, 40),
+                            backgroundColor: Color(0xFF1CB0F6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
                           ),
                         ),
                       ),
@@ -232,8 +259,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
               ),
               const SizedBox(height: 22),
               Divider(
-                color: Color(0xFF1A263D),
-                thickness: 3,
+                color: widget.modoEscuro ? Color(0xFF1A263D) : Color(0xFFC9C9C9),
+                thickness: 2,
               ),
 
               // 3) Botões sociais (círculos azuis)
@@ -252,6 +279,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             FontAwesomeIcons.github,
                             color: Color(0xFF1CB0F6),
                             size: 40,
+                            shadows: [
+                              Shadow(
+                                  color: Color(0xFF1453A3),
+                                  offset: Offset(2, 2),
+                              ),
+                            ],
                           ),
                           /*const SizedBox(height: 4),
                           Text(
@@ -279,6 +312,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             FontAwesomeIcons.instagram,
                             color: Color(0xFF1CB0F6),
                             size: 40,
+                            shadows: [
+                              Shadow(
+                                  color: Color(0xFF1453A3),
+                                  offset: Offset(2, 2),
+                              ),
+                            ],
                           ),
                           /*const SizedBox(height: 4),
                           Text(
@@ -306,6 +345,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             FontAwesomeIcons.linkedin,
                             color: Color(0xFF1CB0F6),
                             size: 40,
+                            shadows: [
+                              Shadow(
+                                  color: Color(0xFF1453A3),
+                                  offset: Offset(2, 2),
+                              ),
+                            ],
                           ),
                           /*const SizedBox(height: 4),
                           Text(
@@ -338,7 +383,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         height: 90,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: Color(0xFF1F2433),
+                          color: widget.modoEscuro ? Color(0xFF1F2433) : Color(0xFFF0F0F0),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -373,7 +418,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                                       card.subtitulo,
                                       style: GoogleFonts.baloo2(
                                           fontSize: 16,
-                                          color: Color(0xFF586892),
+                                          color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFF7A7A7A),
                                           fontWeight: FontWeight.w700
                                       ),
                                     ),

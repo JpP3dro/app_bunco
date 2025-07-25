@@ -22,28 +22,27 @@ class TelaInicial extends StatefulWidget {
 class _TelaInicialState extends State<TelaInicial> {
   late bool modoEscuro;
   int myIndex = 0;
-  late List<Widget> telas;
 
   @override
   void initState() {
     super.initState();
     modoEscuro = widget.parametroModoEscuro;
-    telas = [
-      const TelaCurso(),
-      TelaRanking(usuario: widget.usuario,),
-      const TelaTerminal(),
-      TelaPerfil(usuario: widget.usuario),
-      TelaConfiguracoes(usuario: widget.usuario,
-        parametroModoEscuro: modoEscuro,
-        onModoEscuroChanged: (novoValor) {
-        setState(() {
-          modoEscuro = novoValor;
-        });
-      },),
-    ];
   }
   @override
   Widget build(BuildContext context) {
+    final List<Widget> telas = [
+      const TelaCurso(),
+      TelaRanking(usuario: widget.usuario,),
+      const TelaTerminal(),
+      TelaPerfil(usuario: widget.usuario, modoEscuro: modoEscuro),
+      TelaConfiguracoes(usuario: widget.usuario,
+        parametroModoEscuro: modoEscuro,
+        onModoEscuroChanged: (novoValor) {
+          setState(() {
+            modoEscuro = novoValor;
+          });
+        },),
+    ];
     return Scaffold(
       body: Center(
         child: telas[myIndex],
