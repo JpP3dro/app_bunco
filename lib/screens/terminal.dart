@@ -380,6 +380,7 @@ print("Soma da lista:", sum(numeros))''';
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -619,6 +620,7 @@ print("Soma da lista:", sum(numeros))''';
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
