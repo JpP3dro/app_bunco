@@ -314,8 +314,7 @@ print("Soma da lista:", sum(numeros))''';
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: TextField(
                     controller: _codeController,
-                    maxLines: null,
-                    expands: true,
+                    maxLines: 9999,
                     style: const TextStyle(
                       fontFamily: 'monospace',
                       fontSize: 14,
@@ -551,8 +550,7 @@ print("Soma da lista:", sum(numeros))''';
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: TextField(
                       controller: _codeController,
-                      maxLines: null,
-                      expands: true,
+                      maxLines: 9999,
                       style: const TextStyle(
                         fontFamily: 'monospace',
                         fontSize: 14,
