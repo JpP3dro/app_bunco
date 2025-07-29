@@ -205,12 +205,6 @@ print("Soma da lista:", sum(numeros))''';
       currentPrompt = "";
       _codeController.text = "";
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Editor limpo!"),
-        backgroundColor: Colors.blue,
-      ),
-    );
   }
 
   @override

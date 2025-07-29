@@ -91,35 +91,26 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                 const SizedBox(height: 16),
 
                 // ========== 3) GRID COM AS IMAGENS DISPONÍVEIS ==========
-                // Vamos travar a altura do Grid para não estourar a tela
                 SizedBox(
-                  height: 340,
-                  child: GridView.builder(
+                  height: 120,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,       // 3 colunas
-                      crossAxisSpacing: 8,     // espaçamento horizontal entre itens
-                      mainAxisSpacing: 8,      // espaçamento vertical entre itens
-                    ),
-                    itemCount: imagePaths.length,
-                    itemBuilder: (_, index) {
-                      final path = imagePaths[index];
-                      final bool isSelected = path == selectedImage;
-
-                      return GestureDetector(
-                        onTap: () {
-                          // ao clicar, atualiza a imagem selecionada e muda o preview
-                          setState(() {
-                            selectedImage = path;
-                          });
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // Container com borda para indicar seleção
-                            Container(
-                              height: 110,
-                              width: 110,
+                    child: Row(
+                      children: List.generate(imagePaths.length, (index) {
+                        final path = imagePaths[index];
+                        final isSelected = path == selectedImage;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 12),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImage = path;
+                              });
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 100,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: isSelected ? Colors.blue : Colors.grey.shade300,
@@ -135,16 +126,10 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                                 ),
                               ),
                             ),
-                            if (isSelected)
-                              const Icon(
-                                Icons.check_circle,
-                                color: Colors.blueAccent,
-                                size: 28,
-                              ),
-                          ],
-                        ),
-                      );
-                    },
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ),
 

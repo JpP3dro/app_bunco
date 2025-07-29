@@ -18,7 +18,6 @@ Future<Color?> mostrarSeletorDeCor(
     Color(0xFF586892),
     Color(0xFF0E898B),
     Color(0xFF7AF0F2),
-    Color(0xFFBBF2FF),
     Color(0xFFFF9600),
     Color(0xFFFFC800),
     Color(0xFFE5A259),
@@ -105,8 +104,8 @@ Future<Color?> mostrarSeletorDeCor(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
-                      spacing: 12,
-                      runSpacing: 12,
+                      spacing: 8,
+                      runSpacing: 8,
                       children: colorOptions.map((color) {
                         final bool isSelected = color == selectedColor;
                         return GestureDetector(
@@ -142,11 +141,9 @@ Future<Color?> mostrarSeletorDeCor(
                   ),
                 ),
 
-                const SizedBox(height: 16),
-
                 // ======== 4) BOTÃO DE CONFIRMAR ========
                 Container(
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(5),
                   child: GestureDetector(
                     onTapDown: (_) =>
                         setState(() => botaoPressionado = true),

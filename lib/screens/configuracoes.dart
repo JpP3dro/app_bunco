@@ -156,8 +156,8 @@ class TelaConfiguracoes extends StatefulWidget {
     void initState() {
       super.initState();
       modoEscuro = widget.parametroModoEscuro;
-      _botaoClaroPressionado = false;
-      _botaoEscuroPressionado = false;
+      _botaoClaroPressionado = !modoEscuro;
+      _botaoEscuroPressionado = modoEscuro;
       opcoes = [
         {"label": "Alterar o nome", "tipo": "nome"},
         {"label": "Alterar o username", "tipo": "username"},
