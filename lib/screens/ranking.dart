@@ -9,10 +9,11 @@ import 'outroperfil.dart';
 
 class TelaRanking extends StatefulWidget {
   final Map<String, dynamic> usuario;
-
+  final bool modoEscuro;
   const TelaRanking({
     super.key,
-    required this.usuario
+    required this.usuario,
+    required this.modoEscuro
   });
 
 
@@ -59,11 +60,11 @@ class _TelaRankingState extends State<TelaRanking> {
       case 0:
         return Color(0xFFFDF0AB);
       case 1:
-        return Color(0xFFFFFFFF);
+        return Color(0xFFE6E4E4);
       case 2:
         return Color(0xFFFFDBA8);
       default:
-        return Color(0xFF0D141F);
+        return widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
     }
   }
 
@@ -72,7 +73,7 @@ class _TelaRankingState extends State<TelaRanking> {
       case 0:
         return Color(0xFFFFC800);
       case 1:
-        return Color(0xFFC0C0C0);
+        return Color(0xFF9E9E9E);
       case 2:
         return Color(0xFFCD7F32);
       default:
@@ -88,9 +89,9 @@ class _TelaRankingState extends State<TelaRanking> {
       );
     }
     return Scaffold(
-      backgroundColor: Color(0xFF0D141F),
+      backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xFF0D141F),
+        backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -98,7 +99,7 @@ class _TelaRankingState extends State<TelaRanking> {
                 "Ranking",
                 style: GoogleFonts.baloo2(
                   fontSize: 25,
-                  color: Color(0xFFB0C2DE),
+                  color: widget.modoEscuro ? Color(0xFFB0C2DE) : Color(0xFF1CB0F6),
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -162,7 +163,7 @@ class _TelaRankingState extends State<TelaRanking> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => TelaOutroPerfil(usuario: dados)
+            builder: (_) => TelaOutroPerfil(usuario: dados, modoEscuro: widget.modoEscuro,)
           ),
         );
       },

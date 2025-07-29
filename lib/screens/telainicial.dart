@@ -32,7 +32,7 @@ class _TelaInicialState extends State<TelaInicial> {
   Widget build(BuildContext context) {
     final List<Widget> telas = [
       const TelaCurso(),
-      TelaRanking(usuario: widget.usuario,),
+      TelaRanking(usuario: widget.usuario, modoEscuro: modoEscuro,),
       const TelaTerminal(),
       TelaPerfil(usuario: widget.usuario, modoEscuro: modoEscuro),
       TelaConfiguracoes(usuario: widget.usuario,

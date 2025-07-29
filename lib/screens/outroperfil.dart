@@ -7,9 +7,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TelaOutroPerfil extends StatefulWidget {
   final Map<String, dynamic>? usuario;
+  final bool modoEscuro;
   const TelaOutroPerfil({
     super.key,
     required this.usuario,
+    required this.modoEscuro
   });
 
 
@@ -55,7 +57,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF0D141F),
+      backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_rounded, color: Color(0xFF1CB0F6), size: 30,),
@@ -63,11 +65,11 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: Color(0xFF0D141F),
+        backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
         title: Text(
           "Perfil de ${widget.usuario!['nome']}",
           style: GoogleFonts.baloo2(
-            color: Color(0xFFB0C2DE),
+            color: widget.modoEscuro ? Color(0xFFB0C2DE) : Color(0xFF1CB0F6),
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
@@ -106,7 +108,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                         style: GoogleFonts.baloo2(
                             fontWeight: FontWeight.w700,
                             fontSize: 22,
-                            color: Colors.white
+                            color: widget.modoEscuro ? Colors.white : Color(0xFF7A7A7A)
                         ),
                       ),
                       SizedBox(height: 4),
@@ -115,8 +117,8 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                         style: GoogleFonts.baloo2(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF586892)
-                        ),
+                            color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFFC9C9C9)
+                        ), 
                       ),
                     ],
                   ),
@@ -124,8 +126,8 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
               ),
               const SizedBox(height: 22),
               Divider(
-                color: Color(0xFF1A263D),
-                thickness: 3,
+                color: widget.modoEscuro ? Color(0xFF1A263D) : Color(0xFFC9C9C9),
+                thickness: 2,
               ),
 
               // 3) Botões sociais (círculos azuis)
@@ -230,7 +232,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                         height: 90,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: Color(0xFF1F2433),
+                          color: widget.modoEscuro ? Color(0xFF1F2433) : Color(0xFFF0F0F0),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
@@ -265,7 +267,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                                     card.subtitulo,
                                     style: GoogleFonts.baloo2(
                                         fontSize: 16,
-                                        color: Color(0xFF586892),
+                                        color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFF7A7A7A),
                                         fontWeight: FontWeight.w700
                                     ),
                                   ),
