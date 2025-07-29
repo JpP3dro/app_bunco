@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_bunco/main.dart';
 import 'package:app_bunco/uteis/ip.dart';
@@ -298,7 +297,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Claro ${!modoEscuro ? "(atual)" : ""}",
+                          "Claro",
                           style: GoogleFonts.baloo2(
                             color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,
@@ -344,7 +343,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Escuro ${modoEscuro ? "(atual)" : ""}",
+                          "Escuro",
                           style: GoogleFonts.baloo2(
                             color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
                             fontSize: 18,

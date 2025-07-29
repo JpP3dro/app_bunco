@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
@@ -31,6 +30,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
   late String exibirVidas;
   late String fotoSelecionada;
   late Color corFundo;
+  bool _botaoFotoPressionado = false;
+  bool _botaoCorPressionado = false;
 
   Future abrirLink({
     required String url,
@@ -178,37 +179,48 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xFF2C4168),
-                                offset: Offset(2.7, 2.8),
-                              spreadRadius: -1
-                            ),
-                          ],
                         ),
-                        child: IconButton(
-                          onPressed: () async {
-                            final escolha = await mostrarSeletorDeFotoDePerfil(
-                                context,
-                                fotoAtual: fotoSelecionada,
-                                corFundo: corFundo
-                            );
-                            if (escolha != null) {
-                              setState(() {
-                                fotoSelecionada = escolha;
-                                widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
-                              });
-                              alterarFoto();
-                            }
+                        child: GestureDetector(
+                          onTapDown: (_) => setState(() => _botaoFotoPressionado = true),
+                          onTapUp: (_) async {
+                            setState(() => _botaoFotoPressionado = false);
+                              final escolha = await mostrarSeletorDeFotoDePerfil(
+                                  context,
+                                  fotoAtual: fotoSelecionada,
+                                  corFundo: corFundo
+                              );
+                              if (escolha != null) {
+                                setState(() {
+                                  fotoSelecionada = escolha;
+                                  widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
+                                });
+                                alterarFoto();
+                              }
                           },
-                          icon: const Icon(Icons.camera_alt),
-                          color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
-                          iconSize: 24,
-                          style: IconButton.styleFrom(
-                            fixedSize: Size(40, 40),
-                            backgroundColor: Color(0xFF1CB0F6),
-                            shape: RoundedRectangleBorder(
+                          onTapCancel: () => setState(() => _botaoFotoPressionado = false),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 100),
+                            transform: Matrix4.identity()
+                              ..translate(0.0, _botaoFotoPressionado ? 4.0 : 0.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1CB0F6),
                               borderRadius: BorderRadius.circular(5),
+                              boxShadow: _botaoFotoPressionado
+                                  ? null
+                                  : [
+                                BoxShadow(
+                                  color: Color(0xFF2C4168),
+                                  offset: Offset(5, 5),
+                                  spreadRadius: -1,
+                                ),
+                              ],
+                            ),
+                            width: 40,
+                            height: 40,
+                            child: Icon(
+                              Icons.camera_alt,
+                              color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
+                              size: 24,
                             ),
                           ),
                         ),
@@ -217,16 +229,11 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color(0xFF2C4168),
-                                offset: Offset(2.7, 2.8),
-                                spreadRadius: -1
-                            ),
-                          ],
                         ),
-                        child: IconButton(
-                          onPressed: () async {
+                        child: GestureDetector(
+                          onTapDown: (_) => setState(() => _botaoCorPressionado = true),
+                          onTapUp: (_) async {
+                            setState(() => _botaoCorPressionado = false);
                             final escolha = await mostrarSeletorDeCor(
                               context,
                               fotoAtual: fotoSelecionada,
@@ -241,14 +248,30 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               alterarCor();
                             }
                           },
-                          icon: const Icon(Icons.edit),
-                          color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
-                          iconSize: 24,
-                          style: IconButton.styleFrom(
-                            fixedSize: Size(40, 40),
-                            backgroundColor: Color(0xFF1CB0F6),
-                            shape: RoundedRectangleBorder(
+                          onTapCancel: () => setState(() => _botaoCorPressionado = false),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 100),
+                            transform: Matrix4.identity()
+                              ..translate(0.0, _botaoCorPressionado ? 4.0 : 0.0),
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF1CB0F6),
                               borderRadius: BorderRadius.circular(5),
+                              boxShadow: _botaoCorPressionado
+                                  ? null
+                                  : [
+                                const BoxShadow(
+                                  color: Color(0xFF2C4168),
+                                  offset: Offset(5, 5),
+                                  spreadRadius: -1,
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              size: 24,
+                              color: widget.modoEscuro ? const Color(0xFF0D141F) : Colors.white,
                             ),
                           ),
                         ),
@@ -282,7 +305,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             shadows: [
                               Shadow(
                                   color: Color(0xFF1453A3),
-                                  offset: Offset(2, 2),
+                                  offset: Offset(1, 1),
+                                  blurRadius: 3
                               ),
                             ],
                           ),
@@ -315,7 +339,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             shadows: [
                               Shadow(
                                   color: Color(0xFF1453A3),
-                                  offset: Offset(2, 2),
+                                  offset: Offset(1, 1),
+                                blurRadius: 3
                               ),
                             ],
                           ),
@@ -348,7 +373,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             shadows: [
                               Shadow(
                                   color: Color(0xFF1453A3),
-                                  offset: Offset(2, 2),
+                                  offset: Offset(1, 1),
+                                blurRadius: 3
                               ),
                             ],
                           ),
