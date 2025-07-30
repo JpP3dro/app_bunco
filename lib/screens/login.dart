@@ -23,7 +23,6 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _controllerSenha = TextEditingController();
   final TextEditingController _controllerLogin = TextEditingController();
 
-  //Função que faz o login
   Future<void> fazerLogin() async {
     String ip = obterIP();
     String url = "http://$ip/bunco/api/login.php";
@@ -64,7 +63,6 @@ class _TelaLoginState extends State<TelaLogin> {
 
   @override
   void dispose() {
-    // Limpa os controladores quando o widget é descartado
     _controllerLogin.dispose();
     _controllerSenha.dispose();
     super.dispose();
@@ -104,7 +102,7 @@ class _TelaLoginState extends State<TelaLogin> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min, // A Column ocupa o mínimo de espaço
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   //Texto
                   Text(
@@ -114,7 +112,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  //Container que guarda o local do login
+
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: TextFormField(
@@ -154,7 +152,6 @@ class _TelaLoginState extends State<TelaLogin> {
                     ),
                   ),
 
-                  //Container que guarda a senha
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: TextFormField(
@@ -208,7 +205,6 @@ class _TelaLoginState extends State<TelaLogin> {
                     ),
                   ),
 
-                  //Container que guarda o botão
                   Container(
                     margin: const EdgeInsets.all(10),
                     child: GestureDetector(
@@ -259,7 +255,6 @@ class _TelaLoginState extends State<TelaLogin> {
             ),
           ),
 
-      //Botão que direciona para a página de cadastro
       bottomNavigationBar: Container(
         height: 80,
         color: Color(0xFF586892),

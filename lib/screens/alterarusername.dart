@@ -174,7 +174,6 @@ Future<void> TelaAlterarUsername({
   );
 }
 
-// Função para alterar o username (extraída da classe original)
 Future<void> _alterarUsername(BuildContext context, int id, String novoUsername) async {
   try {
     String ip = obterIP();

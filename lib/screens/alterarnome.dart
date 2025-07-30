@@ -38,7 +38,6 @@ Future<void> TelaAlterarNome({
               }
             }
 
-            // Adicionar listener ao controlador
             controllerNome.addListener(validarCampo);
 
             return Column(
@@ -183,7 +182,6 @@ Future<void> TelaAlterarNome({
   );
 }
 
-// Função para alterar o nome (extraída da classe original)
 Future<void> _alterarNome(BuildContext context, String username, String novoNome) async {
   try {
     String ip = obterIP();

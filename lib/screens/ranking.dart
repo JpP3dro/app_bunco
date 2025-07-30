@@ -185,8 +185,8 @@ class _TelaRankingState extends State<TelaRanking> {
               BoxShadow(
                 color: corTexto,
                 spreadRadius: 2, // quanto a sombra se espalha
-                blurRadius: 0, // quanto a sombra é borrada
-                offset: const Offset(3, 3), // posição da sombra (x, y)
+                blurRadius: 0,
+                offset: const Offset(3, 3),
               ),
             ] : null,
           ),

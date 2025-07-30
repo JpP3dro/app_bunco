@@ -400,7 +400,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       },
                     ),
 
-                    // ✅ Botões fixos no fundo
+                    // Botões fixos
                     Positioned(
                       bottom: 10,
                       left: 15,

@@ -130,7 +130,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                 thickness: 2,
               ),
 
-              // 3) Botões sociais (círculos azuis)
+              // 3) Redes sociais (icones azuis)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

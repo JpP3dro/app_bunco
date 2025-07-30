@@ -183,7 +183,6 @@ Future<void> TelaAlterarEmail({
   );
 }
 
-// Função para alterar o email (extraída da classe original)
 Future<void> _alterarEmail(BuildContext context, String username, String novoEmail) async {
   try {
     String ip = obterIP();

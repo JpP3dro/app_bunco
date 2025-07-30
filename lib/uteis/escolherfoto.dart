@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Este método abre um diálogo “full screen” (ou quase — você pode ajustar tamanho)
-/// e, quando o usuário confirmar, retorna o caminho do asset selecionado.
-/// Se fechar (X), retorna null.
 Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
   required String fotoAtual,
   required Color corFundo
 }) {
   bool botaoPressionado = false;
-  // 1) Defina aqui a lista de caminhos de imagens em assets/profile_pics/
+  bool botaoHabilitado = false;
+  // 1) Defina aqui a lista de caminhos de imagens em assets/images/perfil/
   final List<String> imagePaths = [
     'assets/images/perfil/buncodefault.png',
     'assets/images/perfil/buncoandroid.png',
@@ -34,7 +32,6 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
         insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
-          // StatefulBuilder permite usar setState _dentro_ do builder do diálogo
           builder: (context, setState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
@@ -100,6 +97,7 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                       children: List.generate(imagePaths.length, (index) {
                         final path = imagePaths[index];
                         final isSelected = path == selectedImage;
+                        botaoHabilitado = selectedImage != fotoAtual;
                         return Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: GestureDetector(
@@ -140,10 +138,14 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                   margin: const EdgeInsets.all(10),
                   child: GestureDetector(
                     onTapDown: (_) =>
-                        setState(() => botaoPressionado = true),
+                        setState(() { if (botaoHabilitado) {
+                          botaoPressionado = true;
+                        }}),
                     onTapUp: (_) {
-                      setState(() => botaoPressionado = false);
-                      Navigator.of(context).pop(selectedImage);
+                      setState(() { if (botaoHabilitado) {
+                        botaoPressionado = false;
+                        Navigator.of(context).pop(selectedImage);
+                      }});
                     },
                     onTapCancel: () =>
                         setState(() => botaoPressionado = false),
@@ -152,9 +154,9 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                       transform: Matrix4.identity()
                         ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFF1CB0F6),
+                        color: botaoHabilitado ? Color(0xFF1CB0F6) : Color(0xFF505050),
                         borderRadius: BorderRadius.circular(40),
-                        boxShadow: botaoPressionado
+                        boxShadow: botaoPressionado || !botaoHabilitado
                             ? null
                             : [
                           BoxShadow(
@@ -173,7 +175,7 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
-                              color: Colors.white,
+                              color: botaoHabilitado ? Colors.white : Color(0xFF333333),
                             ),
                           ),
                         ),

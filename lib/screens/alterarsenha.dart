@@ -320,7 +320,6 @@ Future<void> TelaAlterarSenha({
   );
 }
 
-// Função para alterar a senha (extraída da classe original)
 Future<void> _alterarSenha(
     BuildContext context,
     String username,
@@ -366,7 +365,6 @@ Future<void> _alterarSenha(
     );
 
     if (response["sucesso"] == "true") {
-      // Recarrega o app
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const MyApp())

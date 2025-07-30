@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Abre um diálogo para o usuário escolher uma cor de fundo para o CircleAvatar.
-/// - [context]: BuildContext do widget chamador.
-/// - [imagePath]: caminho do asset da imagem já escolhida (ou você pode adaptar para NetworkImage/FileImage).
-/// - [corAtual]: a cor que estava selecionada até o momento (para iniciar o diálogo já com ela marcada).
-///
-/// Retorna a [Color] escolhida pelo usuário, ou `null` se ele fechar o diálogo sem confirmar.
 Future<Color?> mostrarSeletorDeCor(
     BuildContext context, {
       required String fotoAtual,
       required Color corAtual,
     }) {
   bool botaoPressionado = false;
+  bool botaoHabilitado = false;
   // 1) Defina aqui a paleta de cores que o usuário poderá escolher:
   final List<Color> colorOptions = [
     Color(0xFF586892),
@@ -31,7 +26,6 @@ Future<Color?> mostrarSeletorDeCor(
     Color(0xFFFFFFFF),
   ];
 
-  // 2) Começamos com a cor atual, se ela estiver na paleta; senão, usamos a primeira da lista
   Color selectedColor =
   colorOptions.contains(corAtual) ? corAtual : colorOptions.first;
 
@@ -98,7 +92,6 @@ Future<Color?> mostrarSeletorDeCor(
 
                 const SizedBox(height: 16),
 
-                // Vamos colocar num SizedBox para limitar altura e permitir scroll, se necessário
                 SizedBox(
                   height: 150,
                   child: SingleChildScrollView(
@@ -108,6 +101,7 @@ Future<Color?> mostrarSeletorDeCor(
                       runSpacing: 8,
                       children: colorOptions.map((color) {
                         final bool isSelected = color == selectedColor;
+                        botaoHabilitado = selectedColor != corAtual;
                         return GestureDetector(
                           onTap: () {
                             setState(() {
@@ -146,10 +140,14 @@ Future<Color?> mostrarSeletorDeCor(
                   margin: const EdgeInsets.all(5),
                   child: GestureDetector(
                     onTapDown: (_) =>
-                        setState(() => botaoPressionado = true),
+                        setState(() { if (botaoHabilitado) {
+                          botaoPressionado = true;
+                        }}),
                     onTapUp: (_) {
-                      setState(() => botaoPressionado = false);
-                      Navigator.of(context).pop(selectedColor);
+                      setState(() { if (botaoHabilitado) {
+                        botaoPressionado = false;
+                        Navigator.of(context).pop(selectedColor);
+                      }});
                     },
                     onTapCancel: () =>
                         setState(() => botaoPressionado = false),
@@ -158,9 +156,9 @@ Future<Color?> mostrarSeletorDeCor(
                       transform: Matrix4.identity()
                         ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFF1CB0F6),
+                        color: botaoHabilitado ? Color(0xFF1CB0F6) : Color(0xFF505050),
                         borderRadius: BorderRadius.circular(40),
-                        boxShadow: botaoPressionado
+                        boxShadow: botaoPressionado || !botaoHabilitado
                             ? null
                             : [
                           BoxShadow(
@@ -179,7 +177,7 @@ Future<Color?> mostrarSeletorDeCor(
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
-                              color: Colors.white,
+                              color: botaoHabilitado ? Colors.white : Color(0xFF333333),
                             ),
                           ),
                         ),

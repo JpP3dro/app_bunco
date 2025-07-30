@@ -23,7 +23,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
   bool _mostrarSenha = false;
   bool _botaoPressionado = false;
 
-  //Função que faz o cadastro
   Future<void> fazerCadastro() async {
     if (!(_controllerNome.text.isNotEmpty && _controllerUsername.text.isNotEmpty &&
         _controllerEmail.text.isNotEmpty && _controllerSenha.text.isNotEmpty)) {
@@ -79,7 +78,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   void dispose() {
-    // Limpa os controladores quando o widget é descartado
     _controllerNome.dispose();
     _controllerUsername.dispose();
     _controllerEmail.dispose();

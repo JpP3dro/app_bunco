@@ -172,6 +172,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       ),
                     ],
                   ),
+
                   //3) Botões
                   Column(
                     mainAxisSize: MainAxisSize.min,
@@ -225,7 +226,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 15),
+
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -280,13 +283,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
                   ),
                 ],
               ),
+
               const SizedBox(height: 22),
               Divider(
                 color: widget.modoEscuro ? Color(0xFF1A263D) : Color(0xFFC9C9C9),
                 thickness: 2,
               ),
 
-              // 3) Botões sociais (círculos azuis)
+              // 4) Redes sociais (icones azuis)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -394,7 +398,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                 ],
               ),
 
-              //4) Cards com as informações
+              //5) Cards com as informações
               ListView.builder(
                 shrinkWrap: true,
                 padding: const EdgeInsets.all(16),
@@ -414,7 +418,6 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         ),
                         child: Row(
                             children: [
-                              // Quadrado da imagem
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.asset(
