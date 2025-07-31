@@ -1,11 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class TelaTerminal extends StatefulWidget {
-  const TelaTerminal({super.key});
+  final bool modoEscuro;
 
+  const TelaTerminal({super.key, required this.modoEscuro});
 
   @override
   State<TelaTerminal> createState() => _TelaTerminalState();
@@ -35,6 +36,7 @@ print("Lista de números:", numeros)
 print("Soma da lista:", sum(numeros))''';
 
   String output = "";
+  bool botaoPresionado = false;
   bool isLoading = false;
   bool waitingForInput = false;
   String inputValue = "";
@@ -80,7 +82,7 @@ print("Soma da lista:", sum(numeros))''';
     int inputIndex = 0;
     modifiedCode = modifiedCode.replaceAllMapped(
       RegExp(r'''input\s*\(\s*["\']([^"\']+)["\']\s*\)'''),
-          (match) {
+      (match) {
         if (inputIndex < inputs.length) {
           return '"${inputs[inputIndex++]}";';
         }
@@ -137,9 +139,12 @@ print("Soma da lista:", sum(numeros))''';
   void executePython() {
     if (code.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Por favor, escreva algum código Python primeiro!"),
-          backgroundColor: Colors.red,
+        SnackBar(
+          content: Text(
+            "Por favor, escreva algum código Python primeiro!",
+            style: GoogleFonts.baloo2(fontSize: 16),
+          ),
+          backgroundColor: Color(0xFFEA2B2B),
         ),
       );
       return;
@@ -162,7 +167,7 @@ print("Soma da lista:", sum(numeros))''';
         waitingForInput = true;
         inputValue = "";
         output =
-        "Preparando execução...\nInputs necessários: ${prompts.length}\n\n";
+            "Preparando execução...\nInputs necessários: ${prompts.length}\n\n";
       });
     }
   }
@@ -213,7 +218,7 @@ print("Soma da lista:", sum(numeros))''';
     bool isTablet = MediaQuery.of(context).size.width < 1000;
 
     return Scaffold(
-      backgroundColor: Color(0xFF0D141F),
+      backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -229,14 +234,12 @@ print("Soma da lista:", sum(numeros))''';
                       children: [
                         Text(
                           'Terminal de Python',
-                          style: TextStyle(
+                          style: GoogleFonts.baloo2(
                             fontSize: isMobile ? 20 : 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: widget.modoEscuro ? Colors.white : Color(0xFF7A7A7A),
                           ),
                         ),
-                        SizedBox(width: isMobile ? 6 : 12),
-                        Icon(Icons.terminal, color: const Color(0xFF34d399)),
                       ],
                     ),
                   ],
@@ -261,14 +264,20 @@ print("Soma da lista:", sum(numeros))''';
       child: Column(
         children: [
           // Editor de Código (Mobile)
-          Card(
-            color: const Color(0xFF1e293b),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: Color(0xFF8b5cf6),
-                width: 1,
-              ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            height: 400,
+            width: MediaQuery.of(context).size.width * 0.85,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1e293b),
+              borderRadius: BorderRadius.circular(23),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  spreadRadius: 2,
+                  offset: Offset(7, 7),
+                ),
+              ],
             ),
             child: Column(
               children: [
@@ -277,15 +286,17 @@ print("Soma da lista:", sum(numeros))''';
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.code, color: Color(0xFFa78bfa)),
-                          SizedBox(width: 8),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Text(
                             'Editor',
-                            style: TextStyle(
+                            style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
+                              fontSize: 20,
                             ),
                           ),
                         ],
@@ -295,7 +306,7 @@ print("Soma da lista:", sum(numeros))''';
                           IconButton(
                             onPressed: clearCode,
                             icon: const Icon(Icons.delete,
-                                color: Color(0xFFf87171)),
+                                color: Color(0xFFEA2B2B)),
                             tooltip: 'Limpar',
                           ),
                         ],
@@ -304,23 +315,23 @@ print("Soma da lista:", sum(numeros))''';
                   ),
                 ),
                 Container(
-                  height: 300,
+                  height: 250,
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: TextField(
+                    cursorColor: Color(0xFF1cB0F6),
                     controller: _codeController,
                     maxLines: 9999,
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 14,
+                    style: GoogleFonts.firaCode(
+                      fontSize: 16,
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
                       hintText: 'Digite seu código Python aqui...',
                       hintStyle: TextStyle(color: Colors.grey[600]),
                       filled: true,
-                      fillColor: const Color(0xFF0f172a),
+                      fillColor: const Color(0xFF151923),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(13),
                         borderSide: BorderSide.none,
                       ),
                       contentPadding: const EdgeInsets.all(12),
@@ -334,25 +345,52 @@ print("Soma da lista:", sum(numeros))''';
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: ElevatedButton.icon(
-                    onPressed:
-                    isLoading || waitingForInput ? null : executePython,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF10b981),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  child: GestureDetector(
+                    onTapDown: (_) {
+                      setState(() => botaoPresionado = true);
+                    },
+                    onTapUp: (_) {
+                      setState(() => botaoPresionado = false);
+                      isLoading || waitingForInput ? null : executePython();
+                    },
+                    onTapCancel: () => setState(() => botaoPresionado = false),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      transform: Matrix4.identity()
+                        ..translate(0.0, botaoPresionado ? 5.0 : 0.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1CB0F6),
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: botaoPresionado
+                            ? null
+                            : [
+                                BoxShadow(
+                                  color: const Color(0xFF1453A3),
+                                  offset: const Offset(6, 6),
+                                  blurRadius: 0,
+                                )
+                              ],
                       ),
-                    ),
-                    icon: const Icon(Icons.play_arrow),
-                    label: Text(
-                      isLoading
-                          ? 'Executando...'
-                          : waitingForInput
-                          ? 'Input ${currentInputIndex + 1}/${inputsNeeded.length}'
-                          : 'Executar',
-                      style: const TextStyle(fontSize: 16),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              isLoading
+                                  ? 'Executando...'
+                                  : waitingForInput
+                                      ? 'Input ${currentInputIndex + 1}/${inputsNeeded.length}'
+                                      : 'Executar',
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -363,14 +401,18 @@ print("Soma da lista:", sum(numeros))''';
           const SizedBox(height: 16),
 
           // Console de Saída (Mobile)
-          Card(
-            color: const Color(0xFF1e293b),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: Color(0xFF10b981),
-                width: 1,
-              ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1e293b),
+              borderRadius: BorderRadius.circular(23),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  spreadRadius: 2,
+                  offset: Offset(7, 7),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -379,13 +421,15 @@ print("Soma da lista:", sum(numeros))''';
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.terminal, color: Color(0xFF34d399)),
-                      const SizedBox(width: 8),
-                      const Text(
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
                         'Console',
-                        style: TextStyle(
+                        style: GoogleFonts.baloo2(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontSize: 20,
                         ),
                       ),
                       if (waitingForInput) ...[
@@ -393,7 +437,7 @@ print("Soma da lista:", sum(numeros))''';
                         Text(
                           '• Input ${currentInputIndex + 1}/${inputsNeeded.length}',
                           style: const TextStyle(
-                            color: Color(0xFFfbbf24),
+                            color: Color(0xFF586892),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -404,7 +448,7 @@ print("Soma da lista:", sum(numeros))''';
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Color(0xFF151923),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -414,10 +458,9 @@ print("Soma da lista:", sum(numeros))''';
                     child: Text(
                       output.isNotEmpty
                           ? output
-                          : '# Console Python Interativo\n# Clique em "Executar" para começar',
-                      style: const TextStyle(
+                          : '# Terminal de Python Interativo',
+                      style: GoogleFonts.firaCode(
                         color: Color(0xFF34d399),
-                        fontFamily: 'monospace',
                         fontSize: 14,
                       ),
                     ),
@@ -431,11 +474,10 @@ print("Soma da lista:", sum(numeros))''';
                         Flexible(
                           child: Text(
                             currentPrompt,
-                            style: const TextStyle(
-                              color: Color(0xFFfbbf24),
-                              fontFamily: 'monospace',
-                              fontSize: 14,
-                            ),
+                            style: GoogleFonts.baloo2(
+                                color: Color(0xFFB0C2DE),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -443,29 +485,37 @@ print("Soma da lista:", sum(numeros))''';
                         Expanded(
                           flex: 2,
                           child: TextField(
+                            cursorColor: Color(0xFF1CB0F6),
                             controller: _inputController,
                             autofocus: true,
-                            style: const TextStyle(
-                              color: Color(0xFF34d399),
-                              fontFamily: 'monospace',
+                            style: GoogleFonts.baloo2(
+                                color: Color(0xFF1CB0F6),
+                                fontWeight: FontWeight.bold
                             ),
                             decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF1CB0F6)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF1CB0F6), width: 2),
+                              ),
+
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.send,
-                                    color: Color(0xFF34d399)),
+                                    color: Color(0xFF1CB0F6)),
                                 onPressed: () {
                                   handleInputSubmit(_inputController.text);
                                 },
                               ),
                               hintText: 'Digite e pressione Enter...',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
+                              hintStyle: GoogleFonts.baloo2(
+                                  color: Color(0xFF1CB0F6),
+                                fontWeight: FontWeight.bold
+                              ),
                               filled: true,
                               fillColor: const Color(0xFF1e293b),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide:
-                                const BorderSide(color: Color(0xFF475569)),
-                              ),
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 10),
                             ),
@@ -491,14 +541,18 @@ print("Soma da lista:", sum(numeros))''';
       children: [
         // Editor de Código
         Expanded(
-          child: Card(
-            color: const Color(0xFF1e293b),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: Color(0xFF8b5cf6),
-                width: 1,
-              ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1e293b),
+              borderRadius: BorderRadius.circular(23),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  spreadRadius: 2,
+                  offset: Offset(7, 7),
+                ),
+              ],
             ),
             child: Column(
               children: [
@@ -507,16 +561,17 @@ print("Soma da lista:", sum(numeros))''';
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.code, color: Color(0xFFa78bfa)),
-                          SizedBox(width: 8),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Text(
                             'Editor de Código',
-                            style: TextStyle(
-                              fontSize: 18,
+                            style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
+                              fontSize: 20,
                             ),
                           ),
                         ],
@@ -528,7 +583,7 @@ print("Soma da lista:", sum(numeros))''';
                             onPressed: clearCode,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF1e293b),
-                              foregroundColor: const Color(0xFFf87171),
+                              foregroundColor: const Color(0xFFEA2B2B),
                               side: const BorderSide(color: Color(0xFFef4444)),
                             ),
                             icon: const Icon(Icons.delete, size: 16),
@@ -543,10 +598,10 @@ print("Soma da lista:", sum(numeros))''';
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: TextField(
+                      cursorColor: Color(0xFF1cB0F6),
                       controller: _codeController,
                       maxLines: 9999,
-                      style: const TextStyle(
-                        fontFamily: 'monospace',
+                      style: GoogleFonts.firaCode(
                         fontSize: 14,
                         color: Colors.white,
                       ),
@@ -554,9 +609,9 @@ print("Soma da lista:", sum(numeros))''';
                         hintText: 'Digite seu código Python aqui...',
                         hintStyle: TextStyle(color: Colors.grey[600]),
                         filled: true,
-                        fillColor: const Color(0xFF0f172a),
+                        fillColor: const Color(0xFF151923),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(13),
                           borderSide: BorderSide.none,
                         ),
                         contentPadding: const EdgeInsets.all(12),
@@ -570,26 +625,53 @@ print("Soma da lista:", sum(numeros))''';
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton.icon(
-                    onPressed:
-                    isLoading || waitingForInput ? null : executePython,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF10b981),
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  padding: const EdgeInsets.all(12.0),
+                  child: GestureDetector(
+                    onTapDown: (_) {
+                      setState(() => botaoPresionado = true);
+                    },
+                    onTapUp: (_) {
+                      setState(() => botaoPresionado = false);
+                      isLoading || waitingForInput ? null : executePython();
+                    },
+                    onTapCancel: () => setState(() => botaoPresionado = false),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      transform: Matrix4.identity()
+                        ..translate(0.0, botaoPresionado ? 5.0 : 0.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1CB0F6),
+                        borderRadius: BorderRadius.circular(40),
+                        boxShadow: botaoPresionado
+                            ? null
+                            : [
+                                BoxShadow(
+                                  color: const Color(0xFF1453A3),
+                                  offset: const Offset(6, 6),
+                                  blurRadius: 0,
+                                )
+                              ],
                       ),
-                    ),
-                    icon: const Icon(Icons.play_arrow),
-                    label: Text(
-                      isLoading
-                          ? 'Executando...'
-                          : waitingForInput
-                          ? 'Coletando Input ${currentInputIndex + 1}/${inputsNeeded.length}'
-                          : 'Executar Código',
-                      style: const TextStyle(fontSize: 16),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              isLoading
+                                  ? 'Executando...'
+                                  : waitingForInput
+                                      ? 'Input ${currentInputIndex + 1}/${inputsNeeded.length}'
+                                      : 'Executar',
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -602,14 +684,18 @@ print("Soma da lista:", sum(numeros))''';
 
         // Console de Saída
         Expanded(
-          child: Card(
-            color: const Color(0xFF1e293b),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-              side: const BorderSide(
-                color: Color(0xFF10b981),
-                width: 1,
-              ),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.85,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1e293b),
+              borderRadius: BorderRadius.circular(23),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black,
+                  spreadRadius: 2,
+                  offset: Offset(7, 7),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -618,14 +704,15 @@ print("Soma da lista:", sum(numeros))''';
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: [
-                      const Icon(Icons.terminal, color: Color(0xFF34d399)),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Console Interativo',
-                        style: TextStyle(
-                          fontSize: 18,
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Console',
+                        style: GoogleFonts.baloo2(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          fontSize: 20,
                         ),
                       ),
                       if (waitingForInput) ...[
@@ -633,7 +720,7 @@ print("Soma da lista:", sum(numeros))''';
                         Text(
                           '• Input ${currentInputIndex + 1}/${inputsNeeded.length}',
                           style: const TextStyle(
-                            color: Color(0xFFfbbf24),
+                            color: Color(0xFF586892),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -644,7 +731,7 @@ print("Soma da lista:", sum(numeros))''';
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: Color(0xFF151923),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -654,10 +741,9 @@ print("Soma da lista:", sum(numeros))''';
                       child: Text(
                         output.isNotEmpty
                             ? output
-                            : '# Terminal de Python Interativo \n# Clique em "Executar Código" para começar',
-                        style: const TextStyle(
+                            : '# Terminal de Python Interativo',
+                        style: GoogleFonts.firaCode(
                           color: Color(0xFF34d399),
-                          fontFamily: 'monospace',
                           fontSize: 14,
                         ),
                       ),
@@ -671,38 +757,42 @@ print("Soma da lista:", sum(numeros))''';
                       children: [
                         Text(
                           currentPrompt,
-                          style: const TextStyle(
-                            color: Color(0xFFfbbf24),
-                            fontFamily: 'monospace',
-                          ),
+                          style: GoogleFonts.baloo2(
+                              color: Color(0xFFB0C2DE),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: TextField(
+                            cursorColor: Color(0xFF1CB0F6),
                             controller: _inputController,
                             autofocus: true,
-                            style: const TextStyle(
-                              color: Color(0xFF34d399),
-                              fontFamily: 'monospace',
+                            style: GoogleFonts.baloo2(
+                                color: Color(0xFF1CB0F6),
+                                fontWeight: FontWeight.bold
                             ),
                             decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF1CB0F6)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: BorderSide(color: Color(0xFF1CB0F6), width: 2),
+                              ),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.send,
-                                    color: Color(0xFF34d399)),
+                                    color: Color(0xFF1CB0F6)),
                                 onPressed: () {
                                   handleInputSubmit(_inputController.text);
                                 },
                               ),
                               hintText:
-                              'Digite sua resposta e pressione Enter...',
-                              hintStyle: TextStyle(color: Colors.grey[600]),
+                                  'Digite sua resposta e pressione Enter...',
+                              hintStyle: TextStyle(color: Color(0xFF1CB0F6)),
                               filled: true,
                               fillColor: const Color(0xFF1e293b),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide:
-                                const BorderSide(color: Color(0xFF475569)),
-                              ),
                             ),
                             onSubmitted: (value) {
                               handleInputSubmit(value);
