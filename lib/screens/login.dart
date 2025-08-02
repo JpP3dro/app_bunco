@@ -35,8 +35,8 @@ class _TelaLoginState extends State<TelaLogin> {
         http.Response res = await http.post(
           Uri.parse(url),
           body: {
-            "login": _controllerLogin.text,
-            "senha": _controllerSenha.text,
+            "login": _controllerLogin.text.trim(),
+            "senha": _controllerSenha.text.trim(),
           },
         );
         if (res.statusCode == 200) {
@@ -53,7 +53,7 @@ class _TelaLoginState extends State<TelaLogin> {
           }
         }
         else {
-          await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Erro: ${res.statusCode}");
+          await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Tente novamente daqui mais tarde!");
         }
       }
     } catch (e) {

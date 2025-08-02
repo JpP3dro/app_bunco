@@ -47,9 +47,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
         String url = "http://$ip/bunco/api/cadastrar.php";
         var res = await http.post(Uri.parse(url), body: {
           "username": _controllerUsername.text.trim(),
-          "nome": _controllerNome.text,
-          "email": _controllerEmail.text,
-          "senha": _controllerSenha.text
+          "nome": _controllerNome.text.trim(),
+          "email": _controllerEmail.text.trim(),
+          "senha": _controllerSenha.text.trim()
         }).timeout(const Duration(minutes: 1));
         var response = jsonDecode(res.body);
         await exibirResultado(
@@ -69,7 +69,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
         await exibirResultado(
           context: context,
           tipo: TipoDialogo.erro,
-          titulo: "Erro crítico",
+          titulo: "Falha na conexão com o servidor!",
           conteudo: "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
         );
       }
