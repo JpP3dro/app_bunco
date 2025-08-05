@@ -67,15 +67,15 @@ Future<void> TelaAlterarNome({
                         backgroundColor: const Color(0xFF58CC02),
                         radius: 7,
                       ),
-                      const SizedBox(width: 20),
-                      Text(
-                        'Alterar Nome',
-                        style: GoogleFonts.baloo2(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white
-                        ),
-                      ),
+                      const SizedBox(width: 50),
+                          Text(
+                            'Alterar Nome',
+                            style: GoogleFonts.baloo2(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white
+                            ),
+                          ),
                     ],
                   ),
                 ),

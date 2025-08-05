@@ -85,9 +85,10 @@ class TelaConfiguracoes extends StatefulWidget {
                       ),
                       onPressed: () {
                         if (acao == "sair") {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => const MyApp())
+                              MaterialPageRoute(builder: (context) => const MyApp()),
+                              (route) => false
                           );
                         }
                         else if (acao == "excluir") {

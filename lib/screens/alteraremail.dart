@@ -67,7 +67,7 @@ Future<void> TelaAlterarEmail({
                         backgroundColor: const Color(0xFF58CC02),
                         radius: 7,
                       ),
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 50),
                       Text(
                         'Alterar Email',
                         style: GoogleFonts.baloo2(

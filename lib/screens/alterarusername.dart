@@ -65,7 +65,7 @@ Future<void> TelaAlterarUsername({
                         backgroundColor: const Color(0xFF58CC02),
                         radius: 7,
                       ),
-                      const SizedBox(width: 20),
+                      const SizedBox(width: 50),
                       Text(
                         'Alterar Username',
                         style: GoogleFonts.baloo2(
