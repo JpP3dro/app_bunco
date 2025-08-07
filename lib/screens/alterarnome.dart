@@ -1,4 +1,3 @@
-import 'package:app_bunco/main.dart';
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/ip.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
@@ -8,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Future<void> TelaAlterarNome({
+Future<String?> TelaAlterarNome({
   required BuildContext context,
   required String nome,
   required String username,
@@ -17,7 +16,7 @@ Future<void> TelaAlterarNome({
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
-  return showDialog<void>(
+  return showDialog<String> (
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -131,10 +130,13 @@ Future<void> TelaAlterarNome({
                         setState(() => botaoPressionado = true);
                       }
                     },
-                    onTapUp: (_) {
+                    onTapUp: (_) async {
                       setState(() => botaoPressionado = false);
                       if (botaoHabilitado) {
-                        _alterarNome(context, username, controllerNome.text.trim());
+                        bool sucesso = await _alterarNome(context, username, controllerNome.text.trim());
+                        if (sucesso) {
+                          Navigator.of(context).pop(controllerNome.text.trim());
+                        }
                       }
                     },
                     onTapCancel: () => setState(() => botaoPressionado = false),
@@ -182,7 +184,7 @@ Future<void> TelaAlterarNome({
   );
 }
 
-Future<void> _alterarNome(BuildContext context, String username, String novoNome) async {
+Future<bool> _alterarNome(BuildContext context, String username, String novoNome) async {
   try {
     String ip = obterIP();
     String url = "http://$ip/bunco/api/alterarNome.php";
@@ -200,10 +202,10 @@ Future<void> _alterarNome(BuildContext context, String username, String novoNome
     );
 
     if (response["sucesso"] == "true") {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp())
-      );
+      return true;
+    }
+    else {
+      return false;
     }
   }
   catch(e) {
@@ -213,5 +215,6 @@ Future<void> _alterarNome(BuildContext context, String username, String novoNome
         titulo: "Erro ao cadastrar o nome novo",
         conteudo: "Tente de novo daqui a pouco!"
     );
+    return false;
   }
 }

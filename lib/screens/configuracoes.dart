@@ -169,28 +169,44 @@ class TelaConfiguracoes extends StatefulWidget {
       ];
     }
 
-    void _abrirDialogo(String tipo) {
+    void _abrirDialogo(String tipo) async {
+      String? informacaoAlterada;
+      List<String>? linksAlterados;
       switch (tipo) {
         case "nome":
-          TelaAlterarNome(
+          informacaoAlterada = await TelaAlterarNome(
             context: context,
             nome: widget.usuario["nome"],
             username: widget.usuario["username"],
           );
+          if (informacaoAlterada != null) {
+            setState(() {
+              widget.usuario["nome"] = informacaoAlterada;
+            });
+          }
           break;
         case "username":
-          TelaAlterarUsername(
+          informacaoAlterada = await TelaAlterarUsername(
             context: context,
             username: widget.usuario["username"],
-            id: widget.usuario["id"],
           );
+          if (informacaoAlterada != null) {
+            setState(() {
+              widget.usuario["username"] = informacaoAlterada;
+            });
+          }
           break;
         case "email":
-          TelaAlterarEmail(
+          informacaoAlterada = await TelaAlterarEmail(
             context: context,
             email: widget.usuario["email"],
             username: widget.usuario["username"],
           );
+          if (informacaoAlterada != null) {
+            setState(() {
+              widget.usuario["email"] = informacaoAlterada;
+            });
+          }
           break;
         case "senha":
           TelaAlterarSenha(
@@ -199,13 +215,18 @@ class TelaConfiguracoes extends StatefulWidget {
           );
           break;
         case "links":
-          TelaAlterarLinks(
+          linksAlterados = await TelaAlterarLinks(
             context: context,
             username: widget.usuario["username"],
             github: widget.usuario["link_github"] ?? "",
             instagram: widget.usuario["link_instagram"] ?? "",
             linkedin: widget.usuario["link_linkedin"] ?? "",
           );
+          if (linksAlterados != null) {
+            widget.usuario["link_github"] = linksAlterados[0];
+            widget.usuario["link_instagram"] = linksAlterados[1];
+            widget.usuario["link_linkedin"] = linksAlterados[2];
+          }
           break;
       }
     }

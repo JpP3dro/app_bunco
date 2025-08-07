@@ -2,21 +2,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 
-Future<void> TelaAlterarUsername({
+Future<String?> TelaAlterarUsername({
   required BuildContext context,
   required String username,
-  required int id,
 }) {
   TextEditingController controllerUsername = TextEditingController(text: username);
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
-  return showDialog<void>(
+  return showDialog<String>(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -123,10 +121,13 @@ Future<void> TelaAlterarUsername({
                         setState(() => botaoPressionado = true);
                       }
                     },
-                    onTapUp: (_) {
+                    onTapUp: (_) async {
                       setState(() => botaoPressionado = false);
                       if (botaoHabilitado) {
-                        _alterarUsername(context, id, controllerUsername.text.trim());
+                       bool sucesso = await _alterarUsername(context, username, controllerUsername.text.trim());
+                       if (sucesso) {
+                         Navigator.of(context).pop(controllerUsername.text.trim());
+                       }
                       }
                     },
                     onTapCancel: () => setState(() => botaoPressionado = false),
@@ -174,13 +175,13 @@ Future<void> TelaAlterarUsername({
   );
 }
 
-Future<void> _alterarUsername(BuildContext context, int id, String novoUsername) async {
+Future<bool> _alterarUsername(BuildContext context, String antigoUsername, String novoUsername) async {
   try {
     String ip = obterIP();
     String url = "http://$ip/bunco/api/alterarUsername.php";
     var res = await http.post(Uri.parse(url), body: {
       "usernamenovo": novoUsername,
-      "id": id.toString()
+      "username": antigoUsername
     }).timeout(const Duration(minutes: 1));
 
     var response = jsonDecode(res.body);
@@ -192,11 +193,10 @@ Future<void> _alterarUsername(BuildContext context, int id, String novoUsername)
     );
 
     if (response["sucesso"] == "true") {
-      // Recarrega o app
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp())
-      );
+      return true;
+    }
+    else {
+      return false;
     }
   }
   catch(e) {
@@ -206,5 +206,6 @@ Future<void> _alterarUsername(BuildContext context, int id, String novoUsername)
         titulo: "Erro ao cadastrar o username novo",
         conteudo: e.toString()
     );
+    return false;
   }
 }

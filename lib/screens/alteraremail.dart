@@ -7,7 +7,7 @@ import '../uteis/dialogo.dart';
 import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 
-Future<void> TelaAlterarEmail({
+Future<String?> TelaAlterarEmail({
   required BuildContext context,
   required String email,
   required String username,
@@ -17,7 +17,7 @@ Future<void> TelaAlterarEmail({
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
-  return showDialog<void>(
+  return showDialog<String>(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -132,10 +132,13 @@ Future<void> TelaAlterarEmail({
                         setState(() => botaoPressionado = true);
                       }
                     },
-                    onTapUp: (_) {
+                    onTapUp: (_) async {
                       setState(() => botaoPressionado = false);
                       if (botaoHabilitado) {
-                        _alterarEmail(context, username, controllerEmail.text.trim());
+                        bool sucesso = await _alterarEmail(context, username, controllerEmail.text.trim());
+                        if (sucesso) {
+                          Navigator.of(context).pop(controllerEmail.text.trim());
+                        }
                       }
                     },
                     onTapCancel: () => setState(() => botaoPressionado = false),
@@ -183,7 +186,7 @@ Future<void> TelaAlterarEmail({
   );
 }
 
-Future<void> _alterarEmail(BuildContext context, String username, String novoEmail) async {
+Future<bool> _alterarEmail(BuildContext context, String username, String novoEmail) async {
   try {
     String ip = obterIP();
     String url = "http://$ip/bunco/api/alterarEmail.php";
@@ -201,11 +204,10 @@ Future<void> _alterarEmail(BuildContext context, String username, String novoEma
     );
 
     if (response["sucesso"] == "true") {
-      // Recarrega o app
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp())
-      );
+      return true;
+    }
+    else {
+      return false;
     }
   }
   catch(e) {
@@ -215,5 +217,6 @@ Future<void> _alterarEmail(BuildContext context, String username, String novoEma
         titulo: "Erro ao cadastrar o email novo",
         conteudo: "Tente de novo daqui a pouco!"
     );
+    return false;
   }
 }

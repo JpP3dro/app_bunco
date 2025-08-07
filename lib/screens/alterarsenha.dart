@@ -365,10 +365,7 @@ Future<void> _alterarSenha(
     );
 
     if (response["sucesso"] == "true") {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp())
-      );
+      Navigator.pop(context);
     }
   }
   catch(e) {

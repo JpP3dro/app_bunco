@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/ip.dart';
 import '../uteis/tipo_dialogo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Future<void> TelaAlterarLinks({
+Future<List<String>?> TelaAlterarLinks({
   required BuildContext context,
   required String username,
   required String github,
@@ -22,7 +21,7 @@ Future<void> TelaAlterarLinks({
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
-  return showDialog<void>(
+  return showDialog<List<String>>(
     context: context,
     builder: (BuildContext context) {
       return StatefulBuilder(
@@ -222,16 +221,23 @@ Future<void> TelaAlterarLinks({
                           setState(() => botaoPressionado = true);
                         }
                       },
-                      onTapUp: (_) {
+                      onTapUp: (_) async {
                         setState(() => botaoPressionado = false);
                         if (botaoHabilitado) {
-                          _alterarLinks(
+                          bool sucesso = await _alterarLinks(
                               context,
                               username,
                               controllerGithub.text.trim(),
                               controllerInstagram.text.trim(),
                               controllerLinkedin.text.trim()
                           );
+                          if (sucesso) {
+                            Navigator.of(context).pop([
+                              controllerGithub.text.trim(),
+                              controllerInstagram.text.trim(),
+                              controllerLinkedin.text.trim()
+                            ]);
+                          }
                         }
                       },
                       onTapCancel: () => setState(() => botaoPressionado = false),
@@ -280,7 +286,7 @@ Future<void> TelaAlterarLinks({
   );
 }
 
-Future<void> _alterarLinks(
+Future<bool> _alterarLinks(
     BuildContext context,
     String username,
     String github,
@@ -303,7 +309,7 @@ Future<void> _alterarLinks(
           titulo: "Link do Github inválido!",
           conteudo: "O link que você colocou no Github está inválido!"
       );
-      return;
+      return false;
     }
     else if (!regexInstagram.hasMatch(instagram)) {
       await exibirResultado(
@@ -312,7 +318,7 @@ Future<void> _alterarLinks(
           titulo: "Link do Instagram inválido!",
           conteudo: "O link que você colocou no Instagram está inválido!"
       );
-      return;
+      return false;
     }
     else if (!regexLinkedin.hasMatch(linkedin)) {
       await exibirResultado(
@@ -321,7 +327,7 @@ Future<void> _alterarLinks(
           titulo: "Link do Linkedin inválido!",
           conteudo: "O link que você colocou no Linkedin está inválido!"
       );
-      return;
+      return false;
     }
 
     String ip = obterIP();
@@ -342,10 +348,10 @@ Future<void> _alterarLinks(
     );
 
     if (response["sucesso"] == "true") {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp())
-      );
+      return true;
+    }
+    else {
+      return false;
     }
   }
   catch(e) {
@@ -355,5 +361,6 @@ Future<void> _alterarLinks(
         titulo: "Erro ao atualizar os links novos",
         conteudo: "Tente de novo daqui a pouco!"
     );
+    return false;
   }
 }
