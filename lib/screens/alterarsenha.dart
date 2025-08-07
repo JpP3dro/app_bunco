@@ -3,7 +3,6 @@ import 'package:app_bunco/uteis/ip.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/tipo_dialogo.dart';
 

@@ -62,15 +62,13 @@ flutter_launcher_icons:
 
 #dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#272E40"
-  image: assets/images/telainicial/splash.png
-  branding: assets/images/telainicial/branding.png
+  color: "#0D141F"
+  image: assets/images/icone/icone.png
   ios: true
   android: true
   android_12:
-    color: "#272E40"
-    image: assets/images/telainicial/splash.png
-    branding: assets/images/telainicial/branding.png
+    color: "#0D141F"
+    image: assets/images/icone/icone.png
 
 dev_dependencies:
   flutter_test:
