@@ -1,3 +1,9 @@
+String ipAtual = "192.168.15.10";
+
 String obterIP() {
-  return "192.168.15.10";
+  return ipAtual;
+}
+
+void alterarIP(String ipNovo) {
+  ipAtual = ipNovo;
 }

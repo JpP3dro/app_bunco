@@ -6,6 +6,7 @@ import 'package:app_bunco/uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
+import '../uteis/alterar_ip.dart';
 import 'alterarnome.dart' show TelaAlterarNome;
 import 'alterarusername.dart' show TelaAlterarUsername;
 import 'alteraremail.dart' show TelaAlterarEmail;
@@ -230,6 +231,17 @@ class TelaConfiguracoes extends StatefulWidget {
         ),
         centerTitle: true,
         toolbarHeight: 80,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+              onPressed: () {
+                dialogoAlterarIP(context, setState);
+              },
+            ),
+          ),
+        ],
       ),
       body: Container(
         height: MediaQuery.of(context).size.height -

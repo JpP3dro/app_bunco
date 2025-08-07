@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../uteis/alterar_ip.dart';
 import '../uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
@@ -76,6 +77,7 @@ class _TelaLoginState extends State<TelaLogin> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
+        centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -84,10 +86,19 @@ class _TelaLoginState extends State<TelaLogin> {
             ),
           ),
         ),
-        title: Center(
-          child: Image.asset('assets/images/telainicial/login.png'),
-        ),
+        title: Image.asset('assets/images/telainicial/login.png'),
         toolbarHeight: 250,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+              onPressed: () {
+                dialogoAlterarIP(context, setState);
+              },
+            ),
+          ),
+        ],
       ),
       body: Container(
             height: MediaQuery.of(context).size.height -
