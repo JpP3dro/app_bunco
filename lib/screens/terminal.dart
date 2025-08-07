@@ -351,6 +351,7 @@ print("Soma da lista:", sum(numeros))''';
                     },
                     onTapUp: (_) {
                       setState(() => botaoPresionado = false);
+                      FocusScope.of(context).unfocus();
                       isLoading || waitingForInput ? null : executePython();
                     },
                     onTapCancel: () => setState(() => botaoPresionado = false),
@@ -632,6 +633,7 @@ print("Soma da lista:", sum(numeros))''';
                     },
                     onTapUp: (_) {
                       setState(() => botaoPresionado = false);
+                      FocusScope.of(context).unfocus();
                       isLoading || waitingForInput ? null : executePython();
                     },
                     onTapCancel: () => setState(() => botaoPresionado = false),
