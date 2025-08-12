@@ -10,10 +10,10 @@ Future<void> TelaAlterarSenha({
   required BuildContext context,
   required String username,
 }) {
-
   final TextEditingController controllerSenhaAtual = TextEditingController();
   final TextEditingController controllerSenhaNova = TextEditingController();
-  final TextEditingController controllerSenhaConfirmada = TextEditingController();
+  final TextEditingController controllerSenhaConfirmada =
+      TextEditingController();
 
   bool mostrarSenhaAtual = false;
   bool mostrarSenhaNova = false;
@@ -21,40 +21,46 @@ Future<void> TelaAlterarSenha({
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
-
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          void validarCampos() {
-            final novoEstado = controllerSenhaAtual.text.trim().isNotEmpty &&
-                controllerSenhaNova.text.trim().isNotEmpty &&
-                controllerSenhaConfirmada.text.trim().isNotEmpty;
-            if (botaoHabilitado != novoEstado) {
-              setState(() {
-                botaoHabilitado = novoEstado;
-              });
+      return Dialog(
+        backgroundColor: const Color(0xFF333333),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            void validarCampos() {
+              final novoEstado = controllerSenhaAtual.text.trim().isNotEmpty &&
+                  controllerSenhaNova.text.trim().isNotEmpty &&
+                  controllerSenhaConfirmada.text.trim().isNotEmpty;
+              if (botaoHabilitado != novoEstado) {
+                setState(() {
+                  botaoHabilitado = novoEstado;
+                });
+              }
             }
-          }
-          controllerSenhaAtual.addListener(validarCampos);
-          controllerSenhaNova.addListener(validarCampos);
-          controllerSenhaConfirmada.addListener(validarCampos);
 
-          return Dialog(
-            backgroundColor: const Color(0xFF333333),
-            insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: SingleChildScrollView(
+            controllerSenhaAtual.addListener(validarCampos);
+            controllerSenhaNova.addListener(validarCampos);
+            controllerSenhaConfirmada.addListener(validarCampos);
+
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              behavior: HitTestBehavior.opaque,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // ======== 1) BARRA DE TÍTULO ========
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xFF4D4D4D),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -79,8 +85,7 @@ Future<void> TelaAlterarSenha({
                           style: GoogleFonts.baloo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                       ],
                     ),
@@ -95,15 +100,21 @@ Future<void> TelaAlterarSenha({
                       children: [
                         // Senha Atual
                         TextFormField(
+                          //maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          //buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                          maxLength: 16,
                           cursorColor: Color(0xFF1cB0F6),
                           controller: controllerSenhaAtual,
                           obscureText: !mostrarSenhaAtual,
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
+                            counterStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
                             border: OutlineInputBorder(
@@ -121,8 +132,7 @@ Future<void> TelaAlterarSenha({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               Icons.password,
                               color: Color(0xFF1CB0F6),
@@ -147,15 +157,21 @@ Future<void> TelaAlterarSenha({
 
                         // Nova Senha
                         TextFormField(
+                          //maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          //buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                          maxLength: 16,
                           cursorColor: Color(0xFF1cB0F6),
                           controller: controllerSenhaNova,
                           obscureText: !mostrarSenhaNova,
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
+                            counterStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
                             border: OutlineInputBorder(
@@ -173,8 +189,7 @@ Future<void> TelaAlterarSenha({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               Icons.password,
                               color: Color(0xFF1CB0F6),
@@ -199,15 +214,21 @@ Future<void> TelaAlterarSenha({
 
                         // Confirmar Senha
                         TextFormField(
+                          //maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          //buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                          maxLength: 16,
                           cursorColor: Color(0xFF1cB0F6),
                           controller: controllerSenhaConfirmada,
                           obscureText: !mostrarSenhaConfirmada,
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
+                            counterStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
                             border: OutlineInputBorder(
@@ -225,8 +246,7 @@ Future<void> TelaAlterarSenha({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               Icons.password,
                               color: Color(0xFF1CB0F6),
@@ -234,7 +254,8 @@ Future<void> TelaAlterarSenha({
                             suffixIcon: GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  mostrarSenhaConfirmada = !mostrarSenhaConfirmada;
+                                  mostrarSenhaConfirmada =
+                                  !mostrarSenhaConfirmada;
                                 });
                               },
                               child: Icon(
@@ -269,17 +290,19 @@ Future<void> TelaAlterarSenha({
                               username,
                               controllerSenhaAtual.text.trim(),
                               controllerSenhaNova.text.trim(),
-                              controllerSenhaConfirmada.text.trim()
-                          );
+                              controllerSenhaConfirmada.text.trim());
                         }
                       },
-                      onTapCancel: () => setState(() => botaoPressionado = false),
+                      onTapCancel: () =>
+                          setState(() => botaoPressionado = false),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         transform: Matrix4.identity()
                           ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                         decoration: BoxDecoration(
-                          color: botaoHabilitado ? const Color(0xFF1CB0F6) : Color(0xFF505050),
+                          color: botaoHabilitado
+                              ? const Color(0xFF1CB0F6)
+                              : Color(0xFF505050),
                           borderRadius: BorderRadius.circular(40),
                           boxShadow: botaoPressionado || !botaoHabilitado
                               ? null
@@ -300,7 +323,9 @@ Future<void> TelaAlterarSenha({
                               style: GoogleFonts.baloo2(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 26,
-                                color: botaoHabilitado ? Colors.white : Color(0xFF333333),
+                                color: botaoHabilitado
+                                    ? Colors.white
+                                    : Color(0xFF333333),
                               ),
                             ),
                           ),
@@ -311,29 +336,24 @@ Future<void> TelaAlterarSenha({
                   const SizedBox(height: 12),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       );
     },
   );
 }
 
-Future<void> _alterarSenha(
-    BuildContext context,
-    String username,
-    String senhaAtual,
-    String senhaNova,
-    String senhaConfirmada
-    ) async {
+Future<void> _alterarSenha(BuildContext context, String username,
+    String senhaAtual, String senhaNova, String senhaConfirmada) async {
   try {
     if (senhaAtual == senhaNova) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Senhas iguais!",
-          conteudo: "Você colocou a mesma senha tanto no campo de senha atual quanto no campo de senha nova!"
-      );
+          conteudo:
+              "Você colocou a mesma senha tanto no campo de senha atual quanto no campo de senha nova!");
       return;
     }
 
@@ -342,8 +362,16 @@ Future<void> _alterarSenha(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Senhas diferentes!",
-          conteudo: "Você colocou senhas diferentes nos campos de senha nova!"
-      );
+          conteudo: "Você colocou senhas diferentes nos campos de senha nova!");
+      return;
+    }
+
+    if (senhaNova.length < 4) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Senha muito pequena",
+          conteudo: "Senha deve ter no mínimo 4 caracteres");
       return;
     }
 
@@ -358,21 +386,22 @@ Future<void> _alterarSenha(
     var response = jsonDecode(res.body);
     await exibirResultado(
         context: context,
-        tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-        titulo: response["sucesso"] == "true" ? "Senha alterada com sucesso!" : "Algo deu errado!",
-        conteudo: response["mensagem"]
-    );
+        tipo: response["sucesso"] == "true"
+            ? TipoDialogo.sucesso
+            : TipoDialogo.erro,
+        titulo: response["sucesso"] == "true"
+            ? "Senha alterada com sucesso!"
+            : "Algo deu errado!",
+        conteudo: response["mensagem"]);
 
     if (response["sucesso"] == "true") {
       Navigator.pop(context);
     }
-  }
-  catch(e) {
+  } catch (e) {
     await exibirResultado(
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Erro ao alterar a senha",
-        conteudo: "Tente de novo daqui a pouco!"
-    );
+        conteudo: "Tente de novo daqui a pouco!");
   }
 }

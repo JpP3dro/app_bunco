@@ -14,46 +14,54 @@ Future<List<String>?> TelaAlterarLinks({
   required String instagram,
   required String linkedin,
 }) {
-
-  final TextEditingController controllerGithub = TextEditingController(text: github);
-  final TextEditingController controllerInstagram = TextEditingController(text: instagram);
-  final TextEditingController controllerLinkedin = TextEditingController(text: linkedin);
+  final TextEditingController controllerGithub =
+      TextEditingController(text: github);
+  final TextEditingController controllerInstagram =
+      TextEditingController(text: instagram);
+  final TextEditingController controllerLinkedin =
+      TextEditingController(text: linkedin);
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
 
   return showDialog<List<String>>(
     context: context,
     builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          void validarCampos() {
-            final novoEstado = controllerGithub.text.trim() != github ||
-                controllerInstagram.text.trim() != instagram ||
-                controllerLinkedin.text.trim() != linkedin;
-            if (botaoHabilitado != novoEstado) {
-              setState(() {
-                botaoHabilitado = novoEstado;
-              });
+      return Dialog(
+        backgroundColor: const Color(0xFF333333),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: StatefulBuilder(
+          builder: (context, setState) {
+            void validarCampos() {
+              final novoEstado = controllerGithub.text.trim() != github ||
+                  controllerInstagram.text.trim() != instagram ||
+                  controllerLinkedin.text.trim() != linkedin;
+              if (botaoHabilitado != novoEstado) {
+                setState(() {
+                  botaoHabilitado = novoEstado;
+                });
+              }
             }
-          }
-          controllerGithub.addListener(validarCampos);
-          controllerInstagram.addListener(validarCampos);
-          controllerLinkedin.addListener(validarCampos);
 
-          return Dialog(
-            backgroundColor: const Color(0xFF333333),
-            insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: SingleChildScrollView(
+            controllerGithub.addListener(validarCampos);
+            controllerInstagram.addListener(validarCampos);
+            controllerLinkedin.addListener(validarCampos);
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              behavior: HitTestBehavior.opaque,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // ======== 1) BARRA DE TÍTULO ========
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xFF4D4D4D),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -78,8 +86,7 @@ Future<List<String>?> TelaAlterarLinks({
                           style: GoogleFonts.baloo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                       ],
                     ),
@@ -99,8 +106,7 @@ Future<List<String>?> TelaAlterarLinks({
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
@@ -119,8 +125,7 @@ Future<List<String>?> TelaAlterarLinks({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               FontAwesomeIcons.github,
                               color: Color(0xFF1CB0F6),
@@ -138,8 +143,7 @@ Future<List<String>?> TelaAlterarLinks({
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
@@ -158,8 +162,7 @@ Future<List<String>?> TelaAlterarLinks({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               FontAwesomeIcons.instagram,
                               color: Color(0xFF1CB0F6),
@@ -177,8 +180,7 @@ Future<List<String>?> TelaAlterarLinks({
                           style: GoogleFonts.baloo2(
                               color: Colors.white,
                               fontSize: 16,
-                              fontWeight: FontWeight.w600
-                          ),
+                              fontWeight: FontWeight.w600),
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: const Color(0xFF4D4D4D),
@@ -197,8 +199,7 @@ Future<List<String>?> TelaAlterarLinks({
                             labelStyle: GoogleFonts.baloo2(
                                 color: Color(0xFF878787),
                                 fontSize: 20,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                             icon: const Icon(
                               FontAwesomeIcons.linkedin,
                               color: Color(0xFF1CB0F6),
@@ -229,8 +230,7 @@ Future<List<String>?> TelaAlterarLinks({
                               username,
                               controllerGithub.text.trim(),
                               controllerInstagram.text.trim(),
-                              controllerLinkedin.text.trim()
-                          );
+                              controllerLinkedin.text.trim());
                           if (sucesso) {
                             Navigator.of(context).pop([
                               controllerGithub.text.trim(),
@@ -246,7 +246,9 @@ Future<List<String>?> TelaAlterarLinks({
                         transform: Matrix4.identity()
                           ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                         decoration: BoxDecoration(
-                          color: botaoHabilitado ? const Color(0xFF1CB0F6) : Color(0xFF505050),
+                          color: botaoHabilitado
+                              ? const Color(0xFF1CB0F6)
+                              : Color(0xFF505050),
                           borderRadius: BorderRadius.circular(40),
                           boxShadow: botaoPressionado || !botaoHabilitado
                               ? null
@@ -267,7 +269,9 @@ Future<List<String>?> TelaAlterarLinks({
                               style: GoogleFonts.baloo2(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 26,
-                                color: botaoHabilitado ? Colors.white : Color(0xFF333333),
+                                color: botaoHabilitado
+                                    ? Colors.white
+                                    : Color(0xFF333333),
                               ),
                             ),
                           ),
@@ -278,25 +282,22 @@ Future<List<String>?> TelaAlterarLinks({
                   const SizedBox(height: 12),
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       );
     },
   );
 }
 
-Future<bool> _alterarLinks(
-    BuildContext context,
-    String username,
-    String github,
-    String instagram,
-    String linkedin
-    ) async {
+Future<bool> _alterarLinks(BuildContext context, String username, String github,
+    String instagram, String linkedin) async {
   try {
     // Verificar os links com regex
-    final regexGithub = RegExp(r'^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$');
-    final regexInstagram = RegExp(r'^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$');
+    final regexGithub =
+        RegExp(r'^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$');
+    final regexInstagram =
+        RegExp(r'^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$');
     final regexLinkedin = RegExp(
       r"^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9À-ÿ\-_%]+\/?$",
       caseSensitive: false,
@@ -307,26 +308,21 @@ Future<bool> _alterarLinks(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Github inválido!",
-          conteudo: "O link que você colocou no Github está inválido!"
-      );
+          conteudo: "O link que você colocou no Github está inválido!");
       return false;
-    }
-    else if (!regexInstagram.hasMatch(instagram)) {
+    } else if (!regexInstagram.hasMatch(instagram)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Instagram inválido!",
-          conteudo: "O link que você colocou no Instagram está inválido!"
-      );
+          conteudo: "O link que você colocou no Instagram está inválido!");
       return false;
-    }
-    else if (!regexLinkedin.hasMatch(linkedin)) {
+    } else if (!regexLinkedin.hasMatch(linkedin)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Link do Linkedin inválido!",
-          conteudo: "O link que você colocou no Linkedin está inválido!"
-      );
+          conteudo: "O link que você colocou no Linkedin está inválido!");
       return false;
     }
 
@@ -342,25 +338,25 @@ Future<bool> _alterarLinks(
     var response = jsonDecode(res.body);
     await exibirResultado(
         context: context,
-        tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-        titulo: response["sucesso"] == "true" ? "Links alterados com sucesso!" : "Algo deu errado!",
-        conteudo: response["mensagem"]
-    );
+        tipo: response["sucesso"] == "true"
+            ? TipoDialogo.sucesso
+            : TipoDialogo.erro,
+        titulo: response["sucesso"] == "true"
+            ? "Links alterados com sucesso!"
+            : "Algo deu errado!",
+        conteudo: response["mensagem"]);
 
     if (response["sucesso"] == "true") {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
-  }
-  catch(e) {
+  } catch (e) {
     await exibirResultado(
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Erro ao atualizar os links novos",
-        conteudo: "Tente de novo daqui a pouco!"
-    );
+        conteudo: "Tente de novo daqui a pouco!");
     return false;
   }
 }
