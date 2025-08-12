@@ -41,6 +41,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   url_launcher: ^6.1.10
   flutter_native_splash: ^2.3.13
+  shared_preferences: ^2.2.2
 
 #dart run flutter_launcher_icons
 flutter_launcher_icons:

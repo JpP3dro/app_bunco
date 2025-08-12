@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_bunco/main.dart';
 import 'package:app_bunco/uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
@@ -12,6 +11,7 @@ import 'alterarusername.dart' show TelaAlterarUsername;
 import 'alteraremail.dart' show TelaAlterarEmail;
 import 'alterarsenha.dart' show TelaAlterarSenha;
 import 'alterarlinks.dart' show TelaAlterarLinks;
+import 'login.dart';
 
 class TelaConfiguracoes extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -88,7 +88,7 @@ class TelaConfiguracoes extends StatefulWidget {
                         if (acao == "sair") {
                           Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (context) => const MyApp()),
+                              MaterialPageRoute(builder: (context) => const TelaLogin()),
                               (route) => false
                           );
                         }
@@ -141,7 +141,7 @@ class TelaConfiguracoes extends StatefulWidget {
         if (response["sucesso"] == "true") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const MyApp())
+            MaterialPageRoute(builder: (context) => const TelaLogin())
           );
         }
       }

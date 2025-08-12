@@ -219,6 +219,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 Container(
                   margin: const EdgeInsets.all(10),
                   child: TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
+                    ],
                     cursorColor: Color(0xFF1cB0F6),
                     style: GoogleFonts.baloo2(
                       color: Colors.white,

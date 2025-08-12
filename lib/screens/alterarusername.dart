@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/dialogo.dart';
@@ -95,6 +96,9 @@ Future<String?> TelaAlterarUsername({
                           fontSize: 16,
                           fontWeight: FontWeight.w600
                       ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
+                      ],
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFF4D4D4D),
