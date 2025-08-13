@@ -20,6 +20,10 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
     'assets/images/perfil/buncolegal.png',
     'assets/images/perfil/buncomimo.png',
     'assets/images/perfil/buncoromantico.png',
+    'assets/images/perfil/buncochines.png',
+    'assets/images/perfil/buncoconstrutor.png',
+    'assets/images/perfil/buncoonepiece.png',
+    'assets/images/perfil/buncoprofessor.png',
   ];
 
   String selectedImage = imagePaths.contains(fotoAtual) ? fotoAtual : imagePaths.first;
