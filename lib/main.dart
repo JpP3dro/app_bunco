@@ -1,6 +1,6 @@
-import 'package:app_bunco/screens/telainicial.dart';
 import 'package:flutter/material.dart';
 import 'screens/login.dart';
+import 'screens/telainicial.dart';
 import 'uteis/controle_login.dart';
 
 void main() {
@@ -14,24 +14,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder<bool>(
-        future: verificarLogin(context),
-        builder: (context, snapshot) {
-          dispositivoModoEscuro(context);
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.data!) {
-            return TelaInicial(
-              usuario: usuario,
-              parametroModoEscuro: parametroModoEscuro,
-            );
-          } else {
-            return const TelaLogin();
-          }
+      home: Builder(
+        builder: (context) {
+          return FutureBuilder<bool>(
+            future: verificarLogin(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.data!) {
+                return TelaInicial(
+                  usuario: usuario,
+                  parametroModoEscuro: parametroModoEscuro,
+                );
+              } else {
+                return const TelaLogin();
+              }
+            },
+          );
         },
       ),
     );
   }
-
 }
