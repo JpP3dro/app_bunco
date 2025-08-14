@@ -31,7 +31,7 @@ Future<bool> verificarLogin(BuildContext context) async {
   try {
     final response = await http.post(
       Uri.parse("http://${obterIP()}buscar_usuario.php"),
-      body: {"login": id},
+      body: {"login": int.parse(id)},
     );
 
     if (response.statusCode == 200) {
@@ -41,12 +41,15 @@ Future<bool> verificarLogin(BuildContext context) async {
         usuario = dados;
         return true;
       } else {
+        prefs.clear();
         return false;
       }
     } else {
+      prefs.clear();
       return false;
     }
   } catch (e) {
+    prefs.clear();
     return false;
   }
 }
