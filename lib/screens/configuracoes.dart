@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:app_bunco/uteis/controle_login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:app_bunco/uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../uteis/alterar_ip.dart';
 import 'alterarnome.dart' show TelaAlterarNome;
 import 'alterarusername.dart' show TelaAlterarUsername;
@@ -86,6 +88,7 @@ class TelaConfiguracoes extends StatefulWidget {
                       ),
                       onPressed: () {
                         if (acao == "sair") {
+                          logout();
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(builder: (context) => const TelaLogin()),
@@ -301,9 +304,11 @@ class TelaConfiguracoes extends StatefulWidget {
                           onTapDown: (_) => setState(() => _botaoClaroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoEscuroPressionado = false);
-                            setState(() {
+                            setState(() async {
                               modoEscuro = false;
                               widget.onModoEscuroChanged(modoEscuro);
+                              final prefs = await SharedPreferences.getInstance();
+                              prefs.setBool("modoEscuro", false);
                             });
                           },
                           onTapCancel: () => setState(() => _botaoClaroPressionado = false),
@@ -347,9 +352,11 @@ class TelaConfiguracoes extends StatefulWidget {
                           onTapDown: (_) => setState(() => _botaoEscuroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoClaroPressionado = false);
-                            setState(() {
+                            setState(() async {
                               modoEscuro = true;
                               widget.onModoEscuroChanged(modoEscuro);
+                              final prefs = await SharedPreferences.getInstance();
+                              prefs.setBool("modoEscuro", true);
                             });
                           },
                           onTapCancel: () => setState(() => _botaoEscuroPressionado = false),

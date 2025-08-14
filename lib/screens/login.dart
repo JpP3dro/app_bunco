@@ -9,6 +9,7 @@ import 'telainicial.dart';
 import '../uteis/tipo_dialogo.dart';
 import 'package:page_transition/page_transition.dart';
 import '../uteis/dialogo.dart';
+import '../uteis/controle_login.dart';
 
 
 class TelaLogin extends StatefulWidget {
@@ -26,7 +27,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
   Future<void> fazerLogin() async {
     String ip = obterIP();
-    String url = "http://$ip/bunco/api/login.php";
+    String url = "http://$ip/bunco_testes/api/login.php";
 
     try {
       if (_controllerSenha.text == "" || _controllerLogin.text == "") {
@@ -43,6 +44,7 @@ class _TelaLoginState extends State<TelaLogin> {
         if (res.statusCode == 200) {
           var user = jsonDecode(res.body);
           if (user["sucesso"] == "true") {
+            await salvarLogin(user['id'].toString(), user['username'], context);
             await exibirResultado(context: context, tipo: TipoDialogo.sucesso, titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
             Navigator.pushReplacement(
               context,
