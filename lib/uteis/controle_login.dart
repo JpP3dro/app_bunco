@@ -11,7 +11,7 @@ Future<void> salvarLogin(String idUsuario, String username, BuildContext context
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('idUsuario', idUsuario);
   await prefs.setString('username', username);
-  await prefs.setBool('modoEscuro', await dispositivoModoEscuro(context));
+  dispositivoModoEscuro(context);
 }
 
 Future<void> logout() async {
@@ -54,8 +54,7 @@ Future<bool> verificarLogin(BuildContext context) async {
   }
 }
 
-Future<bool> dispositivoModoEscuro(BuildContext context) async {
+Future<void> dispositivoModoEscuro(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool("modoEscuro", MediaQuery.of(context).platformBrightness == Brightness.dark);
-  return MediaQuery.of(context).platformBrightness == Brightness.dark;
 }
