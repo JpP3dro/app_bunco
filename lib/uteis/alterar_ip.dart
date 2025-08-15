@@ -21,8 +21,8 @@ void dialogoAlterarIP(BuildContext context, void Function(VoidCallback) atualiza
           child: const Text('Cancelar'),
         ),
         ElevatedButton(
-          onPressed: () {
-            alterarIP(controller.text);
+          onPressed: () async {
+            await alterarIP(controller.text);
             atualizarTela(() {}); // chama setState da tela principal
             Navigator.pop(context); // fecha o pop-up
           },

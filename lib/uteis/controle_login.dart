@@ -16,8 +16,14 @@ Future<void> salvarLogin(String idUsuario, String username, BuildContext context
 
 Future<void> logout() async {
   final prefs = await SharedPreferences.getInstance();
+  String? ipSalvo = prefs.getString('ip');
+
   await prefs.clear();
+  if (ipSalvo != null) {
+    await prefs.setString('ip', ipSalvo);
+  }
 }
+
 
 Future<bool> verificarLogin(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
