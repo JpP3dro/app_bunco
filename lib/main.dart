@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       home: Builder(
         builder: (context) {
           return FutureBuilder<bool>(
-            future: verificarLogin(),
+            future: verificarLogin(context),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
               if (snapshot.data!) {
                 return TelaInicial(
                   usuario: usuario,
-                  parametroModoEscuro: parametroModoEscuro,
+                  parametroModoEscuro: MediaQuery.of(context).platformBrightness == Brightness.dark,
                 );
               } else {
                 return const TelaLogin();

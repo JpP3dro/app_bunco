@@ -142,6 +142,7 @@ class TelaConfiguracoes extends StatefulWidget {
             conteudo: response["mensagem"]
         );
         if (response["sucesso"] == "true") {
+          logout();
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const TelaLogin())
@@ -304,11 +305,9 @@ class TelaConfiguracoes extends StatefulWidget {
                           onTapDown: (_) => setState(() => _botaoClaroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoEscuroPressionado = false);
-                            setState(() async {
+                            setState(() {
                               modoEscuro = false;
                               widget.onModoEscuroChanged(modoEscuro);
-                              final prefs = await SharedPreferences.getInstance();
-                              prefs.setBool("modoEscuro", false);
                             });
                           },
                           onTapCancel: () => setState(() => _botaoClaroPressionado = false),
@@ -352,11 +351,9 @@ class TelaConfiguracoes extends StatefulWidget {
                           onTapDown: (_) => setState(() => _botaoEscuroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoClaroPressionado = false);
-                            setState(() async {
+                            setState(() {
                               modoEscuro = true;
                               widget.onModoEscuroChanged(modoEscuro);
-                              final prefs = await SharedPreferences.getInstance();
-                              prefs.setBool("modoEscuro", true);
                             });
                           },
                           onTapCancel: () => setState(() => _botaoEscuroPressionado = false),
