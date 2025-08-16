@@ -6,7 +6,6 @@ import 'package:app_bunco/uteis/ip.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../uteis/alterar_ip.dart';
 import 'alterarnome.dart' show TelaAlterarNome;
 import 'alterarusername.dart' show TelaAlterarUsername;

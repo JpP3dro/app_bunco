@@ -27,7 +27,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
   Future<void> fazerLogin() async {
     String ip = obterIP();
-    String url = "http://$ip/bunco_testes/api/login.php";
+    String url = "http://$ip/bunco/api/login.php";
 
     try {
       if (_controllerSenha.text == "" || _controllerLogin.text == "") {

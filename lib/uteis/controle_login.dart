@@ -33,7 +33,7 @@ Future<bool> verificarLogin(BuildContext context) async {
   }
 
   try {
-    final url = "http://${obterIP()}/bunco_testes/api/buscarUsuario.php";
+    final url = "http://${obterIP()}/bunco/api/buscarUsuario.php";
     final response = await http.post(
       Uri.parse(url),
       body: {"login": id},
