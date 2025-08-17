@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-String urlAtual = "https://bunco.infinityfree.me"; // valor para a web
+String urlAtual = "https://bunco.alwaysdata.net"; // valor para a web
 //String urlAtual = "http://ipdamaquina/bunco"; // valor local
 
 Future<void> carregarUrl() async {
   final prefs = await SharedPreferences.getInstance();
-  urlAtual = prefs.getString('url') ?? "https://bunco.infinityfree.me";
+  urlAtual = prefs.getString('url') ?? "https://bunco.alwaysdata.net";
 }
 
 String obterUrl() {
