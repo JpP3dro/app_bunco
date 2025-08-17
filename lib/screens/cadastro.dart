@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../uteis/ip.dart';
+import '../uteis/alterar_url.dart';
+import '../uteis/url.dart';
 import 'login.dart';
 import '../uteis/tipo_dialogo.dart';
 import 'package:page_transition/page_transition.dart';
@@ -85,13 +86,12 @@ class _TelaCadastroState extends State<TelaCadastro> {
               context: context,
               tipo: TipoDialogo.alerta,
               titulo: "Email muito grande!",
-              conteudo:
-                  "O endereço de email superou o tamanho máximo permitido!");
+              conteudo: "O endereço de email superou o tamanho máximo permitido!");
           return;
         }
-        String ip = obterIP();
-        String url = "http://$ip/bunco/api/cadastrar.php";
-        var res = await http.post(Uri.parse(url), body: {
+        String url = obterUrl();
+        String link = "$url/api/cadastrar.php";
+        var res = await http.post(Uri.parse(link), body: {
           "username": _controllerUsername.text.trim(),
           "nome": _controllerNome.text.trim(),
           "email": _controllerEmail.text.trim().toLowerCase(),
@@ -113,8 +113,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Falha na conexão com o servidor!",
-          conteudo:
-              "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
+          conteudo: "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
         );
       }
     }
@@ -154,6 +153,17 @@ class _TelaCadastroState extends State<TelaCadastro> {
             child: Image.asset('assets/images/telainicial/cadastro.png'),
           ),
           toolbarHeight: 250,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+                onPressed: () {
+                  dialogoAlterarUrl(context, setState);
+                },
+              ),
+            ),
+          ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height -

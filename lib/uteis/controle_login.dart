@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'ip.dart';
+import 'url.dart';
 
 late Map<String, dynamic> usuario;
 
@@ -16,11 +16,11 @@ Future<void> salvarLogin(String idUsuario, String username, BuildContext context
 
 Future<void> logout() async {
   final prefs = await SharedPreferences.getInstance();
-  String? ipSalvo = prefs.getString('ip');
+  String? urlSalva = prefs.getString('url');
 
   await prefs.clear();
-  if (ipSalvo != null) {
-    await prefs.setString('ip', ipSalvo);
+  if (urlSalva != null) {
+    await prefs.setString('ip', urlSalva);
   }
 }
 
@@ -33,9 +33,9 @@ Future<bool> verificarLogin(BuildContext context) async {
   }
 
   try {
-    final url = "http://${obterIP()}/bunco/api/buscarUsuario.php";
+    final link = "${obterUrl()}/api/buscarUsuario.php";
     final response = await http.post(
-      Uri.parse(url),
+      Uri.parse(link),
       body: {"login": id},
     );
 

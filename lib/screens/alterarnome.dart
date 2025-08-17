@@ -1,5 +1,5 @@
 import 'package:app_bunco/uteis/dialogo.dart';
-import 'package:app_bunco/uteis/ip.dart';
+import 'package:app_bunco/uteis/url.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -193,9 +193,9 @@ Future<String?> TelaAlterarNome({
 
 Future<bool> _alterarNome(BuildContext context, String username, String novoNome) async {
   try {
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/alterarNome.php";
-    var res = await http.post(Uri.parse(url), body: {
+    String url = obterUrl();
+    String link = "$url/api/alterarNome.php";
+    var res = await http.post(Uri.parse(link), body: {
       "username": username,
       "nomenovo": novoNome
     }).timeout(const Duration(minutes: 1));

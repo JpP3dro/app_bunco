@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/dialogo.dart';
-import '../uteis/ip.dart';
+import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
 
 Future<String?> TelaAlterarEmail({
@@ -194,9 +194,9 @@ Future<String?> TelaAlterarEmail({
 
 Future<bool> _alterarEmail(BuildContext context, String username, String novoEmail) async {
   try {
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/alterarEmail.php";
-    var res = await http.post(Uri.parse(url), body: {
+    String url = obterUrl();
+    String link = "$url/api/alterarEmail.php";
+    var res = await http.post(Uri.parse(link), body: {
       "username": username,
       "email": novoEmail.toLowerCase()
     }).timeout(const Duration(minutes: 1));

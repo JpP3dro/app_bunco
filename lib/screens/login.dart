@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../uteis/alterar_ip.dart';
-import '../uteis/ip.dart';
+import '../uteis/alterar_url.dart';
+import '../uteis/url.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
 import 'telainicial.dart';
@@ -26,8 +26,8 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _controllerLogin = TextEditingController();
 
   Future<void> fazerLogin() async {
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/login.php";
+    String url = obterUrl();
+    String link = "$url/api/login.php";
 
     try {
       if (_controllerSenha.text == "" || _controllerLogin.text == "") {
@@ -35,7 +35,7 @@ class _TelaLoginState extends State<TelaLogin> {
       }
       else {
         http.Response res = await http.post(
-          Uri.parse(url),
+          Uri.parse(link),
           body: {
             "login": _controllerLogin.text.trim(),
             "senha": _controllerSenha.text.trim(),
@@ -101,7 +101,7 @@ class _TelaLoginState extends State<TelaLogin> {
               child: IconButton(
                 icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
                 onPressed: () {
-                  dialogoAlterarIP(context, setState);
+                  dialogoAlterarUrl(context, setState);
                 },
               ),
             ),

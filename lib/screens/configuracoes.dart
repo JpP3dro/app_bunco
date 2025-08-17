@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:app_bunco/uteis/controle_login.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:app_bunco/uteis/ip.dart';
+import 'package:app_bunco/uteis/url.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
-import '../uteis/alterar_ip.dart';
+import '../uteis/alterar_url.dart';
 import 'alterarnome.dart' show TelaAlterarNome;
 import 'alterarusername.dart' show TelaAlterarUsername;
 import 'alteraremail.dart' show TelaAlterarEmail;
@@ -129,9 +129,9 @@ class TelaConfiguracoes extends StatefulWidget {
 
     Future<void> excluirConta() async {
       try {
-        String ip = obterIP();
-        String url = "http://$ip/bunco/api/excluir.php";
-        var res = await http.post(Uri.parse(url), body: {
+        String url = obterUrl();
+        String link = "$url/api/excluir.php";
+        var res = await http.post(Uri.parse(link), body: {
           "username": widget.usuario["username"]
         }).timeout(const Duration(minutes: 1));
         var response = jsonDecode(res.body);
@@ -261,7 +261,7 @@ class TelaConfiguracoes extends StatefulWidget {
             child: IconButton(
               icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
               onPressed: () {
-                dialogoAlterarIP(context, setState);
+                dialogoAlterarUrl(context, setState);
               },
             ),
           ),

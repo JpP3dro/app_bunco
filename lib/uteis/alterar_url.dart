@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'ip.dart';
+import 'url.dart';
 
-void dialogoAlterarIP(BuildContext context, void Function(VoidCallback) atualizarTela) {
-  final TextEditingController controller = TextEditingController(text: obterIP());
+void dialogoAlterarUrl(BuildContext context, void Function(VoidCallback) atualizarTela) {
+  final TextEditingController controller = TextEditingController(text: obterUrl());
 
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Alterar IP'),
+      title: const Text('Alterar Url'),
       content: TextField(
         controller: controller,
         decoration: const InputDecoration(
-          labelText: 'Novo IP',
-          hintText: 'Digite o novo IP',
+          labelText: 'Nova URL',
+          hintText: 'Digite a nova URL',
         ),
       ),
       actions: [
@@ -22,7 +22,7 @@ void dialogoAlterarIP(BuildContext context, void Function(VoidCallback) atualiza
         ),
         ElevatedButton(
           onPressed: () async {
-            await alterarIP(controller.text);
+            await alterarUrl(controller.text);
             atualizarTela(() {}); // chama setState da tela principal
             Navigator.pop(context); // fecha o pop-up
           },

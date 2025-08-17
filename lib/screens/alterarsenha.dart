@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:app_bunco/uteis/ip.dart';
+import 'package:app_bunco/uteis/url.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -375,9 +375,9 @@ Future<void> _alterarSenha(BuildContext context, String username,
       return;
     }
 
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/alterarSenha.php";
-    var res = await http.post(Uri.parse(url), body: {
+    String url = obterUrl();
+    String link = "$url/api/alterarSenha.php";
+    var res = await http.post(Uri.parse(link), body: {
       "username": username,
       "senhanova": senhaNova,
       "senhaatual": senhaAtual

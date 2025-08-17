@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/dialogo.dart';
-import '../uteis/ip.dart';
+import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
 
 Future<String?> TelaAlterarUsername({
@@ -188,9 +188,9 @@ Future<String?> TelaAlterarUsername({
 
 Future<bool> _alterarUsername(BuildContext context, String antigoUsername, String novoUsername) async {
   try {
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/alterarUsername.php";
-    var res = await http.post(Uri.parse(url), body: {
+    String url = obterUrl();
+    String link = "$url/api/alterarUsername.php";
+    var res = await http.post(Uri.parse(link), body: {
       "usernamenovo": novoUsername,
       "username": antigoUsername
     }).timeout(const Duration(minutes: 1));

@@ -4,7 +4,7 @@ import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../uteis/ip.dart';
+import '../uteis/url.dart';
 import 'outroperfil.dart';
 
 class TelaRanking extends StatefulWidget {
@@ -31,16 +31,14 @@ class _TelaRankingState extends State<TelaRanking> {
     carregarRanking();
   }
 
-  var response;
-
   Future<void> carregarRanking() async {
     try {
-      String ip = obterIP();
-      String url = "http://$ip/bunco/api/ranking.php";
-      var res = await http.post(Uri.parse(url), body: {
+      String url = obterUrl();
+      String link = "$url/api/ranking.php";
+      var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username']
       }).timeout(const Duration(minutes: 1));
-      response = jsonDecode(res.body);
+      var response = jsonDecode(res.body);
       setState(() {
         primeiros = List<Map<String, dynamic>>.from(response['primeiros']);
         voce = Map<String, dynamic>.from(response['voce']);

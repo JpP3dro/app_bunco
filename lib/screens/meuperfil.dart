@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-import '../uteis/ip.dart';
+import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
 import '../uteis/dialogo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -49,9 +49,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
   Future<void> alterarFoto() async {
     try {
-      String ip = obterIP();
-      String url = "http://$ip/bunco/api/alterarFoto.php";
-      var res = await http.post(Uri.parse(url), body: {
+      String url = obterUrl();
+      String link = "$url/api/alterarFoto.php";
+      var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username'],
         "foto": widget.usuario['foto']
       }).timeout(const Duration(minutes: 1));
@@ -75,9 +75,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
   Future<void> alterarCor() async {
     try {
-      String ip = obterIP();
-      String url = "http://$ip/bunco/api/alterarCor.php";
-      var res = await http.post(Uri.parse(url), body: {
+      String url = obterUrl();
+      String link = "$url/api/alterarCor.php";
+      var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username'],
         "cor": widget.usuario['cor']
       }).timeout(const Duration(minutes: 1));

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/dialogo.dart';
-import '../uteis/ip.dart';
+import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -326,9 +326,9 @@ Future<bool> _alterarLinks(BuildContext context, String username, String github,
       return false;
     }
 
-    String ip = obterIP();
-    String url = "http://$ip/bunco/api/alterarLinks.php";
-    var res = await http.post(Uri.parse(url), body: {
+    String url = obterUrl();
+    String link = "$url/api/alterarLinks.php";
+    var res = await http.post(Uri.parse(link), body: {
       "username": username,
       "github": github,
       "instagram": instagram,
