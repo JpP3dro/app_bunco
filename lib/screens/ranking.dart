@@ -188,7 +188,7 @@ class _TelaRankingState extends State<TelaRanking> {
               ),
             ] : null,
           ),
-          height: 80,
+          height: 105,
           padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
           child: ListTile(
             leading: Text(

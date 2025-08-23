@@ -108,6 +108,12 @@ class _TelaCadastroState extends State<TelaCadastro> {
               ? "Usuário criado com sucesso!"
               : response["mensagem"],
         );
+        if (response["sucesso"] == "true") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TelaLogin())
+          );
+        }
       } catch (e) {
         await exibirResultado(
           context: context,

@@ -56,12 +56,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
         "foto": widget.usuario['foto']
       }).timeout(const Duration(minutes: 1));
       var response = jsonDecode(res.body);
-      await exibirResultado(
-          context: context,
-          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-          titulo: response["sucesso"] == "true" ? "Foto alerada com sucesso!" : "Algo deu errado!",
-          conteudo: response["mensagem"]
-      );
+      if (response["sucesso"] != "true") {
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Algo deu errado ao alterar a foto",
+            conteudo: response["mensagem"]
+        );
+      }
     }
     catch(e) {
       await exibirResultado(
@@ -82,12 +84,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
         "cor": widget.usuario['cor']
       }).timeout(const Duration(minutes: 1));
       var response = jsonDecode(res.body);
-      await exibirResultado(
-          context: context,
-          tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-          titulo: response["sucesso"] == "true" ? "Cor alerada com sucesso!" : "Algo deu errado!",
-          conteudo: response["mensagem"]
-      );
+      if (response["sucesso"] != "true") {
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Algo deu errado ao alterar a cor",
+            conteudo: response["mensagem"]
+        );
+      }
     }
     catch(e) {
       await exibirResultado(
@@ -131,13 +135,13 @@ class _TelaPerfilState extends State<TelaPerfil> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             children: [
-              // 1) Foto circular
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  // 1) Foto circular
                        CircleAvatar(
                           radius: 60,
                           backgroundColor: corFundo,
@@ -150,27 +154,48 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           ),
                         ),
 
+                 const SizedBox(
+                    width: 6,
+                  ),
+
                   // 2) Texto ao lado da foto
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.usuario["nome"],
-                          style: GoogleFonts.baloo2(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22,
-                            color: widget.modoEscuro ? Colors.white : Color(0xFf7A7A7A)
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        //mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // nome (uma linha, sem quebra)
+                          Text(
+                            widget.usuario["nome"],
+                            maxLines: 1,
+                            softWrap: false,
+                            style: GoogleFonts.baloo2(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                              color: widget.modoEscuro ? Colors.white : const Color(0xFF7A7A7A),
+                            ),
                           ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                          '@${widget.usuario["username"]}',
-                          style: GoogleFonts.baloo2(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFFC9C9C9)
+                          const SizedBox(height: 4),
+                          // username (uma linha, sem quebra)
+                          Text(
+                            '@${widget.usuario["username"]}',
+                            maxLines: 1,
+                            softWrap: false,
+                            style: GoogleFonts.baloo2(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: widget.modoEscuro ? const Color(0xFF586892) : const Color(0xFFC9C9C9),
+                            ),
                           ),
+                        ],
                       ),
-                    ],
+                    ),
+                  ),
+
+                  SizedBox(
+                    width: 4,
                   ),
 
                   //3) Botões

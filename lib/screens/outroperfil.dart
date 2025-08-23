@@ -97,30 +97,45 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                       ),
                     ),
                   ),
+
                   SizedBox(
                     width: 20,
                   ),
+
                   // 2) Texto ao lado da foto
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.usuario!["nome"],
-                        style: GoogleFonts.baloo2(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22,
-                            color: widget.modoEscuro ? Colors.white : Color(0xFF7A7A7A)
-                        ),
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        //mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // nome (uma linha, sem quebra)
+                          Text(
+                            widget.usuario!["nome"],
+                            maxLines: 1,
+                            softWrap: false,
+                            style: GoogleFonts.baloo2(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 22,
+                              color: widget.modoEscuro ? Colors.white : const Color(0xFF7A7A7A),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          // username (uma linha, sem quebra)
+                          Text(
+                            '@${widget.usuario!["username"]}',
+                            maxLines: 1,
+                            softWrap: false,
+                            style: GoogleFonts.baloo2(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: widget.modoEscuro ? const Color(0xFF586892) : const Color(0xFFC9C9C9),
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 4),
-                      Text(
-                        '@${widget.usuario!["username"]}',
-                        style: GoogleFonts.baloo2(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFFC9C9C9)
-                        ), 
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),

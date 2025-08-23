@@ -103,7 +103,7 @@ print("Soma da lista:", sum(numeros))''';
               'name': 'main.py',
               'content': modifiedCode,
             }
-          ]
+          ],
         }),
       );
 
