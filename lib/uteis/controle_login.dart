@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'url.dart';
@@ -47,8 +48,10 @@ Future<bool> verificarLogin(BuildContext context) async {
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Sem conexão",
-        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet.",
+        temBotao: false,
     );
+    SystemNavigator.pop();
     return false;
   }
 

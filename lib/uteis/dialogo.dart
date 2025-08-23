@@ -6,6 +6,7 @@ Future<void> exibirResultado({
   required TipoDialogo tipo,
   required String titulo,
   required String conteudo,
+  bool temBotao = true
 }) async {
   IconData icone;
   Color cor;
@@ -62,7 +63,7 @@ Future<void> exibirResultado({
           ],
         ),
         actionsAlignment: MainAxisAlignment.center,
-        actions: [
+        actions: !temBotao ? null : [
           Padding(
             padding: const EdgeInsets.only(bottom: 15),
             child: TextButton(
