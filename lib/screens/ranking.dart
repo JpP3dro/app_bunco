@@ -43,7 +43,7 @@ class _TelaRankingState extends State<TelaRanking> {
       return;
     }
     try {
-      String url = obterUrl();
+      String url = await obterUrl();
       String link = "$url/api/ranking.php";
       var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username']

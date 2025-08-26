@@ -199,7 +199,7 @@ Future<bool> _alterarUsername(BuildContext context, String antigoUsername,
     return false;
   }
   try {
-    String url = obterUrl();
+    String url = await obterUrl();
     String link = "$url/api/alterarUsername.php";
     var res = await http.post(Uri.parse(link), body: {
       "usernamenovo": novoUsername,

@@ -138,7 +138,7 @@ class TelaConfiguracoes extends StatefulWidget {
         return;
       }
       try {
-        String url = obterUrl();
+        String url = await obterUrl();
         String link = "$url/api/excluir.php";
         var res = await http.post(Uri.parse(link), body: {
           "username": widget.usuario["username"]

@@ -204,7 +204,7 @@ Future<bool> _alterarEmail(BuildContext context, String username, String novoEma
     return false;
   }
   try {
-    String url = obterUrl();
+    String url = await obterUrl();
     String link = "$url/api/alterarEmail.php";
     var res = await http.post(Uri.parse(link), body: {
       "username": username,

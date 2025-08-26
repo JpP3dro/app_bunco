@@ -8,8 +8,8 @@ Future<void> carregarUrl() async {
   urlAtual = prefs.getString('url') ?? "http://192.168.15.10/bunco_testes";
 }
 
-String obterUrl() {
-  carregarUrl();
+Future<String> obterUrl() async {
+  await carregarUrl();
   return urlAtual;
 }
 

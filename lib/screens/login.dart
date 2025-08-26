@@ -35,7 +35,7 @@ class _TelaLoginState extends State<TelaLogin> {
       );
       return;
     }
-    String url = obterUrl();
+    String url = await obterUrl();
     String link = "$url/api/login.php";
 
     try {

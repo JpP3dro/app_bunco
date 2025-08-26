@@ -336,7 +336,7 @@ Future<bool> _alterarLinks(BuildContext context, String username, String github,
       return false;
     }
 
-    String url = obterUrl();
+    String url = await obterUrl();
     String link = "$url/api/alterarLinks.php";
     var res = await http.post(Uri.parse(link), body: {
       "username": username,

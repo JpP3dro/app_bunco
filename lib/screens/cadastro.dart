@@ -99,7 +99,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
               conteudo: "O endereço de email superou o tamanho máximo permitido!");
           return;
         }
-        String url = obterUrl();
+        String url = await obterUrl();
         String link = "$url/api/cadastrar.php";
         var res = await http.post(Uri.parse(link), body: {
           "username": _controllerUsername.text.trim(),

@@ -385,7 +385,7 @@ Future<void> _alterarSenha(BuildContext context, String username,
       return;
     }
 
-    String url = obterUrl();
+    String url = await obterUrl();
     String link = "$url/api/alterarSenha.php";
     var res = await http.post(Uri.parse(link), body: {
       "username": username,

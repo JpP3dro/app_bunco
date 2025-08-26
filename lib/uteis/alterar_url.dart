@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'url.dart';
 
-void dialogoAlterarUrl(BuildContext context, void Function(VoidCallback) atualizarTela) {
-  final TextEditingController controller = TextEditingController(text: obterUrl());
+Future<void> dialogoAlterarUrl(BuildContext context, void Function(VoidCallback) atualizarTela) async {
+  final TextEditingController controller = TextEditingController(text: await obterUrl());
 
   showDialog(
     context: context,

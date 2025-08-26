@@ -59,7 +59,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
       return;
     }
     try {
-      String url = obterUrl();
+      String url = await obterUrl();
       String link = "$url/api/alterarFoto.php";
       var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username'],
@@ -96,7 +96,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
       return;
     }
     try {
-      String url = obterUrl();
+      String url = await obterUrl();
       String link = "$url/api/alterarCor.php";
       var res = await http.post(Uri.parse(link), body: {
         "username": widget.usuario['username'],
