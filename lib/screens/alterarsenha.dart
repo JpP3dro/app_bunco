@@ -3,6 +3,7 @@ import 'package:app_bunco/uteis/url.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../uteis/controle_login.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/tipo_dialogo.dart';
 
@@ -346,6 +347,15 @@ Future<void> TelaAlterarSenha({
 
 Future<void> _alterarSenha(BuildContext context, String username,
     String senhaAtual, String senhaNova, String senhaConfirmada) async {
+  if (!await verificarConexao()) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Sem conexão",
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+    );
+    return;
+  }
   try {
     if (senhaAtual == senhaNova) {
       await exibirResultado(

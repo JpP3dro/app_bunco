@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../uteis/controle_login.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
@@ -186,7 +187,17 @@ Future<String?> TelaAlterarUsername({
   );
 }
 
-Future<bool> _alterarUsername(BuildContext context, String antigoUsername, String novoUsername) async {
+Future<bool> _alterarUsername(BuildContext context, String antigoUsername,
+    String novoUsername) async {
+  if (!await verificarConexao()) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Sem conexão",
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+    );
+    return false;
+  }
   try {
     String url = obterUrl();
     String link = "$url/api/alterarUsername.php";

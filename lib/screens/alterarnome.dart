@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../uteis/controle_login.dart';
+
 Future<String?> TelaAlterarNome({
   required BuildContext context,
   required String nome,
@@ -192,6 +194,15 @@ Future<String?> TelaAlterarNome({
 }
 
 Future<bool> _alterarNome(BuildContext context, String username, String novoNome) async {
+  if (!await verificarConexao()) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Sem conexão",
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+    );
+    return false;
+  }
   try {
     String url = obterUrl();
     String link = "$url/api/alterarNome.php";

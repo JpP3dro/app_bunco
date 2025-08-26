@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../uteis/alterar_url.dart';
+import '../uteis/controle_login.dart';
 import '../uteis/url.dart';
 import 'login.dart';
 import '../uteis/tipo_dialogo.dart';
@@ -26,6 +27,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
   bool _botaoPressionado = false;
 
   Future<void> fazerCadastro() async {
+    if (!await verificarConexao()) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Sem conexão",
+          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+      );
+      return;
+    }
     if (!(_controllerNome.text.isNotEmpty &&
         _controllerUsername.text.isNotEmpty &&
         _controllerEmail.text.isNotEmpty &&

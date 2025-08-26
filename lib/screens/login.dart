@@ -26,6 +26,15 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _controllerLogin = TextEditingController();
 
   Future<void> fazerLogin() async {
+    if (!await verificarConexao()) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Sem conexão",
+          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+      );
+      return;
+    }
     String url = obterUrl();
     String link = "$url/api/login.php";
 

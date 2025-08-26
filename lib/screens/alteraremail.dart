@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../uteis/controle_login.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
@@ -193,6 +194,15 @@ Future<String?> TelaAlterarEmail({
 }
 
 Future<bool> _alterarEmail(BuildContext context, String username, String novoEmail) async {
+  if (!await verificarConexao()) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Sem conexão",
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+    );
+    return false;
+  }
   try {
     String url = obterUrl();
     String link = "$url/api/alterarEmail.php";

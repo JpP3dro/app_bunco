@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import '../uteis/controle_login.dart';
 import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
 import '../uteis/dialogo.dart';
@@ -48,6 +49,15 @@ class _TelaPerfilState extends State<TelaPerfil> {
 }
 
   Future<void> alterarFoto() async {
+    if (!await verificarConexao()) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Sem conexão",
+          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+      );
+      return;
+    }
     try {
       String url = obterUrl();
       String link = "$url/api/alterarFoto.php";
@@ -76,6 +86,15 @@ class _TelaPerfilState extends State<TelaPerfil> {
   }
 
   Future<void> alterarCor() async {
+    if (!await verificarConexao()) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Sem conexão",
+          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+      );
+      return;
+    }
     try {
       String url = obterUrl();
       String link = "$url/api/alterarCor.php";

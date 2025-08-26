@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+import '../uteis/controle_login.dart';
+import '../uteis/dialogo.dart';
+import '../uteis/tipo_dialogo.dart';
+
 class TelaTerminal extends StatefulWidget {
   final bool modoEscuro;
 
@@ -92,6 +96,15 @@ print("Soma da lista:", sum(numeros))''';
 
     // Executar via API
     try {
+      if (!await verificarConexao()) {
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Sem conexão",
+            conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+        );
+        return;
+      }
       final response = await http.post(
         Uri.parse('https://emkc.org/api/v2/piston/execute'),
         headers: {'Content-Type': 'application/json'},

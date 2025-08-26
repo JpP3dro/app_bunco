@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import '../uteis/controle_login.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/url.dart';
 import '../uteis/tipo_dialogo.dart';
@@ -292,6 +293,15 @@ Future<List<String>?> TelaAlterarLinks({
 
 Future<bool> _alterarLinks(BuildContext context, String username, String github,
     String instagram, String linkedin) async {
+  if (!await verificarConexao()) {
+    await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Sem conexão",
+        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+    );
+    return false;
+  }
   try {
     // Verificar os links com regex
     final regexGithub =

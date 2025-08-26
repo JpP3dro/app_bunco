@@ -128,6 +128,15 @@ class TelaConfiguracoes extends StatefulWidget {
     }
 
     Future<void> excluirConta() async {
+      if (!await verificarConexao()) {
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Sem conexão",
+            conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
+        );
+        return;
+      }
       try {
         String url = obterUrl();
         String link = "$url/api/excluir.php";
