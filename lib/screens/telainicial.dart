@@ -31,7 +31,7 @@ class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> telas = [
-      const TelaCurso(),
+      TelaCurso(usuario: widget.usuario, modoEscuro: modoEscuro,),
       TelaRanking(usuario: widget.usuario, modoEscuro: modoEscuro,),
       TelaTerminal(modoEscuro: modoEscuro),
       TelaPerfil(usuario: widget.usuario, modoEscuro: modoEscuro),
