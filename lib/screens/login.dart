@@ -11,7 +11,6 @@ import 'package:page_transition/page_transition.dart';
 import '../uteis/dialogo.dart';
 import '../uteis/controle_login.dart';
 
-
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
 
@@ -31,8 +30,8 @@ class _TelaLoginState extends State<TelaLogin> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Sem conexão",
-          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-      );
+          conteudo:
+              "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
       return;
     }
     String url = await obterUrl();
@@ -40,9 +39,12 @@ class _TelaLoginState extends State<TelaLogin> {
 
     try {
       if (_controllerSenha.text == "" || _controllerLogin.text == "") {
-        await exibirResultado(context: context, tipo: TipoDialogo.alerta, titulo: "Campos não preenchidos", conteudo: "Preencha todos os campos!");
-      }
-      else {
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.alerta,
+            titulo: "Campos não preenchidos",
+            conteudo: "Preencha todos os campos!");
+      } else {
         http.Response res = await http.post(
           Uri.parse(link),
           body: {
@@ -54,22 +56,43 @@ class _TelaLoginState extends State<TelaLogin> {
           var user = jsonDecode(res.body);
           if (user["sucesso"] == "true") {
             await salvarLogin(user['id'].toString(), user['username'], context);
-            await exibirResultado(context: context, tipo: TipoDialogo.sucesso, titulo: "Usuário logado!", conteudo: "Usuário logado com sucesso!");
+            await exibirResultado(
+                context: context,
+                tipo: TipoDialogo.sucesso,
+                titulo: "Usuário logado!",
+                conteudo: "Usuário logado com sucesso!");
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => TelaInicial(usuario: user, parametroModoEscuro: MediaQuery.of(context).platformBrightness == Brightness.dark,)),
+              MaterialPageRoute(
+                  builder: (context) => TelaInicial(
+                        usuario: user,
+                        parametroModoEscuro:
+                            MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark,
+                      )),
             );
+          } else {
+            await exibirResultado(
+                context: context,
+                tipo: TipoDialogo.erro,
+                titulo: "Login falho!",
+                conteudo: user["mensagem"]);
           }
-          else {
-            await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Login falho!", conteudo: user["mensagem"]);
-          }
-        }
-        else {
-          await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Algo deu errado!", conteudo: "Tente novamente daqui mais tarde!");
+        } else {
+          await exibirResultado(
+              context: context,
+              tipo: TipoDialogo.erro,
+              titulo: "Algo deu errado!",
+              conteudo: "Tente novamente daqui mais tarde!");
         }
       }
     } catch (e) {
-      await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Erro ao fazer o login", conteudo: "Conexão com o servidor falhou. Tente novamente daqui a pouco!");
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Erro ao fazer o login",
+          conteudo:
+              "Conexão com o servidor falhou. Tente novamente daqui a pouco!");
     }
   }
 
@@ -103,12 +126,15 @@ class _TelaLoginState extends State<TelaLogin> {
             ),
           ),
           title: Image.asset('assets/images/telainicial/login.png'),
-          toolbarHeight: 250,
+          toolbarHeight: 210,
           actions: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
-                icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+                icon: const Icon(
+                  Icons.edit,
+                  color: Color(0x33FFFFFF),
+                ),
                 onPressed: () {
                   dialogoAlterarUrl(context, setState);
                 },
@@ -128,170 +154,163 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                //Texto
-                Text(
-                  "Login",
-                  style: GoogleFonts.baloo2(
-                      fontSize: 48,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    cursorColor: Color(0xFF1cB0F6),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //Texto
+                  Text(
+                    "Login",
                     style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    controller: _controllerLogin,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: Color(0xFF111928),
-                            width: 2
-                        ),
+                        fontSize: 48, fontWeight: FontWeight.bold),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      cursorColor: Color(0xFF1cB0F6),
+                      style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
+                      controller: _controllerLogin,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              BorderSide(color: Color(0xFF111928), width: 2),
                         ),
-                      ),
-                      label: Text(
-                        "Digite o username ou email:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold
+                        filled: true,
+                        fillColor: Color(0xFF111928),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1CB0F6),
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      icon: Icon(
-                        Icons.person,
-                        color: Color(0xFF0D141F),
+                        label: Text(
+                          "Digite o username ou email:",
+                          style: GoogleFonts.baloo2(
+                              fontSize: 20,
+                              color: Color(0xFFB0C2DE),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        icon: Icon(
+                          Icons.person,
+                          color: Color(0xFF0D141F),
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    cursorColor: Color(0xFF1cB0F6),
-                    style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      cursorColor: Color(0xFF1cB0F6),
+                      style: GoogleFonts.baloo2(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      controller: _controllerSenha,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide:
+                              BorderSide(color: Color(0xFF111928), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xFF111928),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1CB0F6),
+                            width: 2,
+                          ),
+                        ),
+                        label: Text(
+                          "Digite sua senha:",
+                          style: GoogleFonts.baloo2(
+                              fontSize: 20,
+                              color: Color(0xFFB0C2DE),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        icon: const Icon(
+                          Icons.password,
+                          color: Color(0xFF0D141F),
+                        ),
+                        suffixIcon: GestureDetector(
+                          child: Icon(
+                            _mostrarSenha == false
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Color(0xFF1CB0F6),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _mostrarSenha = !_mostrarSenha;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: _mostrarSenha == false ? true : false,
                     ),
-                    controller: _controllerSenha,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                            color: Color(0xFF111928),
-                            width: 2
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
-                        ),
-                      ),
-                      label: Text(
-                        "Digite sua senha:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      icon: const Icon(
-                        Icons.password,
-                        color: Color(0xFF0D141F),
-                      ),
-                      suffixIcon: GestureDetector(
-                        child: Icon(
-                          _mostrarSenha == false
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Color(0xFF1CB0F6),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            _mostrarSenha = !_mostrarSenha;
-                          });
-                        },
-                      ),
-                    ),
-                    obscureText: _mostrarSenha == false ? true : false,
                   ),
-                ),
 
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: GestureDetector(
-                    onTapDown: (_) =>
-                        setState(() => _botaoPressionado = true),
-                    onTapUp: (_) {
-                      setState(() => _botaoPressionado = false);
-                      fazerLogin();
-                    },
-                    onTapCancel: () =>
-                        setState(() => _botaoPressionado = false),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 100),
-                      transform: Matrix4.identity()
-                        ..translate(0.0, _botaoPressionado ? 5.0 : 0.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF0F5F7),
-                        borderRadius: BorderRadius.circular(40),
-                        boxShadow: _botaoPressionado
-                            ? null
-                            : [
-                          BoxShadow(
-                            color: Color(0xFF2D466C),
-                            offset: const Offset(6, 6),
-                            blurRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            "Fazer o login",
-                            style: GoogleFonts.baloo2(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: const Color(0xFF1453A3),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTapDown: (_) =>
+                          setState(() => _botaoPressionado = true),
+                      onTapUp: (_) {
+                        setState(() => _botaoPressionado = false);
+                        fazerLogin();
+                      },
+                      onTapCancel: () =>
+                          setState(() => _botaoPressionado = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        transform: Matrix4.identity()
+                          ..translate(0.0, _botaoPressionado ? 5.0 : 0.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F5F7),
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: _botaoPressionado
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: Color(0xFF2D466C),
+                                    offset: const Offset(6, 6),
+                                    blurRadius: 0,
+                                  )
+                                ],
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              "Fazer o login",
+                              style: GoogleFonts.baloo2(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: const Color(0xFF1453A3),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-
         bottomNavigationBar: Container(
-          height: 80,
+          height: 60,
           color: Color(0xFF586892),
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -305,7 +324,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   ),
                   backgroundColor: Color(0xFF0D141F),
                   foregroundColor: Color(0xFF1CB0F6),
-                  minimumSize: const Size.fromHeight(50),
+                  minimumSize: const Size.fromHeight(60),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
@@ -320,8 +339,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       child: const TelaCadastro(),
                       type: PageTransitionType.rightToLeft,
                       duration: const Duration(milliseconds: 500),
-                    )
-                ),
+                    )),
                 child: const Text("Não tem um usuário? Crie um agora!"),
               ),
             ),

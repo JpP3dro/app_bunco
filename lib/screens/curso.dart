@@ -243,7 +243,7 @@ class _TelaCursoState extends State<TelaCurso> {
                         imagemModulo = Image.asset(
                           "assets/images/modulos/modulo${(modulo.id).toString()}$status.png",
                           width: 80,
-                          height: 80,
+                          height: status == "completo" ? 100 : 80,
                         );
 
                         return GestureDetector(
@@ -262,7 +262,7 @@ class _TelaCursoState extends State<TelaCurso> {
                                   );
                                 },
                           child: Container(
-                            height: 180,
+                            height: 190,
                             margin: const EdgeInsets.only(bottom: 14),
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
@@ -280,10 +280,9 @@ class _TelaCursoState extends State<TelaCurso> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (_) => TelaModulo(
-                                                modoEscuro: widget.modoEscuro,
-                                                usuario: widget.usuario,
-                                                modulo: _modulos[index]
-                                              ),
+                                                  modoEscuro: widget.modoEscuro,
+                                                  usuario: widget.usuario,
+                                                  modulo: _modulos[index]),
                                             ),
                                           );
                                         },
@@ -305,12 +304,16 @@ class _TelaCursoState extends State<TelaCurso> {
                                         ),
                                       ),
                                       const SizedBox(height: 6),
-                                      Text(
-                                        modulo.descricao ?? "",
-                                        style: GoogleFonts.baloo2(
-                                          fontSize: 13,
-                                          color: corTexto,
-                                          fontWeight: FontWeight.w600,
+                                      Expanded(
+                                        child: SingleChildScrollView(
+                                          child: Text(
+                                            modulo.descricao ?? "",
+                                            style: GoogleFonts.baloo2(
+                                              fontSize: 13,
+                                              color: corTexto,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],

@@ -14,12 +14,8 @@ import '../uteis/escolhercor.dart';
 class TelaPerfil extends StatefulWidget {
   final Map<String, dynamic> usuario;
   final bool modoEscuro;
-  const TelaPerfil({
-    super.key,
-    required this.usuario,
-    required this.modoEscuro
-  });
-
+  const TelaPerfil(
+      {super.key, required this.usuario, required this.modoEscuro});
 
   @override
   State<TelaPerfil> createState() => _TelaPerfilState();
@@ -36,17 +32,16 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
   Future abrirLink({
     required String url,
-}) async {
+  }) async {
     Uri link = Uri.parse(url);
     if (!await launchUrl(link)) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.alerta,
           titulo: "Erro ao abrir link",
-          conteudo: "Link não abriu. Tente novamente mais tarde!"
-      );
+          conteudo: "Link não abriu. Tente novamente mais tarde!");
     }
-}
+  }
 
   Future<void> alterarFoto() async {
     if (!await verificarConexao()) {
@@ -54,8 +49,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Sem conexão",
-          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-      );
+          conteudo:
+              "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
       return;
     }
     try {
@@ -71,17 +66,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
             context: context,
             tipo: TipoDialogo.erro,
             titulo: "Algo deu errado ao alterar a foto",
-            conteudo: response["mensagem"]
-        );
+            conteudo: response["mensagem"]);
       }
-    }
-    catch(e) {
+    } catch (e) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Erro ao colocar a foto nova no servidor",
-          conteudo: "Tente de novo daqui a pouco!"
-      );
+          conteudo: "Tente de novo daqui a pouco!");
     }
   }
 
@@ -91,8 +83,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Sem conexão",
-          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-      );
+          conteudo:
+              "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
       return;
     }
     try {
@@ -108,17 +100,14 @@ class _TelaPerfilState extends State<TelaPerfil> {
             context: context,
             tipo: TipoDialogo.erro,
             titulo: "Algo deu errado ao alterar a cor",
-            conteudo: response["mensagem"]
-        );
+            conteudo: response["mensagem"]);
       }
-    }
-    catch(e) {
+    } catch (e) {
       await exibirResultado(
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Erro ao colocar a cor nova no servidor",
-          conteudo: "Tente de novo daqui a pouco!"
-      );
+          conteudo: "Tente de novo daqui a pouco!");
     }
   }
 
@@ -130,9 +119,18 @@ class _TelaPerfilState extends State<TelaPerfil> {
     exibirDias = widget.usuario['ofensiva'] == 1 ? "dia" : "dias";
     exibirVidas = widget.usuario['vidas'] == 1 ? "vida" : "vidas";
     cards = [
-      _Cards(imagePath: 'assets/images/icone/icone-xp.png', titulo: '${widget.usuario['xp']} XP', subtitulo: 'Quantidade de XP'),
-      _Cards(imagePath: 'assets/images/icone/icone-ofensiva.png', titulo: '${widget.usuario['ofensiva']} $exibirDias', subtitulo: 'Dias de ofensiva'),
-      _Cards(imagePath: 'assets/images/icone/icone-vida.png', titulo: '${widget.usuario['vidas']} $exibirVidas', subtitulo: 'Quantidade de vidas'),
+      _Cards(
+          imagePath: 'assets/images/icone/icone-xp.png',
+          titulo: '${widget.usuario['xp']} XP',
+          subtitulo: 'Quantidade de XP'),
+      _Cards(
+          imagePath: 'assets/images/icone/icone-ofensiva.png',
+          titulo: '${widget.usuario['ofensiva']} $exibirDias',
+          subtitulo: 'Dias de ofensiva'),
+      _Cards(
+          imagePath: 'assets/images/icone/icone-vida.png',
+          titulo: '${widget.usuario['vidas']} $exibirVidas',
+          subtitulo: 'Quantidade de vidas'),
     ];
   }
 
@@ -158,34 +156,31 @@ class _TelaPerfilState extends State<TelaPerfil> {
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   // 1) Foto circular
-                       CircleAvatar(
-                          radius: 60,
-                          backgroundColor: corFundo,
-                          child: ClipOval(
-                            child: Image.asset(
-                              fotoSelecionada,
-                              height: 160,
-                              width: 160,
-                            ),
-                          ),
-                        ),
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundColor: corFundo,
+                    child: ClipOval(
+                      child: Image.asset(
+                        fotoSelecionada,
+                        height: 160,
+                        width: 160,
+                      ),
+                    ),
+                  ),
 
-                 const SizedBox(
-                    width: 6,
+                  const SizedBox(
+                    width: 12,
                   ),
 
                   // 2) Texto ao lado da foto
-                  Flexible(
+                  Expanded(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        //mainAxisSize: MainAxisSize.min,
                         children: [
-                          // nome (uma linha, sem quebra)
                           Text(
                             widget.usuario["nome"],
                             maxLines: 1,
@@ -193,11 +188,12 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.w700,
                               fontSize: 22,
-                              color: widget.modoEscuro ? Colors.white : const Color(0xFF7A7A7A),
+                              color: widget.modoEscuro
+                                  ? Colors.white
+                                  : const Color(0xFF7A7A7A),
                             ),
                           ),
                           const SizedBox(height: 4),
-                          // username (uma linha, sem quebra)
                           Text(
                             '@${widget.usuario["username"]}',
                             maxLines: 1,
@@ -205,7 +201,9 @@ class _TelaPerfilState extends State<TelaPerfil> {
                             style: GoogleFonts.baloo2(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
-                              color: widget.modoEscuro ? const Color(0xFF586892) : const Color(0xFFC9C9C9),
+                              color: widget.modoEscuro
+                                  ? const Color(0xFF586892)
+                                  : const Color(0xFFC9C9C9),
                             ),
                           ),
                         ],
@@ -226,59 +224,64 @@ class _TelaPerfilState extends State<TelaPerfil> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GestureDetector(
-                          onTapDown: (_) => setState(() => _botaoFotoPressionado = true),
+                          onTapDown: (_) =>
+                              setState(() => _botaoFotoPressionado = true),
                           onTapUp: (_) async {
                             setState(() => _botaoFotoPressionado = false);
-                              final escolha = await mostrarSeletorDeFotoDePerfil(
-                                  context,
-                                  fotoAtual: fotoSelecionada,
-                                  corFundo: corFundo
-                              );
-                              if (escolha != null) {
-                                setState(() {
-                                  fotoSelecionada = escolha;
-                                  widget.usuario['foto'] = fotoSelecionada.replaceAll('assets/images/perfil/', "").replaceAll(".png", "");
-                                });
-                                alterarFoto();
-                              }
+                            final escolha = await mostrarSeletorDeFotoDePerfil(
+                                context,
+                                fotoAtual: fotoSelecionada,
+                                corFundo: corFundo);
+                            if (escolha != null) {
+                              setState(() {
+                                fotoSelecionada = escolha;
+                                widget.usuario['foto'] = fotoSelecionada
+                                    .replaceAll('assets/images/perfil/', "")
+                                    .replaceAll(".png", "");
+                              });
+                              alterarFoto();
+                            }
                           },
-                          onTapCancel: () => setState(() => _botaoFotoPressionado = false),
+                          onTapCancel: () =>
+                              setState(() => _botaoFotoPressionado = false),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 100),
                             transform: Matrix4.identity()
-                              ..translate(0.0, _botaoFotoPressionado ? 4.0 : 0.0),
+                              ..translate(
+                                  0.0, _botaoFotoPressionado ? 4.0 : 0.0),
                             decoration: BoxDecoration(
                               color: Color(0xFF1CB0F6),
                               borderRadius: BorderRadius.circular(5),
                               boxShadow: _botaoFotoPressionado
                                   ? null
                                   : [
-                                BoxShadow(
-                                  color: Color(0xFF2C4168),
-                                  offset: Offset(5, 5),
-                                  spreadRadius: -1,
-                                ),
-                              ],
+                                      BoxShadow(
+                                        color: Color(0xFF2C4168),
+                                        offset: Offset(5, 5),
+                                        spreadRadius: -1,
+                                      ),
+                                    ],
                             ),
                             width: 40,
                             height: 40,
                             child: Icon(
                               Icons.camera_alt,
-                              color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
+                              color: widget.modoEscuro
+                                  ? Color(0xFF0D141F)
+                                  : Colors.white,
                               size: 24,
                             ),
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 15),
-
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GestureDetector(
-                          onTapDown: (_) => setState(() => _botaoCorPressionado = true),
+                          onTapDown: (_) =>
+                              setState(() => _botaoCorPressionado = true),
                           onTapUp: (_) async {
                             setState(() => _botaoCorPressionado = false);
                             final escolha = await mostrarSeletorDeCor(
@@ -290,16 +293,19 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               setState(() {
                                 int teste = escolha.toARGB32();
                                 corFundo = escolha;
-                                widget.usuario['cor'] = teste.toRadixString(16).substring(2);
+                                widget.usuario['cor'] =
+                                    teste.toRadixString(16).substring(2);
                               });
                               alterarCor();
                             }
                           },
-                          onTapCancel: () => setState(() => _botaoCorPressionado = false),
+                          onTapCancel: () =>
+                              setState(() => _botaoCorPressionado = false),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 100),
                             transform: Matrix4.identity()
-                              ..translate(0.0, _botaoCorPressionado ? 4.0 : 0.0),
+                              ..translate(
+                                  0.0, _botaoCorPressionado ? 4.0 : 0.0),
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
@@ -308,17 +314,19 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               boxShadow: _botaoCorPressionado
                                   ? null
                                   : [
-                                const BoxShadow(
-                                  color: Color(0xFF2C4168),
-                                  offset: Offset(5, 5),
-                                  spreadRadius: -1,
-                                ),
-                              ],
+                                      const BoxShadow(
+                                        color: Color(0xFF2C4168),
+                                        offset: Offset(5, 5),
+                                        spreadRadius: -1,
+                                      ),
+                                    ],
                             ),
                             child: Icon(
                               Icons.edit,
                               size: 24,
-                              color: widget.modoEscuro ? const Color(0xFF0D141F) : Colors.white,
+                              color: widget.modoEscuro
+                                  ? const Color(0xFF0D141F)
+                                  : Colors.white,
                             ),
                           ),
                         ),
@@ -330,7 +338,8 @@ class _TelaPerfilState extends State<TelaPerfil> {
 
               const SizedBox(height: 22),
               Divider(
-                color: widget.modoEscuro ? Color(0xFF1A263D) : Color(0xFFC9C9C9),
+                color:
+                    widget.modoEscuro ? Color(0xFF1A263D) : Color(0xFFC9C9C9),
                 thickness: 2,
               ),
 
@@ -354,8 +363,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               Shadow(
                                   color: Color(0xFF1453A3),
                                   offset: Offset(1, 1),
-                                  blurRadius: 3
-                              ),
+                                  blurRadius: 3),
                             ],
                           ),
                           /*const SizedBox(height: 4),
@@ -388,8 +396,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               Shadow(
                                   color: Color(0xFF1453A3),
                                   offset: Offset(1, 1),
-                                blurRadius: 3
-                              ),
+                                  blurRadius: 3),
                             ],
                           ),
                           /*const SizedBox(height: 4),
@@ -422,8 +429,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                               Shadow(
                                   color: Color(0xFF1453A3),
                                   offset: Offset(1, 1),
-                                blurRadius: 3
-                              ),
+                                  blurRadius: 3),
                             ],
                           ),
                           /*const SizedBox(height: 4),
@@ -457,49 +463,55 @@ class _TelaPerfilState extends State<TelaPerfil> {
                         height: 90,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          color: widget.modoEscuro ? Color(0xFF1F2433) : Color(0xFFF0F0F0),
+                          color: widget.modoEscuro
+                              ? Color(0xFF1F2433)
+                              : Color(0xFFF0F0F0),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  card.imagePath,
-                                  width: 100,
-                                  height: 150,
-                                ),
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(
+                                card.imagePath,
+                                width: 100,
+                                height: 150,
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    card.titulo,
+                                    style: GoogleFonts.baloo2(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700,
+                                        color: index == 0
+                                            ? Color(0xFF9069CD)
+                                            : index == 1
+                                                ? Color(0xFFFFC800)
+                                                : Color(0xFFEA2B2B)),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    card.subtitulo,
+                                    style: GoogleFonts.baloo2(
+                                        fontSize: 16,
+                                        color: widget.modoEscuro
+                                            ? Color(0xFF586892)
+                                            : Color(0xFF7A7A7A),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      card.titulo,
-                                      style: GoogleFonts.baloo2(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w700,
-                                          color: index == 0 ? Color(0xFF9069CD) : index == 1 ? Color(0xFFFFC800) : Color(0xFFEA2B2B)
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      card.subtitulo,
-                                      style: GoogleFonts.baloo2(
-                                          fontSize: 16,
-                                          color: widget.modoEscuro ? Color(0xFF586892) : Color(0xFF7A7A7A),
-                                          fontWeight: FontWeight.w700
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

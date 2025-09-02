@@ -6,20 +6,17 @@ class TelaModulo extends StatefulWidget {
   final Map<String, dynamic> usuario;
   final bool modoEscuro;
   final Modulo modulo;
-  const TelaModulo({
-    super.key,
-    required this.usuario,
-    required this.modoEscuro,
-    required this.modulo
-  });
-
+  const TelaModulo(
+      {super.key,
+      required this.usuario,
+      required this.modoEscuro,
+      required this.modulo});
 
   @override
   State<TelaModulo> createState() => _TelaModuloState();
 }
 
 class _TelaModuloState extends State<TelaModulo> {
-
   final List<Color> _coresTextoPorModulo = [
     Color(0xFF15D2D6),
     Color(0xFF84C1FF),
@@ -62,7 +59,11 @@ class _TelaModuloState extends State<TelaModulo> {
       backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: Color(0xFF1CB0F6), size: 30,),
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: Color(0xFF1CB0F6),
+            size: 30,
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -142,7 +143,7 @@ class _TelaModuloState extends State<TelaModulo> {
         children: [
           Container(
             padding: EdgeInsets.all(10),
-            color: _coresFundoPorModulo[widget.modulo.id],
+            color: _coresFundoPorModulo[widget.modulo.id - 1],
             height: 130,
             child: Row(
               children: [
@@ -163,16 +164,14 @@ class _TelaModuloState extends State<TelaModulo> {
                         style: GoogleFonts.baloo2(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
-                            color: _coresTituloPorModulo[widget.modulo.id]
-                        ),
+                            color: _coresTituloPorModulo[widget.modulo.id - 1]),
                       ),
                       Text(
                         widget.modulo.descricao.toString(),
                         style: GoogleFonts.baloo2(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: _coresTextoPorModulo[widget.modulo.id]
-                        ),
+                            color: _coresTextoPorModulo[widget.modulo.id - 1]),
                       ),
                     ],
                   ),

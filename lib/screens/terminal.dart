@@ -101,8 +101,8 @@ print("Soma da lista:", sum(numeros))''';
             context: context,
             tipo: TipoDialogo.erro,
             titulo: "Sem conexão",
-            conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-        );
+            conteudo:
+                "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
         return;
       }
       final response = await http.post(
@@ -243,14 +243,16 @@ print("Soma da lista:", sum(numeros))''';
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Terminal de Python',
+                          "Terminal de Python",
                           style: GoogleFonts.baloo2(
-                            fontSize: isMobile ? 20 : 24,
+                            color: widget.modoEscuro
+                                ? Color(0xFFB0C2DE)
+                                : Color(0xFF1CB0F6),
+                            fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: widget.modoEscuro ? Colors.white : Color(0xFF7A7A7A),
                           ),
                         ),
                       ],
@@ -280,7 +282,7 @@ print("Soma da lista:", sum(numeros))''';
           Container(
             margin: EdgeInsets.only(bottom: 20),
             height: 400,
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width * 0.75,
             decoration: BoxDecoration(
               color: const Color(0xFF1e293b),
               borderRadius: BorderRadius.circular(23),
@@ -319,7 +321,7 @@ print("Soma da lista:", sum(numeros))''';
                           IconButton(
                             onPressed: clearCode,
                             icon: const Icon(Icons.delete,
-                                color: Color(0xFFEA2B2B)),
+                                color: Color(0xFFef4444)),
                             tooltip: 'Limpar',
                           ),
                         ],
@@ -412,11 +414,9 @@ print("Soma da lista:", sum(numeros))''';
             ),
           ),
 
-          const SizedBox(height: 16),
-
           // Console de Saída (Mobile)
           Container(
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width * 0.75,
             decoration: BoxDecoration(
               color: const Color(0xFF1e293b),
               borderRadius: BorderRadius.circular(23),
@@ -504,18 +504,18 @@ print("Soma da lista:", sum(numeros))''';
                             autofocus: true,
                             style: GoogleFonts.baloo2(
                                 color: Color(0xFF1CB0F6),
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Color(0xFF1CB0F6)),
+                                borderSide:
+                                    BorderSide(color: Color(0xFF1CB0F6)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Color(0xFF1CB0F6), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF1CB0F6), width: 2),
                               ),
-
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.send,
                                     color: Color(0xFF1CB0F6)),
@@ -526,8 +526,7 @@ print("Soma da lista:", sum(numeros))''';
                               hintText: 'Digite e pressione Enter...',
                               hintStyle: GoogleFonts.baloo2(
                                   color: Color(0xFF1CB0F6),
-                                fontWeight: FontWeight.bold
-                              ),
+                                  fontWeight: FontWeight.bold),
                               filled: true,
                               fillColor: const Color(0xFF1e293b),
                               contentPadding: const EdgeInsets.symmetric(
@@ -600,7 +599,8 @@ print("Soma da lista:", sum(numeros))''';
                               foregroundColor: const Color(0xFFEA2B2B),
                               side: const BorderSide(color: Color(0xFFef4444)),
                             ),
-                            icon: const Icon(Icons.delete, size: 16),
+                            icon: const Icon(Icons.delete,
+                                size: 16, color: Color(0xFFef4444)),
                             label: const Text('Limpar'),
                           ),
                         ],
@@ -785,16 +785,17 @@ print("Soma da lista:", sum(numeros))''';
                             autofocus: true,
                             style: GoogleFonts.baloo2(
                                 color: Color(0xFF1CB0F6),
-                                fontWeight: FontWeight.bold
-                            ),
+                                fontWeight: FontWeight.bold),
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Color(0xFF1CB0F6)),
+                                borderSide:
+                                    BorderSide(color: Color(0xFF1CB0F6)),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide(color: Color(0xFF1CB0F6), width: 2),
+                                borderSide: BorderSide(
+                                    color: Color(0xFF1CB0F6), width: 2),
                               ),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.send,

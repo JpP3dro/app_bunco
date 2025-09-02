@@ -32,8 +32,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Sem conexão",
-          conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-      );
+          conteudo:
+              "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
       return;
     }
     if (!(_controllerNome.text.isNotEmpty &&
@@ -96,7 +96,8 @@ class _TelaCadastroState extends State<TelaCadastro> {
               context: context,
               tipo: TipoDialogo.alerta,
               titulo: "Email muito grande!",
-              conteudo: "O endereço de email superou o tamanho máximo permitido!");
+              conteudo:
+                  "O endereço de email superou o tamanho máximo permitido!");
           return;
         }
         String url = await obterUrl();
@@ -120,16 +121,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
         );
         if (response["sucesso"] == "true") {
           Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => TelaLogin())
-          );
+              context, MaterialPageRoute(builder: (context) => TelaLogin()));
         }
       } catch (e) {
         await exibirResultado(
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Falha na conexão com o servidor!",
-          conteudo: "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
+          conteudo:
+              "Falha na conexão com o servidor! Tente novamente daqui a um tempo.",
         );
       }
     }
@@ -168,12 +168,15 @@ class _TelaCadastroState extends State<TelaCadastro> {
           title: Center(
             child: Image.asset('assets/images/telainicial/cadastro.png'),
           ),
-          toolbarHeight: 250,
+          toolbarHeight: 210,
           actions: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
-                icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+                icon: const Icon(
+                  Icons.edit,
+                  color: Color(0x33FFFFFF),
+                ),
                 onPressed: () {
                   dialogoAlterarUrl(context, setState);
                 },
@@ -193,251 +196,260 @@ class _TelaCadastroState extends State<TelaCadastro> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "Cadastro",
-                  style: GoogleFonts.baloo2(
-                      fontSize: 48, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    cursorColor: Color(0xFF1cB0F6),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Cadastro",
                     style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    controller: _controllerNome,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF111928),
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
-                        ),
-                      ),
-                      label: Text(
-                        "Digite um nome:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      icon: Icon(
-                        Icons.person,
-                        color: Color(0xFF0D141F),
-                      ),
-                    ),
+                        fontSize: 48, fontWeight: FontWeight.bold),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9_]')),
-                    ],
-                    cursorColor: Color(0xFF1cB0F6),
-                    style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    controller: _controllerUsername,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF111928),
-                          width: 2,
+                  Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          cursorColor: Color(0xFF1cB0F6),
+                          style: GoogleFonts.baloo2(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          controller: _controllerNome,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF111928),
+                                width: 2,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Color(0xFF111928),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            label: Text(
+                              "Digite um nome:",
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 20,
+                                  color: Color(0xFFB0C2DE),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            icon: Icon(
+                              Icons.person,
+                              color: Color(0xFF0D141F),
+                            ),
+                          ),
                         ),
                       ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-zA-Z0-9_]')),
+                          ],
+                          cursorColor: Color(0xFF1cB0F6),
+                          style: GoogleFonts.baloo2(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          controller: _controllerUsername,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF111928),
+                                width: 2,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Color(0xFF111928),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            label: Text(
+                              "Digite um nome de usuário:",
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 20,
+                                  color: Color(0xFFB0C2DE),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            icon: Icon(
+                              Icons.switch_account,
+                              color: Color(0xFF0D141F),
+                            ),
+                          ),
                         ),
                       ),
-                      label: Text(
-                        "Digite um nome de usuário:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      icon: Icon(
-                        Icons.switch_account,
-                        color: Color(0xFF0D141F),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    cursorColor: Color(0xFF1cB0F6),
-                    style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    controller: _controllerEmail,
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF111928),
-                          width: 2,
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          cursorColor: Color(0xFF1cB0F6),
+                          style: GoogleFonts.baloo2(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          controller: _controllerEmail,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF111928),
+                                width: 2,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Color(0xFF111928),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            label: Text(
+                              "Digite um email:",
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 20,
+                                  color: Color(0xFFB0C2DE),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            icon: Icon(
+                              Icons.mark_email_read,
+                              color: Color(0xFF0D141F),
+                            ),
+                          ),
                         ),
                       ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
-                        ),
-                      ),
-                      label: Text(
-                        "Digite um email:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      icon: Icon(
-                        Icons.mark_email_read,
-                        color: Color(0xFF0D141F),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: TextFormField(
-                    //maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    //buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
-                    maxLength: 16,
-                    cursorColor: Color(0xFF1cB0F6),
-                    style: GoogleFonts.baloo2(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    controller: _controllerSenha,
-                    decoration: InputDecoration(
-                      counterStyle: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF111928),
-                          width: 2,
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: Color(0xFF111928),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Color(0xFF1CB0F6),
-                          width: 2,
-                        ),
-                      ),
-                      label: Text(
-                        "Coloque uma senha:",
-                        style: GoogleFonts.baloo2(
-                            fontSize: 20,
-                            color: Color(0xFFB0C2DE),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      icon: const Icon(
-                        Icons.password,
-                        color: Color(0xFF0D141F),
-                      ),
-                      suffixIcon: GestureDetector(
-                        child: Icon(
-                          _mostrarSenha == false
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          color: Color(0xFF1CB0F6),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            _mostrarSenha = !_mostrarSenha;
-                          });
-                        },
-                      ),
-                    ),
-                    obscureText: _mostrarSenha == false ? true : false,
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(10),
-                  child: GestureDetector(
-                    onTapDown: (_) => setState(() => _botaoPressionado = true),
-                    onTapUp: (_) {
-                      setState(() => _botaoPressionado = false);
-                      fazerCadastro();
-                    },
-                    onTapCancel: () => setState(() => _botaoPressionado = false),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 100),
-                      transform: Matrix4.identity()
-                        ..translate(0.0, _botaoPressionado ? 5.0 : 0.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF0F5F7),
-                        borderRadius: BorderRadius.circular(40),
-                        boxShadow: _botaoPressionado
-                            ? null
-                            : [
-                          BoxShadow(
-                            color: Color(0xFF2D466C),
-                            offset: const Offset(6, 6),
-                            blurRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            "Criar um novo usuário",
-                            style: GoogleFonts.baloo2(
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: TextFormField(
+                          //maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          //buildCounter: (_, {required currentLength, required isFocused, maxLength}) => null,
+                          maxLength: 16,
+                          cursorColor: Color(0xFF1cB0F6),
+                          style: GoogleFonts.baloo2(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          controller: _controllerSenha,
+                          decoration: InputDecoration(
+                            counterStyle: TextStyle(
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: const Color(0xFF1453A3),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF111928),
+                                width: 2,
+                              ),
+                            ),
+                            filled: true,
+                            fillColor: Color(0xFF111928),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Color(0xFF1CB0F6),
+                                width: 2,
+                              ),
+                            ),
+                            label: Text(
+                              "Coloque uma senha:",
+                              style: GoogleFonts.baloo2(
+                                  fontSize: 20,
+                                  color: Color(0xFFB0C2DE),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            icon: const Icon(
+                              Icons.password,
+                              color: Color(0xFF0D141F),
+                            ),
+                            suffixIcon: GestureDetector(
+                              child: Icon(
+                                _mostrarSenha == false
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Color(0xFF1CB0F6),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  _mostrarSenha = !_mostrarSenha;
+                                });
+                              },
+                            ),
+                          ),
+                          obscureText: _mostrarSenha == false ? true : false,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    child: GestureDetector(
+                      onTapDown: (_) =>
+                          setState(() => _botaoPressionado = true),
+                      onTapUp: (_) {
+                        setState(() => _botaoPressionado = false);
+                        fazerCadastro();
+                      },
+                      onTapCancel: () =>
+                          setState(() => _botaoPressionado = false),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 100),
+                        transform: Matrix4.identity()
+                          ..translate(0.0, _botaoPressionado ? 5.0 : 0.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F5F7),
+                          borderRadius: BorderRadius.circular(40),
+                          boxShadow: _botaoPressionado
+                              ? null
+                              : [
+                                  BoxShadow(
+                                    color: Color(0xFF2D466C),
+                                    offset: const Offset(6, 6),
+                                    blurRadius: 0,
+                                  )
+                                ],
+                        ),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              "Criar um novo usuário",
+                              style: GoogleFonts.baloo2(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: const Color(0xFF1453A3),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
         bottomNavigationBar: Container(
-          height: 80,
+          height: 60,
           color: Color(0xFF586892),
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -451,7 +463,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                   ),
                   backgroundColor: Color(0xFF0D141F),
                   foregroundColor: Color(0xFF1CB0F6),
-                  minimumSize: const Size.fromHeight(50),
+                  minimumSize: const Size.fromHeight(60),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(

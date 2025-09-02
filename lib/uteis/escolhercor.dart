@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<Color?> mostrarSeletorDeCor(
-    BuildContext context, {
-      required String fotoAtual,
-      required Color corAtual,
-    }) {
+  BuildContext context, {
+  required String fotoAtual,
+  required Color corAtual,
+}) {
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
   // 1) Defina aqui a paleta de cores que o usuário poderá escolher:
@@ -27,14 +27,17 @@ Future<Color?> mostrarSeletorDeCor(
   ];
 
   Color selectedColor =
-  colorOptions.contains(corAtual) ? corAtual : colorOptions.first;
+      colorOptions.contains(corAtual) ? corAtual : colorOptions.first;
 
   return showDialog<Color>(
     context: context,
     builder: (buildContext) {
       return Dialog(
         backgroundColor: Color(0xFF333333),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: MediaQuery.of(context).size.height * 0.05,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           builder: (context, setState) {
@@ -44,11 +47,11 @@ Future<Color?> mostrarSeletorDeCor(
                 // ======== 1) BARRA DE TÍTULO ========
                 Container(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: Color(0xFF4D4D4D),
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                        const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -71,11 +74,13 @@ Future<Color?> mostrarSeletorDeCor(
                         backgroundColor: Color(0xFF58CC02),
                         radius: 7,
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                       Text(
                         'Escolha a cor de fundo',
                         style: GoogleFonts.baloo2(
-                            fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -84,16 +89,16 @@ Future<Color?> mostrarSeletorDeCor(
                 const SizedBox(height: 12),
 
                 // ======== 2) PREVIEW DO CircleAvatar ========
-                 CircleAvatar(
-                    radius: 50,
-                    backgroundColor: selectedColor,
-                    backgroundImage: AssetImage(fotoAtual),
-                  ),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: selectedColor,
+                  backgroundImage: AssetImage(fotoAtual),
+                ),
 
                 const SizedBox(height: 16),
 
                 SizedBox(
-                  height: 150,
+                  height: 120,
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Wrap(
@@ -123,10 +128,10 @@ Future<Color?> mostrarSeletorDeCor(
                             ),
                             child: isSelected
                                 ? const Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 20,
-                            )
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 20,
+                                  )
                                 : null,
                           ),
                         );
@@ -139,34 +144,38 @@ Future<Color?> mostrarSeletorDeCor(
                 Container(
                   margin: const EdgeInsets.all(5),
                   child: GestureDetector(
-                    onTapDown: (_) =>
-                        setState(() { if (botaoHabilitado) {
-                          botaoPressionado = true;
-                        }}),
+                    onTapDown: (_) => setState(() {
+                      if (botaoHabilitado) {
+                        botaoPressionado = true;
+                      }
+                    }),
                     onTapUp: (_) {
-                      setState(() { if (botaoHabilitado) {
-                        botaoPressionado = false;
-                        Navigator.of(context).pop(selectedColor);
-                      }});
+                      setState(() {
+                        if (botaoHabilitado) {
+                          botaoPressionado = false;
+                          Navigator.of(context).pop(selectedColor);
+                        }
+                      });
                     },
-                    onTapCancel: () =>
-                        setState(() => botaoPressionado = false),
+                    onTapCancel: () => setState(() => botaoPressionado = false),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       transform: Matrix4.identity()
                         ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                       decoration: BoxDecoration(
-                        color: botaoHabilitado ? Color(0xFF1CB0F6) : Color(0xFF505050),
+                        color: botaoHabilitado
+                            ? Color(0xFF1CB0F6)
+                            : Color(0xFF505050),
                         borderRadius: BorderRadius.circular(40),
                         boxShadow: botaoPressionado || !botaoHabilitado
                             ? null
                             : [
-                          BoxShadow(
-                            color: Color(0xFF1453A3),
-                            offset: const Offset(6, 6),
-                            blurRadius: 0,
-                          )
-                        ],
+                                BoxShadow(
+                                  color: Color(0xFF1453A3),
+                                  offset: const Offset(6, 6),
+                                  blurRadius: 0,
+                                )
+                              ],
                       ),
                       child: SizedBox(
                         width: double.infinity,
@@ -177,7 +186,9 @@ Future<Color?> mostrarSeletorDeCor(
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
-                              color: botaoHabilitado ? Colors.white : Color(0xFF333333),
+                              color: botaoHabilitado
+                                  ? Colors.white
+                                  : Color(0xFF333333),
                             ),
                           ),
                         ),

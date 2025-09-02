@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
-  required String fotoAtual,
-  required Color corFundo
-}) {
+Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context,
+    {required String fotoAtual, required Color corFundo}) {
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
   // 1) Defina aqui a lista de caminhos de imagens em assets/images/perfil/
@@ -26,14 +24,18 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
     'assets/images/perfil/buncoprofessor.png',
   ];
 
-  String selectedImage = imagePaths.contains(fotoAtual) ? fotoAtual : imagePaths.first;
+  String selectedImage =
+      imagePaths.contains(fotoAtual) ? fotoAtual : imagePaths.first;
 
   return showDialog<String>(
     context: context,
     builder: (context) {
       return Dialog(
         backgroundColor: Color(0xFF333333),
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: MediaQuery.of(context).size.height * 0.05,
+        ),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: StatefulBuilder(
           builder: (context, setState) {
@@ -43,11 +45,11 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                 // ========== 1) BARRA DE TÍTULO ==========
                 Container(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: Color(0xFF4D4D4D),
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(16)),
+                        const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -70,11 +72,13 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                         backgroundColor: Color(0xFF58CC02),
                         radius: 7,
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.1),
                       Text(
                         'Escolha a foto de perfil',
                         style: GoogleFonts.baloo2(
-                            fontSize: 18, fontWeight: FontWeight.w700, color: Colors.white),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
                       ),
                     ],
                   ),
@@ -111,11 +115,13 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                               });
                             },
                             child: Container(
-                              width: 100,
-                              height: 100,
+                              width: 80,
+                              height: 80,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: isSelected ? Colors.blue : Colors.grey.shade300,
+                                  color: isSelected
+                                      ? Colors.blue
+                                      : Colors.grey.shade300,
                                   width: isSelected ? 3 : 1,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -141,34 +147,38 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                 Container(
                   margin: const EdgeInsets.all(10),
                   child: GestureDetector(
-                    onTapDown: (_) =>
-                        setState(() { if (botaoHabilitado) {
-                          botaoPressionado = true;
-                        }}),
+                    onTapDown: (_) => setState(() {
+                      if (botaoHabilitado) {
+                        botaoPressionado = true;
+                      }
+                    }),
                     onTapUp: (_) {
-                      setState(() { if (botaoHabilitado) {
-                        botaoPressionado = false;
-                        Navigator.of(context).pop(selectedImage);
-                      }});
+                      setState(() {
+                        if (botaoHabilitado) {
+                          botaoPressionado = false;
+                          Navigator.of(context).pop(selectedImage);
+                        }
+                      });
                     },
-                    onTapCancel: () =>
-                        setState(() => botaoPressionado = false),
+                    onTapCancel: () => setState(() => botaoPressionado = false),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       transform: Matrix4.identity()
                         ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                       decoration: BoxDecoration(
-                        color: botaoHabilitado ? Color(0xFF1CB0F6) : Color(0xFF505050),
+                        color: botaoHabilitado
+                            ? Color(0xFF1CB0F6)
+                            : Color(0xFF505050),
                         borderRadius: BorderRadius.circular(40),
                         boxShadow: botaoPressionado || !botaoHabilitado
                             ? null
                             : [
-                          BoxShadow(
-                            color: Color(0xFF1453A3),
-                            offset: const Offset(6, 6),
-                            blurRadius: 0,
-                          )
-                        ],
+                                BoxShadow(
+                                  color: Color(0xFF1453A3),
+                                  offset: const Offset(6, 6),
+                                  blurRadius: 0,
+                                )
+                              ],
                       ),
                       child: SizedBox(
                         width: double.infinity,
@@ -179,7 +189,9 @@ Future<String?> mostrarSeletorDeFotoDePerfil(BuildContext context, {
                             style: GoogleFonts.baloo2(
                               fontWeight: FontWeight.bold,
                               fontSize: 26,
-                              color: botaoHabilitado ? Colors.white : Color(0xFF333333),
+                              color: botaoHabilitado
+                                  ? Colors.white
+                                  : Color(0xFF333333),
                             ),
                           ),
                         ),
