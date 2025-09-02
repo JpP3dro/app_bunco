@@ -25,7 +25,9 @@ class MyApp extends StatelessWidget {
               if (snapshot.data!) {
                 return TelaInicial(
                   usuario: usuario,
-                  parametroModoEscuro: MediaQuery.of(context).platformBrightness == Brightness.dark,
+                  parametroModoEscuro:
+                      MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark,
                 );
               } else {
                 return const TelaLogin();

@@ -413,7 +413,7 @@ class TelaConfiguracoes extends StatefulWidget {
                             margin: const EdgeInsets.symmetric(horizontal: 16),
                             padding: const EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              border: Border.all(color: modoEscuro ? Color(0xFF1A263D) : Color(0xFFE5E5E5), width: 3),
+                              border: Border.all(color: modoEscuro ? Color(0xFF1A263D) : Color(0xFFE5E5E5), width: 2),
                               borderRadius: BorderRadius.vertical(
                                 top: index == 0
                                     ? const Radius.circular(30)
@@ -448,7 +448,7 @@ class TelaConfiguracoes extends StatefulWidget {
 
                     // Botões fixos
                     Positioned(
-                      bottom: 10,
+                      bottom: 5,
                       left: 15,
                       right: 15,
                       child: Column(
@@ -484,7 +484,7 @@ class TelaConfiguracoes extends StatefulWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 10),
                           ElevatedButton.icon(
                             onPressed: () {
                               certeza(

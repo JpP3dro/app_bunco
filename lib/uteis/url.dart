@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+
 //String urlAtual = "https://bunco.alwaysdata.net"; // valor para a web
 String urlAtual = "http://192.168.15.10/bunco_testes"; // valor local
 

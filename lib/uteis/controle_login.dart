@@ -14,13 +14,13 @@ Future<bool> verificarConexao() async {
   var result = await Connectivity().checkConnectivity();
   if (result != ConnectivityResult.none) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
-Future<void> salvarLogin(String idUsuario, String username, BuildContext context) async {
+Future<void> salvarLogin(
+    String idUsuario, String username, BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
   await prefs.setString('idUsuario', idUsuario);
   await prefs.setString('username', username);
@@ -32,10 +32,9 @@ Future<void> logout() async {
 
   await prefs.clear();
   if (urlSalva != null) {
-    await prefs.setString('ip', urlSalva);
+    await prefs.setString('url', urlSalva);
   }
 }
-
 
 Future<bool> verificarLogin(BuildContext context) async {
   final prefs = await SharedPreferences.getInstance();
@@ -45,18 +44,21 @@ Future<bool> verificarLogin(BuildContext context) async {
   }
   if (!await verificarConexao()) {
     await exibirResultado(
-        context: context,
-        tipo: TipoDialogo.erro,
-        titulo: "Sem conexão",
-        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet.",
-        temBotao: false,
+      context: context,
+      tipo: TipoDialogo.erro,
+      titulo: "Sem conexão",
+      conteudo:
+          "Seu dispositivo está sem internet. Tente novamente quando tiver internet.",
+      temBotao: false,
     );
     SystemNavigator.pop();
     return false;
   }
 
+  final url = await obterUrl();
+
   try {
-    final link = "${obterUrl()}/api/buscarUsuario.php";
+    final link = "$url/api/buscarUsuario.php";
     final response = await http.post(
       Uri.parse(link),
       body: {"login": id},
@@ -67,22 +69,40 @@ Future<bool> verificarLogin(BuildContext context) async {
 
       if (dados["sucesso"] == "true") {
         usuario = dados;
-        //await exibirResultado(context: context, tipo: TipoDialogo.sucesso, titulo: "Deu certo!", conteudo: "OK!");
+        /*await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.sucesso,
+            titulo: "Deu certo!",
+            conteudo: "OK!");*/
         return true;
       } else {
-        //await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "API retornou false", conteudo: response.body);
+        /*await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "API retornou false",
+            conteudo: response.body);*/
         prefs.clear();
+        await prefs.setString('url', url);
         return false;
       }
     } else {
-      //await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Código HTTP não é 200", conteudo: response.statusCode.toString());
+      /*await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Código HTTP não é 200",
+          conteudo: response.statusCode.toString());*/
       prefs.clear();
+      await prefs.setString('url', url);
       return false;
     }
   } catch (e) {
-    //await exibirResultado(context: context, tipo: TipoDialogo.erro, titulo: "Erro na requisição", conteudo: e.toString());
+    /*await exibirResultado(
+        context: context,
+        tipo: TipoDialogo.erro,
+        titulo: "Erro na requisição",
+        conteudo: e.toString());*/
     prefs.clear();
+    await prefs.setString('url', url);
     return false;
   }
 }
-
