@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'screens/login.dart';
 import 'screens/telainicial.dart';
 import 'uteis/controle_login.dart';
+import 'package:flutter/services.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // só retrato normal
+    DeviceOrientation.portraitDown, // permite de cabeça pra baixo também
+  ]);
+
   runApp(const MyApp());
 }
 
