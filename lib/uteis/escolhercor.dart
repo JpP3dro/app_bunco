@@ -8,22 +8,23 @@ Future<Color?> mostrarSeletorDeCor(
 }) {
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
-  // 1) Defina aqui a paleta de cores que o usuário poderá escolher:
+  // Cores que o usuário pode escolher
   final List<Color> colorOptions = [
-    Color(0xFF586892),
-    Color(0xFF0E898B),
-    Color(0xFF7AF0F2),
-    Color(0xFFFF9600),
-    Color(0xFFFFC800),
-    Color(0xFFE5A259),
-    Color(0xFFEA2B2B),
-    Color(0xFF9069CD),
-    Color(0xFFFFAADE),
-    Color(0xFF5EB200),
-    Color(0xFFA5ED6E),
-    Color(0xFF8E8E93),
-    Color(0xFF000000),
-    Color(0xFFFFFFFF),
+    Color(0xFFA4E451),
+    Color(0xFF4BC1FF),
+    Color(0xFFFF9F4A),
+    Color(0xFFB084F1),
+    Color(0xFFFFF275),
+    Color(0xFFFF6B6B),
+    Color(0xFF7AE7C7),
+    Color(0xFF41729F),
+    Color(0xFFF2F2F2),
+    Color(0xFFFEC89A),
+    Color(0xFFA259FF),
+    Color(0xFFFFD8A9),
+    Color(0xFF88E1F2),
+    Color(0xFFF2C94C),
+    Color(0xFF202020),
   ];
 
   Color selectedColor =

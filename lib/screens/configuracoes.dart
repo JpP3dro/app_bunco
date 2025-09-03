@@ -27,221 +27,221 @@ class TelaConfiguracoes extends StatefulWidget {
 
   @override
   State<TelaConfiguracoes> createState() => _TelaConfiguracoesState();
-  }
-  
-  class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
-    late bool _botaoClaroPressionado;
-    late List<Map<String, dynamic>> opcoes;
-    late bool modoEscuro;
-    late bool _botaoEscuroPressionado;
+}
 
-    Future<void> certeza({
-      required String titulo,
-      required IconData icone,
-      required String acao,
-    }) {
-      return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            alignment: Alignment.center,
-            title: Row(
-              children: [
-                Text(
-                  titulo,
-                  style: GoogleFonts.baloo2(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
+class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
+  late bool _botaoClaroPressionado;
+  late List<Map<String, dynamic>> opcoes;
+  late bool modoEscuro;
+  late bool _botaoEscuroPressionado;
+
+  Future<void> certeza({
+    required String titulo,
+    required IconData icone,
+    required String acao,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          alignment: Alignment.center,
+          title: Row(
+            children: [
+              Text(
+                titulo,
+                style: GoogleFonts.baloo2(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
                 ),
-                const SizedBox(width: 8,),
-                Icon(icone),
-              ],
-            ),
-            content: Text(
-                "Você tem certeza?",
-              style: GoogleFonts.workSans(
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
               ),
+              const SizedBox(
+                width: 8,
+              ),
+              Icon(icone),
+            ],
+          ),
+          content: Text(
+            "Você tem certeza?",
+            style: GoogleFonts.workSans(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.w500,
             ),
-            actions: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.green,
-                      ),
-                      child: const Row(
-                        children: [
-                          Text("Sim"),
-                          Icon(
-                            Icons.check,
-                            color: Colors.green,
-                            size: 20,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        if (acao == "sair") {
-                          logout();
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context) => const TelaLogin()),
-                              (route) => false
-                          );
-                        }
-                        else if (acao == "excluir") {
-                          excluirConta();
-                        }
-                      },
-                    ),
-                  ),
-
-                  TextButton(
+          ),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.red,
+                      foregroundColor: Colors.green,
                     ),
                     child: const Row(
                       children: [
-                        Text("Não"),
+                        Text("Sim"),
                         Icon(
-                          Icons.close,
-                          color: Colors.red,
+                          Icons.check,
+                          color: Colors.green,
                           size: 20,
                         ),
                       ],
                     ),
-                    onPressed: (){
-                      Navigator.pop(context);
+                    onPressed: () {
+                      if (acao == "sair") {
+                        logout();
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const TelaLogin()),
+                            (route) => false);
+                      } else if (acao == "excluir") {
+                        excluirConta();
+                      }
                     },
                   ),
-                ],
-              ),
-            ],
-          );
-        },
-      );
-    }
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.red,
+                  ),
+                  child: const Row(
+                    children: [
+                      Text("Não"),
+                      Icon(
+                        Icons.close,
+                        color: Colors.red,
+                        size: 20,
+                      ),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-    Future<void> excluirConta() async {
-      if (!await verificarConexao()) {
-        await exibirResultado(
-            context: context,
-            tipo: TipoDialogo.erro,
-            titulo: "Sem conexão",
-            conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-        );
-        return;
+  Future<void> excluirConta() async {
+    if (!await verificarConexao()) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Sem conexão",
+          conteudo:
+              "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
+      return;
+    }
+    try {
+      String url = await obterUrl();
+      String link = "$url/api/excluir.php";
+      var res = await http.post(Uri.parse(link), body: {
+        "username": widget.usuario["username"]
+      }).timeout(const Duration(minutes: 1));
+      var response = jsonDecode(res.body);
+      await exibirResultado(
+          context: context,
+          tipo: response["sucesso"] == "true"
+              ? TipoDialogo.sucesso
+              : TipoDialogo.erro,
+          titulo:
+              response["sucesso"] == "true" ? "Sucesso!" : "Algo deu errado!",
+          conteudo: response["mensagem"]);
+      if (response["sucesso"] == "true") {
+        logout();
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const TelaLogin()));
       }
-      try {
-        String url = await obterUrl();
-        String link = "$url/api/excluir.php";
-        var res = await http.post(Uri.parse(link), body: {
-          "username": widget.usuario["username"]
-        }).timeout(const Duration(minutes: 1));
-        var response = jsonDecode(res.body);
-        await exibirResultado(context: context,
-            tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-            titulo: response["sucesso"] == "true" ? "Sucesso!" : "Algo deu errado!",
-            conteudo: response["mensagem"]
+    } catch (e) {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Erro do servidor",
+          conteudo: "Talvez seja um sinal para você continuar com a gente");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    modoEscuro = widget.parametroModoEscuro;
+    _botaoClaroPressionado = !modoEscuro;
+    _botaoEscuroPressionado = modoEscuro;
+    opcoes = [
+      {"label": "Alterar o nome", "tipo": "nome"},
+      {"label": "Alterar o username", "tipo": "username"},
+      {"label": "Alterar o email", "tipo": "email"},
+      {"label": "Alterar a senha", "tipo": "senha"},
+      {"label": "Adicionar links para redes sociais", "tipo": "links"},
+    ];
+  }
+
+  void _abrirDialogo(String tipo) async {
+    String? informacaoAlterada;
+    List<String>? linksAlterados;
+    switch (tipo) {
+      case "nome":
+        informacaoAlterada = await TelaAlterarNome(
+          context: context,
+          nome: widget.usuario["nome"],
+          username: widget.usuario["username"],
         );
-        if (response["sucesso"] == "true") {
-          logout();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const TelaLogin())
-          );
+        if (informacaoAlterada != null) {
+          setState(() {
+            widget.usuario["nome"] = informacaoAlterada;
+          });
         }
-      }
-      catch(e) {
-        await exibirResultado(context: context,
-            tipo: TipoDialogo.erro,
-            titulo: "Erro do servidor",
-            conteudo: "Talvez seja um sinal para você continuar com a gente"
+        break;
+      case "username":
+        informacaoAlterada = await TelaAlterarUsername(
+          context: context,
+          username: widget.usuario["username"],
         );
-      }
+        if (informacaoAlterada != null) {
+          setState(() {
+            widget.usuario["username"] = informacaoAlterada;
+          });
+        }
+        break;
+      case "email":
+        informacaoAlterada = await TelaAlterarEmail(
+          context: context,
+          email: widget.usuario["email"],
+          username: widget.usuario["username"],
+        );
+        if (informacaoAlterada != null) {
+          setState(() {
+            widget.usuario["email"] = informacaoAlterada;
+          });
+        }
+        break;
+      case "senha":
+        TelaAlterarSenha(
+          context: context,
+          username: widget.usuario["username"],
+        );
+        break;
+      case "links":
+        linksAlterados = await TelaAlterarLinks(
+          context: context,
+          username: widget.usuario["username"],
+          github: widget.usuario["link_github"] ?? "",
+          instagram: widget.usuario["link_instagram"] ?? "",
+          linkedin: widget.usuario["link_linkedin"] ?? "",
+        );
+        if (linksAlterados != null) {
+          widget.usuario["link_github"] = linksAlterados[0];
+          widget.usuario["link_instagram"] = linksAlterados[1];
+          widget.usuario["link_linkedin"] = linksAlterados[2];
+        }
+        break;
     }
-
-    @override
-    void initState() {
-      super.initState();
-      modoEscuro = widget.parametroModoEscuro;
-      _botaoClaroPressionado = !modoEscuro;
-      _botaoEscuroPressionado = modoEscuro;
-      opcoes = [
-        {"label": "Alterar o nome", "tipo": "nome"},
-        {"label": "Alterar o username", "tipo": "username"},
-        {"label": "Alterar o email", "tipo": "email"},
-        {"label": "Alterar a senha", "tipo": "senha"},
-        {"label": "Adicionar links para redes sociais", "tipo": "links"},
-      ];
-    }
-
-    void _abrirDialogo(String tipo) async {
-      String? informacaoAlterada;
-      List<String>? linksAlterados;
-      switch (tipo) {
-        case "nome":
-          informacaoAlterada = await TelaAlterarNome(
-            context: context,
-            nome: widget.usuario["nome"],
-            username: widget.usuario["username"],
-          );
-          if (informacaoAlterada != null) {
-            setState(() {
-              widget.usuario["nome"] = informacaoAlterada;
-            });
-          }
-          break;
-        case "username":
-          informacaoAlterada = await TelaAlterarUsername(
-            context: context,
-            username: widget.usuario["username"],
-          );
-          if (informacaoAlterada != null) {
-            setState(() {
-              widget.usuario["username"] = informacaoAlterada;
-            });
-          }
-          break;
-        case "email":
-          informacaoAlterada = await TelaAlterarEmail(
-            context: context,
-            email: widget.usuario["email"],
-            username: widget.usuario["username"],
-          );
-          if (informacaoAlterada != null) {
-            setState(() {
-              widget.usuario["email"] = informacaoAlterada;
-            });
-          }
-          break;
-        case "senha":
-          TelaAlterarSenha(
-            context: context,
-            username: widget.usuario["username"],
-          );
-          break;
-        case "links":
-          linksAlterados = await TelaAlterarLinks(
-            context: context,
-            username: widget.usuario["username"],
-            github: widget.usuario["link_github"] ?? "",
-            instagram: widget.usuario["link_instagram"] ?? "",
-            linkedin: widget.usuario["link_linkedin"] ?? "",
-          );
-          if (linksAlterados != null) {
-            widget.usuario["link_github"] = linksAlterados[0];
-            widget.usuario["link_instagram"] = linksAlterados[1];
-            widget.usuario["link_linkedin"] = linksAlterados[2];
-          }
-          break;
-      }
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -256,10 +256,7 @@ class TelaConfiguracoes extends StatefulWidget {
           size: 60,
           shadows: [
             Shadow(
-              color: Color(0x55000000),
-              offset: Offset(4, 4),
-              blurRadius: 12
-            ),
+                color: Color(0x55000000), offset: Offset(4, 4), blurRadius: 12),
           ],
         ),
         centerTitle: true,
@@ -268,7 +265,10 @@ class TelaConfiguracoes extends StatefulWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: IconButton(
-              icon: const Icon(Icons.edit, color: Color(0x33FFFFFF),),
+              icon: const Icon(
+                Icons.edit,
+                color: Color(0x33FFFFFF),
+              ),
               onPressed: () {
                 dialogoAlterarUrl(context, setState);
               },
@@ -310,7 +310,8 @@ class TelaConfiguracoes extends StatefulWidget {
                     Column(
                       children: [
                         GestureDetector(
-                          onTapDown: (_) => setState(() => _botaoClaroPressionado = true),
+                          onTapDown: (_) =>
+                              setState(() => _botaoClaroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoEscuroPressionado = false);
                             setState(() {
@@ -318,21 +319,25 @@ class TelaConfiguracoes extends StatefulWidget {
                               widget.onModoEscuroChanged(modoEscuro);
                             });
                           },
-                          onTapCancel: () => setState(() => _botaoClaroPressionado = false),
+                          onTapCancel: () =>
+                              setState(() => _botaoClaroPressionado = false),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 70),
                             transform: Matrix4.identity()
-                              ..translate(0.0, _botaoClaroPressionado ? 5.0 : 0.0),
+                              ..translate(
+                                  0.0, _botaoClaroPressionado ? 5.0 : 0.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: _botaoClaroPressionado
-                                  ? null : !modoEscuro ? null
-                                  : [
-                                BoxShadow(
-                                  color: Color(0xFF2C4168),
-                                  offset: const Offset(2.5, 2.5),
-                                ),
-                              ],
+                                  ? null
+                                  : !modoEscuro
+                                      ? null
+                                      : [
+                                          BoxShadow(
+                                            color: Color(0xFF2C4168),
+                                            offset: const Offset(2.5, 2.5),
+                                          ),
+                                        ],
                             ),
                             child: Image.asset(
                               'assets/images/icone/icone-claro.png',
@@ -345,7 +350,9 @@ class TelaConfiguracoes extends StatefulWidget {
                         Text(
                           "Claro",
                           style: GoogleFonts.baloo2(
-                            color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
+                            color: modoEscuro
+                                ? Color(0xFF586892)
+                                : Color(0xFFABABAB),
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
@@ -356,7 +363,8 @@ class TelaConfiguracoes extends StatefulWidget {
                     Column(
                       children: [
                         GestureDetector(
-                          onTapDown: (_) => setState(() => _botaoEscuroPressionado = true),
+                          onTapDown: (_) =>
+                              setState(() => _botaoEscuroPressionado = true),
                           onTapUp: (_) {
                             setState(() => _botaoClaroPressionado = false);
                             setState(() {
@@ -364,34 +372,40 @@ class TelaConfiguracoes extends StatefulWidget {
                               widget.onModoEscuroChanged(modoEscuro);
                             });
                           },
-                          onTapCancel: () => setState(() => _botaoEscuroPressionado = false),
+                          onTapCancel: () =>
+                              setState(() => _botaoEscuroPressionado = false),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 70),
                             transform: Matrix4.identity()
-                              ..translate(0.0, _botaoEscuroPressionado ? 5.0 : 0.0),
+                              ..translate(
+                                  0.0, _botaoEscuroPressionado ? 5.0 : 0.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               boxShadow: _botaoEscuroPressionado
                                   ? null
-                                  : modoEscuro ? null : [
-                                BoxShadow(
-                                  color: Color(0xFF2C4168),
-                                  offset: const Offset(2.5, 2.5),
-                                ),
-                              ],
+                                  : modoEscuro
+                                      ? null
+                                      : [
+                                          BoxShadow(
+                                            color: Color(0xFF2C4168),
+                                            offset: const Offset(2.5, 2.5),
+                                          ),
+                                        ],
                             ),
                             child: Image.asset(
-                                'assets/images/icone/icone-escuro.png',
-                                width: 80,
-                                height: 80,
-                              ),
+                              'assets/images/icone/icone-escuro.png',
+                              width: 80,
+                              height: 80,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           "Escuro",
                           style: GoogleFonts.baloo2(
-                            color: modoEscuro ? Color(0xFF586892) : Color(0xFFABABAB),
+                            color: modoEscuro
+                                ? Color(0xFF586892)
+                                : Color(0xFFABABAB),
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
@@ -402,55 +416,65 @@ class TelaConfiguracoes extends StatefulWidget {
                 ),
               ),
               Expanded(
-                child: Stack(
+                child: Column(
                   children: [
-                    ListView.builder(
-                      itemCount: opcoes.length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () => _abrirDialogo(opcoes[index]['tipo']),
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: modoEscuro ? Color(0xFF1A263D) : Color(0xFFE5E5E5), width: 2),
-                              borderRadius: BorderRadius.vertical(
-                                top: index == 0
-                                    ? const Radius.circular(30)
-                                    : const Radius.circular(0),
-                                bottom: index == 4
-                                    ? const Radius.circular(30)
-                                    : const Radius.circular(0),
+                    // Lista de opções com espaço flexível
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: opcoes.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () => _abrirDialogo(opcoes[index]['tipo']),
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: modoEscuro
+                                        ? Color(0xFF1A263D)
+                                        : Color(0xFFE5E5E5),
+                                    width: 2),
+                                borderRadius: BorderRadius.vertical(
+                                  top: index == 0
+                                      ? const Radius.circular(30)
+                                      : const Radius.circular(0),
+                                  bottom: index == opcoes.length - 1
+                                      ? const Radius.circular(30)
+                                      : const Radius.circular(0),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    opcoes[index]['label'],
+                                    style: GoogleFonts.baloo2(
+                                      color: modoEscuro
+                                          ? Colors.white
+                                          : Color(0xFF7A7A7A),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xFF1CB0F6),
+                                    size: 25,
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  opcoes[index]['label'],
-                                  style: GoogleFonts.baloo2(
-                                    color: modoEscuro ? Colors.white : Color(0xFF7A7A7A),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Color(0xFF1CB0F6),
-                                  size: 25,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
 
-                    // Botões fixos
-                    Positioned(
-                      bottom: 5,
-                      left: 15,
-                      right: 15,
+                    // Botões fixos na parte inferior
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
                       child: Column(
                         children: [
                           ElevatedButton.icon(
@@ -523,4 +547,4 @@ class TelaConfiguracoes extends StatefulWidget {
       ),
     );
   }
-  }
+}
