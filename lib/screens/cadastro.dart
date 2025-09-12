@@ -449,7 +449,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: 60,
+          height: 55,
           color: Color(0xFF586892),
           child: Align(
             alignment: Alignment.bottomCenter,

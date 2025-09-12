@@ -51,7 +51,7 @@ class _TelaLoginState extends State<TelaLogin> {
             "login": _controllerLogin.text.trim(),
             "senha": _controllerSenha.text.trim(),
           },
-        );
+        ).timeout(const Duration(minutes: 1));
         if (res.statusCode == 200) {
           var user = jsonDecode(res.body);
           if (user["sucesso"] == "true") {
@@ -91,8 +91,9 @@ class _TelaLoginState extends State<TelaLogin> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Erro ao fazer o login",
-          conteudo:
-              "Conexão com o servidor falhou. Tente novamente daqui a pouco!");
+          //conteudo: "Conexão com o servidor falhou. Tente novamente daqui a pouco!"
+        conteudo: e.toString()
+      );
     }
   }
 
@@ -310,7 +311,7 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
         ),
         bottomNavigationBar: Container(
-          height: 60,
+          height: 55,
           color: Color(0xFF586892),
           child: Align(
             alignment: Alignment.bottomCenter,
