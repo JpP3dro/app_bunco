@@ -20,40 +20,40 @@ class TelaModulo extends StatefulWidget {
   State<TelaModulo> createState() => _TelaModuloState();
 }
 
-class Lesson {
+class Licao {
   final int id;
-  final int moduleId;
-  final String title;
-  final String type;
-  final int order;
+  final int idModulo;
+  final String titulo;
+  final String tipo;
+  final int ordem;
   final bool isDone;
   final bool isAvailable;
   final bool rowGray;
   final bool connectorColored;
   final String icon;
-  final String subtitle;
+  final String subtitulo;
 
-  Lesson({
+  Licao({
     required this.id,
-    required this.moduleId,
-    required this.title,
-    required this.type,
-    required this.order,
+    required this.idModulo,
+    required this.titulo,
+    required this.tipo,
+    required this.ordem,
     required this.isDone,
     required this.isAvailable,
     required this.rowGray,
     required this.connectorColored,
     required this.icon,
-    required this.subtitle,
+    required this.subtitulo,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) {
-    return Lesson(
+  factory Licao.fromJson(Map<String, dynamic> json) {
+    return Licao(
       id: json['id'] ?? 0,
-      moduleId: json['module_id'] ?? 0,
-      title: json['title'] ?? json['titulo'] ?? '',
-      type: json['type'] ?? json['tipo'] ?? '',
-      order: json['order'] ?? json['ordem'] ?? 0,
+      idModulo: json['module_id'] ?? 0,
+      titulo: json['title'] ?? json['titulo'] ?? '',
+      tipo: json['type'] ?? json['tipo'] ?? '',
+      ordem: json['order'] ?? json['ordem'] ?? 0,
       isDone: json['is_done'] == true || json['is_done'] == 1,
       isAvailable:
       json['is_available'] == true || json['is_available'] == 1,
@@ -61,7 +61,7 @@ class Lesson {
       connectorColored:
       json['connector_colored'] == true || json['connector_colored'] == 1,
       icon: json['icon'] ?? '',
-      subtitle: json['subtitle'] ?? '',
+      subtitulo: json['subtitle'] ?? '',
     );
   }
 }
@@ -103,9 +103,9 @@ class _TelaModuloState extends State<TelaModulo> {
     Color(0xFF2B628C),
   ];
 
-  List<Lesson> _licoes = [];
-  bool _loading = true;
-  String? _error;
+  List<Licao> _licoes = [];
+  bool _carregando = true;
+  String? _erro;
 
   @override
   void initState() {
@@ -115,36 +115,36 @@ class _TelaModuloState extends State<TelaModulo> {
 
   Future<void> _fetchLicoes() async {
     setState(() {
-      _loading = true;
-      _error = null;
+      _carregando = true;
+      _erro = null;
     });
 
     try {
-      final baseUrl = '${await obterUrl()}/api/buscarModulo.php';
+      final urlBase = '${await obterUrl()}/api/buscarModulo.php';
       final modulo = widget.modulo.id;
       final usuario = widget.usuario['id'];
       final uri = Uri.parse(
-          '$baseUrl?modulo=$modulo&login=$usuario');
+          '$urlBase?modulo=$modulo&login=$usuario');
 
-      final resp = await http.get(uri).timeout(Duration(seconds: 12));
-      if (resp.statusCode != 200) {
-        throw Exception('Status ${resp.statusCode}');
+      final resposta = await http.get(uri).timeout(Duration(seconds: 12));
+      if (resposta.statusCode != 200) {
+        throw Exception('Status ${resposta.statusCode}');
       }
 
-      final jsonBody = json.decode(resp.body);
+      final jsonBody = json.decode(resposta.body);
       final items = jsonBody['licoes'] as List<dynamic>?;
       if (items == null) {
         throw Exception('Resposta inválida: campo lições ausente');
       }
 
-      _licoes = items.map((e) => Lesson.fromJson(e)).toList();
+      _licoes = items.map((e) => Licao.fromJson(e)).toList();
       setState(() {
-        _loading = false;
+        _carregando = false;
       });
     } catch (e) {
       setState(() {
-        _loading = false;
-        _error = e.toString();
+        _carregando = false;
+        _erro = e.toString();
       });
     }
   }
@@ -156,9 +156,9 @@ class _TelaModuloState extends State<TelaModulo> {
 
   @override
   Widget build(BuildContext context) {
-    final bg = widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
+    final backgroundColor = widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
     return Scaffold(
-      backgroundColor: bg,
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(
@@ -170,7 +170,7 @@ class _TelaModuloState extends State<TelaModulo> {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: bg,
+        backgroundColor: backgroundColor,
         automaticallyImplyLeading: false,
         centerTitle: true,
         toolbarHeight: 60,
@@ -282,14 +282,14 @@ class _TelaModuloState extends State<TelaModulo> {
             ),
           ),
           Expanded(
-            child: _loading
+            child: _carregando
                 ? Center(child: CircularProgressIndicator())
-                : _error != null
+                : _erro != null
                 ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Erro: $_error'),
+                  Text('Erro: $_erro'),
                   SizedBox(height: 12),
                   ElevatedButton(
                       onPressed: _fetchLicoes,
@@ -301,29 +301,29 @@ class _TelaModuloState extends State<TelaModulo> {
               padding: EdgeInsets.symmetric(vertical: 12),
               itemCount: _licoes.length,
               itemBuilder: (context, index) {
-                final lesson = _licoes[index];
-                final nextConnectorColored = lesson.connectorColored;
+                final licao = _licoes[index];
+                final nextConnectorColored = licao.connectorColored;
                 final accent = _moduleAccentColor();
 
                 // estilos dependendo se a linha está cinza
                 final titleStyle = GoogleFonts.baloo2(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
-                  color: lesson.rowGray ? Colors.grey : _coresTituloPorModulo[widget.modulo.id - 1],
+                  color: licao.rowGray ? Colors.grey : _coresTituloPorModulo[widget.modulo.id - 1],
                 );
                 final subtitleStyle = GoogleFonts.baloo2(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: lesson.rowGray ? Colors.grey : accent,
+                  color: licao.rowGray ? Colors.grey : accent,
                 );
 
                 return InkWell(
-                  onTap: lesson.isAvailable
+                  onTap: licao.isAvailable
                       ? () {
                     // ação ao abrir a lição. Aqui você pode navegar para a tela de conteúdo.
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Abrindo: ${lesson.title}'),
+                        content: Text('Abrindo: ${licao.titulo}'),
                         duration: Duration(milliseconds: 700),
                       ),
                     );
@@ -343,7 +343,7 @@ class _TelaModuloState extends State<TelaModulo> {
                               width: 48,
                               height: 48,
                               decoration: BoxDecoration(
-                                color: lesson.rowGray
+                                color: licao.rowGray
                                     ? Colors.grey.shade300
                                     : Colors.white,
                                 borderRadius: BorderRadius.circular(8),
@@ -354,7 +354,7 @@ class _TelaModuloState extends State<TelaModulo> {
                                       offset: Offset(0, 1))
                                 ],
                                 border: Border.all(
-                                  color: lesson.isAvailable
+                                  color: licao.isAvailable
                                       ? accent
                                       : Colors.grey.shade400,
                                   width: 2,
@@ -362,10 +362,10 @@ class _TelaModuloState extends State<TelaModulo> {
                               ),
                               child: Center(
                                 child: Icon(
-                                  lesson.icon.toLowerCase().contains('book')
+                                  licao.icon.toLowerCase().contains('book')
                                       ? Icons.menu_book_rounded
                                       : Icons.edit_rounded,
-                                  color: lesson.rowGray
+                                  color: licao.rowGray
                                       ? Colors.grey
                                       : accent,
                                 ),
@@ -402,7 +402,7 @@ class _TelaModuloState extends State<TelaModulo> {
                                 children: [
                                   Flexible(
                                     child: Text(
-                                      lesson.title,
+                                      licao.titulo,
                                       style: titleStyle,
                                     ),
                                   ),
@@ -410,7 +410,7 @@ class _TelaModuloState extends State<TelaModulo> {
                               ),
                               SizedBox(height: 6),
                               Text(
-                                lesson.subtitle,
+                                licao.subtitulo,
                                 style: subtitleStyle,
                               ),
                             ],
