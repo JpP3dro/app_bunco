@@ -282,7 +282,7 @@ print("Soma da lista:", sum(numeros))''';
           Container(
             margin: EdgeInsets.only(bottom: 20),
             height: 400,
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery.of(context).size.width * 0.80,
             decoration: BoxDecoration(
               color: const Color(0xFF1e293b),
               borderRadius: BorderRadius.circular(23),
@@ -416,7 +416,7 @@ print("Soma da lista:", sum(numeros))''';
 
           // Console de Saída (Mobile)
           Container(
-            width: MediaQuery.of(context).size.width * 0.75,
+            width: MediaQuery.of(context).size.width * 0.80,
             decoration: BoxDecoration(
               color: const Color(0xFF1e293b),
               borderRadius: BorderRadius.circular(23),

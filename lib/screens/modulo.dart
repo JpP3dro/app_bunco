@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_bunco/screens/aula.dart';
 import 'package:app_bunco/screens/curso.dart';
 import 'package:app_bunco/uteis/url.dart';
 import 'package:flutter/material.dart';
@@ -320,11 +321,10 @@ class _TelaModuloState extends State<TelaModulo> {
                 return InkWell(
                   onTap: licao.isAvailable
                       ? () {
-                    // ação ao abrir a lição. Aqui você pode navegar para a tela de conteúdo.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Abrindo: ${licao.titulo}'),
-                        duration: Duration(milliseconds: 700),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => TelaAula(usuario: widget.usuario, idAula: licao.id),
                       ),
                     );
                   }
