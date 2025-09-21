@@ -38,11 +38,11 @@ class _TelaCursoState extends State<TelaCurso> {
   final List<Color> _coresTituloPorModulo = [
     Color(0xFF0E898B),
     Color(0xFF0888C4),
-    Color(0xFF003E1C),
+    Color(0xFF3E7500),
     Color(0xFFB48C0E),
     Color(0xFF5B3399),
     Color(0xFF4C2F1F),
-    Color(0xFF420000),
+    Color(0xFF820D0D),
     Color(0xFFE64CA7),
     Color(0xFF2B628C),
   ];

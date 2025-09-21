@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:app_bunco/screens/aula.dart';
 import 'package:app_bunco/screens/curso.dart';
+import 'package:app_bunco/uteis/dialogo.dart';
+import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:app_bunco/uteis/url.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,11 +97,11 @@ class _TelaModuloState extends State<TelaModulo> {
   final List<Color> _coresTituloPorModulo = [
     Color(0xFF0E898B),
     Color(0xFF0888C4),
-    Color(0xFF003E1C),
+    Color(0xFF3E7500),
     Color(0xFFB48C0E),
     Color(0xFF5B3399),
     Color(0xFF4C2F1F),
-    Color(0xFF420000),
+    Color(0xFF820D0D),
     Color(0xFFE64CA7),
     Color(0xFF2B628C),
   ];
@@ -319,16 +321,28 @@ class _TelaModuloState extends State<TelaModulo> {
                 );
 
                 return InkWell(
-                  onTap: licao.isAvailable
-                      ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => TelaAula(usuario: widget.usuario, idAula: licao.id),
-                      ),
-                    );
-                  }
-                      : null,
+                  onTap: () async {
+                    if (licao.isAvailable && widget.usuario['vidas'] == 0) {
+                      await exibirResultado(
+                        context: context,
+                        tipo: TipoDialogo.erro,
+                        titulo: "Sem vidas",
+                        conteudo: "Você não tem vida para começar uma nova lição!",
+                      );
+                    } else if (licao.isAvailable) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TelaAula(
+                            usuario: widget.usuario,
+                            idAula: licao.id,
+                            modoEscuro: widget.modoEscuro,
+                            modulo: widget.modulo,
+                          ),
+                        ),
+                      );
+                    }
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16.0),

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TelaInicial extends StatefulWidget {
-  final Map<String, dynamic> usuario;
+  final Map<String, dynamic>? usuario;
   final bool parametroModoEscuro;
    const TelaInicial({
     super.key,
@@ -31,11 +31,11 @@ class _TelaInicialState extends State<TelaInicial> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> telas = [
-      TelaCurso(usuario: widget.usuario, modoEscuro: modoEscuro,),
-      TelaRanking(usuario: widget.usuario, modoEscuro: modoEscuro,),
+      TelaCurso(usuario: widget.usuario!, modoEscuro: modoEscuro,),
+      TelaRanking(usuario: widget.usuario!, modoEscuro: modoEscuro,),
       TelaTerminal(modoEscuro: modoEscuro),
-      TelaPerfil(usuario: widget.usuario, modoEscuro: modoEscuro),
-      TelaConfiguracoes(usuario: widget.usuario,
+      TelaPerfil(usuario: widget.usuario!, modoEscuro: modoEscuro),
+      TelaConfiguracoes(usuario: widget.usuario!,
         parametroModoEscuro: modoEscuro,
         onModoEscuroChanged: (novoValor) {
           setState(() {

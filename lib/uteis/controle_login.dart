@@ -62,7 +62,7 @@ Future<bool> verificarLogin(BuildContext context) async {
     final response = await http.post(
       Uri.parse(link),
       body: {"login": id},
-    );
+    ).timeout(const Duration(seconds: 20));
 
     if (response.statusCode == 200) {
       final dados = jsonDecode(response.body);
