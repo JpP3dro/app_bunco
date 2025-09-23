@@ -75,7 +75,7 @@ class _TelaCursoState extends State<TelaCurso> {
 
       final res = await http.post(link, body: {
         "login": id,
-      }).timeout(const Duration(seconds: 20));
+      }).timeout(const Duration(minutes: 2));
 
       if (res.statusCode != 200) {
         setState(() {

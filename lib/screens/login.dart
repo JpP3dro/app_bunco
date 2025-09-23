@@ -91,8 +91,8 @@ class _TelaLoginState extends State<TelaLogin> {
           context: context,
           tipo: TipoDialogo.erro,
           titulo: "Erro ao fazer o login",
-          //conteudo: "Conexão com o servidor falhou. Tente novamente daqui a pouco!"
-        conteudo: e.toString()
+          conteudo: "Conexão com o servidor falhou. Tente novamente daqui a pouco!"
+        //conteudo: e.toString()
       );
     }
   }

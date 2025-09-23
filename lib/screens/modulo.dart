@@ -129,7 +129,7 @@ class _TelaModuloState extends State<TelaModulo> {
       final uri = Uri.parse(
           '$urlBase?modulo=$modulo&login=$usuario');
 
-      final resposta = await http.get(uri).timeout(Duration(seconds: 12));
+      final resposta = await http.get(uri).timeout(Duration(minutes: 2));
       if (resposta.statusCode != 200) {
         throw Exception('Status ${resposta.statusCode}');
       }
@@ -147,7 +147,8 @@ class _TelaModuloState extends State<TelaModulo> {
     } catch (e) {
       setState(() {
         _carregando = false;
-        _erro = e.toString();
+        //_erro = e.toString();
+        _erro = "Algo deu errado, tente novamente mais tarde!";
       });
     }
   }
@@ -292,7 +293,12 @@ class _TelaModuloState extends State<TelaModulo> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Erro: $_erro'),
+                  Text(
+                    'Erro: $_erro',
+                    style: TextStyle(
+                      color: Colors.deepPurple
+                    ),
+                  ),
                   SizedBox(height: 12),
                   ElevatedButton(
                       onPressed: _fetchLicoes,

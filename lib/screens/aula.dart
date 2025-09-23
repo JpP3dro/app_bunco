@@ -61,7 +61,7 @@ class _TelaAulaState extends State<TelaAula> {
         'aula_id': widget.idAula.toString(),
         'usuario_id': widget.usuario['id'].toString(),
       },
-    );
+    ).timeout(Duration(minutes: 1));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -92,9 +92,19 @@ class _TelaAulaState extends State<TelaAula> {
         });
         return _aulaData!;
       } else {
-        throw Exception(data['mensagem']);
+        await exibirResultado(
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Erro ao carregar aula",
+            conteudo: data['mensagem']);
+        throw Exception('Falha ao carregar aula');
       }
     } else {
+      await exibirResultado(
+          context: context,
+          tipo: TipoDialogo.erro,
+          titulo: "Erro de conexão",
+          conteudo: "Erro ao se conectar com o servidor");
       throw Exception('Falha ao carregar aula');
     }
   }
@@ -158,7 +168,7 @@ class _TelaAulaState extends State<TelaAula> {
           'aula_id': widget.idAula.toString(),
           'usuario_id': widget.usuario['id'].toString(),
         },
-      );
+      ).timeout(const Duration(minutes: 1));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -391,6 +401,7 @@ class _TelaAulaState extends State<TelaAula> {
   }
 
   Widget _buildTelaTexto(ConteudoAula conteudo) {
+    int telaAtual = _currentPage + 1;
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
       child: Column(
@@ -404,8 +415,18 @@ class _TelaAulaState extends State<TelaAula> {
             height: 20,
           ),
           CldImageWidget(
-              publicId: 'samples/sheep.jpg',
+            publicId: 'image-${widget.idAula}-$telaAtual.jpg',
             cloudinary: cloudinary,
+            height: 300,
+            placeholder: (context, url) => Center(
+              child: CircularProgressIndicator(),
+            ),
+
+            errorBuilder: (context, url, error) => Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 40,
+            ),
           ),
         ],
       ),
@@ -413,6 +434,7 @@ class _TelaAulaState extends State<TelaAula> {
   }
 
   Widget _buildTelaExemplo(ConteudoAula conteudo) {
+    int telaAtual = _currentPage + 1;
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
       child: Column(
@@ -429,6 +451,20 @@ class _TelaAulaState extends State<TelaAula> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: Text('• $passo', style: TextStyle(fontSize: 16)),
                 )),
+          CldImageWidget(
+            publicId: 'image-${widget.idAula}-$telaAtual.jpg',
+            cloudinary: cloudinary,
+            height: 300,
+            placeholder: (context, url) => Center(
+              child: CircularProgressIndicator(),
+            ),
+
+            errorBuilder: (context, url, error) => Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 40,
+            ),
+          ),
         ],
       ),
     );
