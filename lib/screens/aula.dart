@@ -1,6 +1,9 @@
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:app_bunco/uteis/url.dart';
+import 'package:cloudinary_flutter/cloudinary_object.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +30,7 @@ class TelaAula extends StatefulWidget {
 }
 
 class _TelaAulaState extends State<TelaAula> {
+  late Cloudinary cloudinary;
   List<List<String>?> _ordenacaoItens = [];
   late Future<AulaDetalhada> _futureAula;
   int _currentPage = 0;
@@ -39,6 +43,7 @@ class _TelaAulaState extends State<TelaAula> {
   @override
   void initState() {
     super.initState();
+    cloudinary = CloudinaryObject.fromCloudName(cloudName: 'dmcahqhac');
     _futureAula = _fetchAulaDetalhada();
     _pageController = PageController(initialPage: _currentPage);
   }
@@ -163,7 +168,7 @@ class _TelaAulaState extends State<TelaAula> {
             widget.usuario['xp'] += int.parse(data['xp_ganho']);
             if (data['modulo_ganho']) {
               widget.usuario['modulos'] += 1;
-            };
+            }
           });
           // Mostrar mensagem de sucesso
           await exibirResultado(
@@ -388,10 +393,21 @@ class _TelaAulaState extends State<TelaAula> {
   Widget _buildTelaTexto(ConteudoAula conteudo) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(20),
-      child: Text(
-        conteudo.conteudo ?? '',
-        style: TextStyle(fontSize: 18, height: 1.5),
-        textAlign: TextAlign.justify,
+      child: Column(
+        children: [
+          Text(
+            conteudo.conteudo ?? '',
+            style: TextStyle(fontSize: 18, height: 1.5),
+            textAlign: TextAlign.justify,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CldImageWidget(
+              publicId: 'samples/sheep.jpg',
+            cloudinary: cloudinary,
+          ),
+        ],
       ),
     );
   }
