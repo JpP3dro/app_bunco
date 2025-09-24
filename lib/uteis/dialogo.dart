@@ -82,12 +82,12 @@ Future<void> exibirResultado(
                                 parametroModoEscuro: modoEscuro,
                               ),
                             ),
-                                (Route<dynamic> route) => false,
+                                (Route<dynamic> route) => true,
                           );
                         });
-                      } else {
-                        Navigator.pop(context);
                       }
+                        Navigator.pop(context);
+
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,

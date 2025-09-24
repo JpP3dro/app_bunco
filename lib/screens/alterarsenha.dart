@@ -389,8 +389,8 @@ Future<void> _alterarSenha(BuildContext context, String username,
     String link = "$url/api/alterarSenha.php";
     var res = await http.post(Uri.parse(link), body: {
       "username": username,
-      "senhanova": senhaNova,
-      "senhaatual": senhaAtual
+      "senhaNova": senhaNova,
+      "senhaAtual": senhaAtual
     }).timeout(const Duration(minutes: 1));
 
     var response = jsonDecode(res.body);
@@ -412,6 +412,8 @@ Future<void> _alterarSenha(BuildContext context, String username,
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Erro ao alterar a senha",
-        conteudo: "Tente de novo daqui a pouco!");
+        //conteudo: "Tente de novo daqui a pouco!");
+        conteudo: e.toString()
+    );
   }
 }

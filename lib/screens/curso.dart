@@ -193,7 +193,7 @@ class _TelaCursoState extends State<TelaCurso> {
         child: RefreshIndicator(
           onRefresh: _carregarModulos,
           child: _carregando
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),))
               : _erro != null
                   ? ListView(
                       physics: const AlwaysScrollableScrollPhysics(),

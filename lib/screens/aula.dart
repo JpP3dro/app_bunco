@@ -30,6 +30,7 @@ class TelaAula extends StatefulWidget {
 }
 
 class _TelaAulaState extends State<TelaAula> {
+  bool _concluindoAula = false;
   late Cloudinary cloudinary;
   List<List<String>?> _ordenacaoItens = [];
   late Future<AulaDetalhada> _futureAula;
@@ -161,6 +162,11 @@ class _TelaAulaState extends State<TelaAula> {
   }
 
   Future<void> _concluirAula() async {
+    if (_concluindoAula) return;
+
+    setState(() {
+      _concluindoAula = true;
+    });
     try {
       final response = await http.post(
         Uri.parse('${await obterUrl()}/api/concluirAula.php'),
@@ -173,14 +179,13 @@ class _TelaAulaState extends State<TelaAula> {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['sucesso']) {
-          // Atualizar os dados do usuário localmente se necessário
           setState(() {
             widget.usuario['xp'] += int.parse(data['xp_ganho']);
+            widget.usuario['ofensiva'] = data['ofensiva'];
             if (data['modulo_ganho']) {
               widget.usuario['modulos'] += 1;
             }
           });
-          // Mostrar mensagem de sucesso
           await exibirResultado(
               context: context,
               tipo: TipoDialogo.sucesso,
@@ -325,7 +330,7 @@ class _TelaAulaState extends State<TelaAula> {
         future: _futureAula,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),));
           } else if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -414,18 +419,20 @@ class _TelaAulaState extends State<TelaAula> {
           SizedBox(
             height: 20,
           ),
-          CldImageWidget(
-            publicId: 'image-${widget.idAula}-$telaAtual.jpg',
-            cloudinary: cloudinary,
-            height: 300,
-            placeholder: (context, url) => Center(
-              child: CircularProgressIndicator(),
-            ),
+          Center(
+            child: CldImageWidget(
+              publicId: 'image-${widget.idAula}-$telaAtual',
+              cloudinary: cloudinary,
+              //height: 300,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(color: Color(0xFF1CB0F6),),
+              ),
 
-            errorBuilder: (context, url, error) => Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 40,
+              errorBuilder: (context, url, error) => Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 40,
+              ),
             ),
           ),
         ],
@@ -451,18 +458,20 @@ class _TelaAulaState extends State<TelaAula> {
                   padding: EdgeInsets.symmetric(vertical: 8),
                   child: Text('• $passo', style: TextStyle(fontSize: 16)),
                 )),
-          CldImageWidget(
-            publicId: 'image-${widget.idAula}-$telaAtual.jpg',
-            cloudinary: cloudinary,
-            height: 300,
-            placeholder: (context, url) => Center(
-              child: CircularProgressIndicator(),
-            ),
+          Center(
+            child: CldImageWidget(
+              publicId: 'image-${widget.idAula}-$telaAtual',
+              cloudinary: cloudinary,
+              //height: 300,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(color: Color(0xFF1CB0F6),),
+              ),
 
-            errorBuilder: (context, url, error) => Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 40,
+              errorBuilder: (context, url, error) => Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 40,
+              ),
             ),
           ),
         ],
@@ -943,7 +952,7 @@ class _TelaAulaState extends State<TelaAula> {
             style: TextStyle(fontSize: 16),
           ),
           ElevatedButton(
-            onPressed: podeAvancar
+            onPressed: (podeAvancar && !_concluindoAula)
                 ? (_currentPage < aula.conteudo.length - 1
                     ? _proximaTela
                     : () async {

@@ -287,7 +287,7 @@ class _TelaModuloState extends State<TelaModulo> {
           ),
           Expanded(
             child: _carregando
-                ? Center(child: CircularProgressIndicator())
+                ? Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),))
                 : _erro != null
                 ? Center(
               child: Column(
