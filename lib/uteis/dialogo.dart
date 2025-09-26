@@ -75,14 +75,14 @@ Future<void> exibirResultado(
                       // Se precisa voltar para a tela inicial, faz isso após fechar o diálogo
                       if (voltarTelaInicial) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.of(context).pushAndRemoveUntil(
+                          Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => TelaInicial(
                                 usuario: usuario,
                                 parametroModoEscuro: modoEscuro,
                               ),
                             ),
-                                (Route<dynamic> route) => true,
+                                //(Route<dynamic> route) => true,
                           );
                         });
                       }

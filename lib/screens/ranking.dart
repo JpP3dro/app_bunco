@@ -22,9 +22,12 @@ class TelaRanking extends StatefulWidget {
   State<TelaRanking> createState() => _TelaRankingState();
 }
 
-class _TelaRankingState extends State<TelaRanking> {
+class _TelaRankingState extends State<TelaRanking> with AutomaticKeepAliveClientMixin{
   List<Map<String, dynamic>> primeiros = [];
   Map<String, dynamic>? voce;
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -91,6 +94,7 @@ class _TelaRankingState extends State<TelaRanking> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (voce == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),)),

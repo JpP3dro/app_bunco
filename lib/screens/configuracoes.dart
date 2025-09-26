@@ -29,7 +29,7 @@ class TelaConfiguracoes extends StatefulWidget {
   State<TelaConfiguracoes> createState() => _TelaConfiguracoesState();
 }
 
-class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
+class _TelaConfiguracoesState extends State<TelaConfiguracoes> with AutomaticKeepAliveClientMixin{
   late bool _botaoClaroPressionado;
   late List<Map<String, dynamic>> opcoes;
   late bool modoEscuro;
@@ -167,6 +167,9 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
   }
 
   @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
+
+  @override
   void initState() {
     super.initState();
     modoEscuro = widget.parametroModoEscuro;
@@ -245,6 +248,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Color(0xFF29A2DB),
       appBar: AppBar(

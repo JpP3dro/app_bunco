@@ -29,7 +29,7 @@ class TelaAula extends StatefulWidget {
   State<TelaAula> createState() => _TelaAulaState();
 }
 
-class _TelaAulaState extends State<TelaAula> {
+class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin {
   bool _concluindoAula = false;
   late Cloudinary cloudinary;
   List<List<String>?> _ordenacaoItens = [];
@@ -40,6 +40,9 @@ class _TelaAulaState extends State<TelaAula> {
   List<bool> _exerciciosConcluidos =
       []; // Controla se cada exercício foi concluído
   List<dynamic> _respostas = []; // Armazena as respostas dos usuários
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -282,6 +285,7 @@ class _TelaAulaState extends State<TelaAula> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

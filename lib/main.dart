@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
             future: verificarLogin(context),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(child: CircularProgressIndicator(color: Color(OxFF1CB0F6)));
+                return const Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6)));
               }
               if (snapshot.data!) {
                 return TelaInicial(

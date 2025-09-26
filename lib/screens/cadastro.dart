@@ -18,7 +18,7 @@ class TelaCadastro extends StatefulWidget {
   State<TelaCadastro> createState() => _TelaCadastroState();
 }
 
-class _TelaCadastroState extends State<TelaCadastro> {
+class _TelaCadastroState extends State<TelaCadastro> with AutomaticKeepAliveClientMixin{
   final TextEditingController _controllerNome = TextEditingController();
   final TextEditingController _controllerUsername = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
@@ -136,6 +136,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
   }
 
   @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
+
+  @override
   void dispose() {
     _controllerNome.dispose();
     _controllerUsername.dispose();
@@ -146,6 +149,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

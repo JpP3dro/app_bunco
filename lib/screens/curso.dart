@@ -15,7 +15,7 @@ class TelaCurso extends StatefulWidget {
   State<TelaCurso> createState() => _TelaCursoState();
 }
 
-class _TelaCursoState extends State<TelaCurso> {
+class _TelaCursoState extends State<TelaCurso> with AutomaticKeepAliveClientMixin{
   bool _carregando = true;
   String? _erro;
   List<Modulo> _modulos = [];
@@ -46,6 +46,9 @@ class _TelaCursoState extends State<TelaCurso> {
     Color(0xFFE64CA7),
     Color(0xFF2B628C),
   ];
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -115,6 +118,7 @@ class _TelaCursoState extends State<TelaCurso> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(

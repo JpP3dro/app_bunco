@@ -19,7 +19,7 @@ class TelaOutroPerfil extends StatefulWidget {
   State<TelaOutroPerfil> createState() => _TelaOutroPerfilState();
 }
 
-class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
+class _TelaOutroPerfilState extends State<TelaOutroPerfil> with AutomaticKeepAliveClientMixin{
   late List<_Cards> cards;
   late String exibirDias;
   late String exibirVidas;
@@ -41,6 +41,9 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   }
 
   @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
+
+  @override
   void initState() {
     super.initState();
     fotoSelecionada = 'assets/images/perfil/${widget.usuario!['foto']}.png';
@@ -56,6 +59,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(

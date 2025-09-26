@@ -16,7 +16,7 @@ class TelaTerminal extends StatefulWidget {
   State<TelaTerminal> createState() => _TelaTerminalState();
 }
 
-class _TelaTerminalState extends State<TelaTerminal> {
+class _TelaTerminalState extends State<TelaTerminal> with AutomaticKeepAliveClientMixin{
   String code = '''# Escreva seu código Python aqui
 print("Olá, mundo!")
 print("Bem-vindo ao Python Console!")
@@ -51,6 +51,9 @@ print("Soma da lista:", sum(numeros))''';
   final TextEditingController _codeController = TextEditingController();
   final TextEditingController _inputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -227,6 +230,7 @@ print("Soma da lista:", sum(numeros))''';
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     bool isMobile = MediaQuery.of(context).size.width < 600;
     bool isTablet = MediaQuery.of(context).size.width < 1000;
 

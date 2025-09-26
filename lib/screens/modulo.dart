@@ -69,7 +69,7 @@ class Licao {
   }
 }
 
-class _TelaModuloState extends State<TelaModulo> {
+class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMixin{
   final List<Color> _coresTextoPorModulo = [
     Color(0xFF15D2D6),
     Color(0xFF84C1FF),
@@ -109,6 +109,9 @@ class _TelaModuloState extends State<TelaModulo> {
   List<Licao> _licoes = [];
   bool _carregando = true;
   String? _erro;
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -160,6 +163,7 @@ class _TelaModuloState extends State<TelaModulo> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final backgroundColor = widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -360,8 +364,8 @@ class _TelaModuloState extends State<TelaModulo> {
                           children: [
                             // quadrado com ícone
                             Container(
-                              width: 48,
-                              height: 48,
+                              width: 55,
+                              height: 55,
                               decoration: BoxDecoration(
                                 color: licao.rowGray
                                     ? Colors.grey.shade300
@@ -402,7 +406,6 @@ class _TelaModuloState extends State<TelaModulo> {
                                   color: nextConnectorColored
                                       ? accent
                                       : Colors.grey.shade400,
-                                  borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
                           ],

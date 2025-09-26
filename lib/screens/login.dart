@@ -18,7 +18,7 @@ class TelaLogin extends StatefulWidget {
   State<TelaLogin> createState() => _TelaLoginState();
 }
 
-class _TelaLoginState extends State<TelaLogin> {
+class _TelaLoginState extends State<TelaLogin> with AutomaticKeepAliveClientMixin{
   bool _mostrarSenha = false;
   bool _botaoPressionado = false;
   final TextEditingController _controllerSenha = TextEditingController();
@@ -98,6 +98,9 @@ class _TelaLoginState extends State<TelaLogin> {
   }
 
   @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
+
+  @override
   void dispose() {
     _controllerLogin.dispose();
     _controllerSenha.dispose();
@@ -106,6 +109,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();

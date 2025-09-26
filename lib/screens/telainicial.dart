@@ -19,9 +19,12 @@ class TelaInicial extends StatefulWidget {
   State<TelaInicial> createState() => _TelaInicialState();
 }
 
-class _TelaInicialState extends State<TelaInicial> {
+class _TelaInicialState extends State<TelaInicial> with AutomaticKeepAliveClientMixin{
   late bool modoEscuro;
   int myIndex = 0;
+
+  @override
+  bool get wantKeepAlive => true; // ← Isso preserva o estado
 
   @override
   void initState() {
@@ -30,6 +33,7 @@ class _TelaInicialState extends State<TelaInicial> {
   }
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final List<Widget> telas = [
       TelaCurso(usuario: widget.usuario!, modoEscuro: modoEscuro,),
       TelaRanking(usuario: widget.usuario!, modoEscuro: modoEscuro,),
