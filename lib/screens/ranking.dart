@@ -184,7 +184,7 @@ class _TelaRankingState extends State<TelaRanking> with AutomaticKeepAliveClient
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: isYou ? Colors.blueAccent : Colors.blue,
+            color: index <= 2 ? Colors.transparent : Color(0xFF1CB0F6),
             width: index <= 2 ? 0 : 2,
           ),
           borderRadius: BorderRadius.circular(8),

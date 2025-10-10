@@ -1,3 +1,4 @@
+import 'package:app_bunco/screens/telainicial.dart';
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:app_bunco/uteis/url.dart';
@@ -17,19 +18,19 @@ class TelaAula extends StatefulWidget {
   final bool modoEscuro;
   final Modulo modulo;
 
-  const TelaAula({
-    super.key,
-    required this.usuario,
-    required this.idAula,
-    required this.modoEscuro,
-    required this.modulo
-  });
+  const TelaAula(
+      {super.key,
+      required this.usuario,
+      required this.idAula,
+      required this.modoEscuro,
+      required this.modulo});
 
   @override
   State<TelaAula> createState() => _TelaAulaState();
 }
 
-class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin {
+class _TelaAulaState extends State<TelaAula>
+    with AutomaticKeepAliveClientMixin {
   bool _concluindoAula = false;
   late Cloudinary cloudinary;
   List<List<String>?> _ordenacaoItens = [];
@@ -194,34 +195,33 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
               tipo: TipoDialogo.sucesso,
               titulo: "Aula concluida!",
               conteudo: data['mensagem'],
-            voltarTelaInicial: true,
-            usuario: widget.usuario,
-            modoEscuro: widget.modoEscuro
-          );
+              voltarTelaInicial: true,
+              usuario: widget.usuario,
+              modoEscuro: widget.modoEscuro);
         } else {
           await exibirResultado(
-              context: context,
-              tipo: TipoDialogo.erro,
-              titulo: "Algo deu errado!",
-              conteudo: data['mensagem'],
+            context: context,
+            tipo: TipoDialogo.erro,
+            titulo: "Algo deu errado!",
+            conteudo: data['mensagem'],
           );
         }
       } else {
         await exibirResultado(
-            context: context,
-            tipo: TipoDialogo.alerta,
-            titulo: "Requisição deu errado!",
-            conteudo: "Algo deu errado ao fazer a requisição!",
+          context: context,
+          tipo: TipoDialogo.alerta,
+          titulo: "Requisição deu errado!",
+          conteudo: "Algo deu errado ao fazer a requisição!",
         );
       }
     } catch (e) {
       await exibirResultado(
-          context: context,
-          tipo: TipoDialogo.alerta,
-          titulo: "Erro ao concluir a aula",
-          //conteudo: e.toString(),
-          conteudo: "Algo deu errado. Tente novamente mais tarde!",
-          );
+        context: context,
+        tipo: TipoDialogo.alerta,
+        titulo: "Erro ao concluir a aula",
+        //conteudo: e.toString(),
+        conteudo: "Algo deu errado. Tente novamente mais tarde!",
+      );
     }
   }
 
@@ -237,29 +237,43 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['sucesso']) {
+          final vidasRestantes = data['vidas_restantes'];
           setState(() {
-            widget.usuario['vidas'] = data['vidas_restantes'];
+            widget.usuario['vidas'] = vidasRestantes;
           });
-          if (await data['vidas_restantes'] == 0) {
+          if (vidasRestantes == 0) {
             await exibirResultado(
                 context: context,
                 tipo: TipoDialogo.erro,
                 titulo: "Sem vidas!",
                 conteudo: "Você perdeu todas as suas vidas!",
                 voltarTelaInicial: true,
-              modoEscuro: widget.modoEscuro,
-              usuario: widget.usuario
+                modoEscuro: widget.modoEscuro,
+                usuario: widget.usuario
             );
           }
-
           return true;
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(data['mensagem']),
-              backgroundColor: Colors.red,
-            ),
-          );
+          // Se a requisição não foi bem-sucedida, verifica se a mensagem indica que não tem vidas
+          // Ou se as vidas atuais já são 0, então exibe a mensagem
+          if (widget.usuario['vidas'] == 0) {
+            await exibirResultado(
+                context: context,
+                tipo: TipoDialogo.erro,
+                titulo: "Sem vidas!",
+                conteudo: "Você perdeu todas as suas vidas!",
+                voltarTelaInicial: true,
+                modoEscuro: widget.modoEscuro,
+                usuario: widget.usuario
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(data['mensagem']),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
           return false;
         }
       } else {
@@ -274,7 +288,6 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          //content: Text('Erro: $e'),
           content: Text('Erro.'),
           backgroundColor: Colors.red,
         ),
@@ -286,71 +299,99 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: Color(0xFF1CB0F6),
-            size: 30,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TelaInicial(
+                usuario: widget.usuario,
+                parametroModoEscuro:
+                MediaQuery.of(context).platformBrightness ==
+                    Brightness.dark,
+              )),
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: Color(0xFF1CB0F6),
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TelaInicial(
+                      usuario: widget.usuario,
+                      parametroModoEscuro:
+                      MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark,
+                    )),
+              );
+            },
           ),
-          onPressed: () {
-            Navigator.pop(context);
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          toolbarHeight: 60,
+          title: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  widget.usuario['vidas'].toString(),
+                  style: GoogleFonts.baloo2(
+                    color: Color(0xFFEA2B2B),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 35,
+                  ),
+                ),
+                SizedBox(width: 5),
+                Image.asset(
+                  "assets/images/icone/icone-vida.png",
+                  width: 30,
+                ),
+              ],
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0),
+            child: Container(
+              color: Color(0xFF2C2F35),
+              height: 4.0,
+            ),
+          ),
+        ),
+        body: FutureBuilder<AulaDetalhada>(
+          future: _futureAula,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF1CB0F6),
+                  ));
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Erro: ${snapshot.error}',
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              final aula = snapshot.data!;
+              return _buildAulaContent(aula);
+            } else {
+              return Center(
+                child: Text('Nenhum dado disponível'),
+              );
+            }
           },
         ),
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        toolbarHeight: 60,
-        title: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                widget.usuario['vidas'].toString(),
-                style: GoogleFonts.baloo2(
-                  color: Color(0xFFEA2B2B),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
-                ),
-              ),
-              SizedBox(width: 5),
-              Image.asset(
-                "assets/images/icone/icone-vida.png",
-                width: 30,
-              ),
-            ],
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            color: Color(0xFF2C2F35),
-            height: 4.0,
-          ),
-        ),
-      ),
-      body: FutureBuilder<AulaDetalhada>(
-        future: _futureAula,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),));
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                'Erro: ${snapshot.error}',
-                style: TextStyle(fontSize: 16),
-              ),
-            );
-          } else if (snapshot.hasData) {
-            final aula = snapshot.data!;
-            return _buildAulaContent(aula);
-          } else {
-            return Center(
-              child: Text('Nenhum dado disponível'),
-            );
-          }
-        },
       ),
     );
   }
@@ -429,7 +470,9 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
               cloudinary: cloudinary,
               //height: 300,
               placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(color: Color(0xFF1CB0F6),),
+                child: CircularProgressIndicator(
+                  color: Color(0xFF1CB0F6),
+                ),
               ),
 
               errorBuilder: (context, url, error) => Icon(
@@ -468,7 +511,9 @@ class _TelaAulaState extends State<TelaAula> with AutomaticKeepAliveClientMixin 
               cloudinary: cloudinary,
               //height: 300,
               placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(color: Color(0xFF1CB0F6),),
+                child: CircularProgressIndicator(
+                  color: Color(0xFF1CB0F6),
+                ),
               ),
 
               errorBuilder: (context, url, error) => Icon(

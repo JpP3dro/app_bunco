@@ -247,7 +247,7 @@ print("Soma da lista:", sum(numeros))''';
                 child: Column(
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "Terminal de Python",
@@ -288,7 +288,7 @@ print("Soma da lista:", sum(numeros))''';
             height: 400,
             width: MediaQuery.of(context).size.width * 0.80,
             decoration: BoxDecoration(
-              color: const Color(0xFF1e293b),
+              color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
               boxShadow: [
                 BoxShadow(
@@ -420,9 +420,10 @@ print("Soma da lista:", sum(numeros))''';
 
           // Console de Saída (Mobile)
           Container(
+            height: 240,
             width: MediaQuery.of(context).size.width * 0.80,
             decoration: BoxDecoration(
-              color: const Color(0xFF1e293b),
+              color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
               boxShadow: [
                 BoxShadow(
@@ -464,7 +465,7 @@ print("Soma da lista:", sum(numeros))''';
                   ),
                 ),
                 Container(
-                  height: 200,
+                  height: 180,
                   decoration: BoxDecoration(
                     color: Color(0xFF151923),
                     borderRadius: BorderRadius.circular(8),
@@ -561,7 +562,7 @@ print("Soma da lista:", sum(numeros))''';
           child: Container(
             width: MediaQuery.of(context).size.width * 0.85,
             decoration: BoxDecoration(
-              color: const Color(0xFF1e293b),
+              color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
               boxShadow: [
                 BoxShadow(
@@ -706,7 +707,7 @@ print("Soma da lista:", sum(numeros))''';
           child: Container(
             width: MediaQuery.of(context).size.width * 0.85,
             decoration: BoxDecoration(
-              color: const Color(0xFF1e293b),
+              color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
               boxShadow: [
                 BoxShadow(

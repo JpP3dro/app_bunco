@@ -305,11 +305,11 @@ Future<bool> _alterarLinks(BuildContext context, String username, String github,
   try {
     // Verificar os links com regex
     final regexGithub =
-        RegExp(r'^https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$');
+        RegExp(r'^(?:https:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$)?$');
     final regexInstagram =
-        RegExp(r'^https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$');
+        RegExp(r'^(?:https:\/\/(www\.)?instagram\.com\/[a-zA-Z0-9._]+\/?$)?$');
     final regexLinkedin = RegExp(
-      r"^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9À-ÿ\-_%]+\/?$",
+      r"^(?:https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9À-ÿ\-_%]+\/?$)?$",
       caseSensitive: false,
     );
 

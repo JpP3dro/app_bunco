@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../uteis/alterar_url.dart';
+//import '../uteis/alterar_url.dart';
 import '../uteis/url.dart';
 import 'package:http/http.dart' as http;
 import 'cadastro.dart';
@@ -132,7 +132,7 @@ class _TelaLoginState extends State<TelaLogin> with AutomaticKeepAliveClientMixi
           ),
           title: Image.asset('assets/images/telainicial/login.png'),
           toolbarHeight: 210,
-          actions: [
+          /*actions: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
@@ -145,7 +145,7 @@ class _TelaLoginState extends State<TelaLogin> with AutomaticKeepAliveClientMixi
                 },
               ),
             ),
-          ],
+          ],*/
         ),
         body: Container(
           height: MediaQuery.of(context).size.height -

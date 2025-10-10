@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import '../uteis/alterar_url.dart';
+//import '../uteis/alterar_url.dart';
 import '../uteis/controle_login.dart';
 import '../uteis/url.dart';
 import 'login.dart';
@@ -173,7 +173,7 @@ class _TelaCadastroState extends State<TelaCadastro> with AutomaticKeepAliveClie
             child: Image.asset('assets/images/telainicial/cadastro.png'),
           ),
           toolbarHeight: 210,
-          actions: [
+         /* actions: [
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: IconButton(
@@ -186,7 +186,7 @@ class _TelaCadastroState extends State<TelaCadastro> with AutomaticKeepAliveClie
                 },
               ),
             ),
-          ],
+          ],*/
         ),
         body: Container(
           height: MediaQuery.of(context).size.height -

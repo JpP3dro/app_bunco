@@ -320,12 +320,12 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
 
                 // estilos dependendo se a linha está cinza
                 final titleStyle = GoogleFonts.baloo2(
-                  fontSize: 16,
+                  fontSize: 17,
                   fontWeight: FontWeight.w700,
                   color: licao.rowGray ? Colors.grey : _coresTituloPorModulo[widget.modulo.id - 1],
                 );
                 final subtitleStyle = GoogleFonts.baloo2(
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: licao.rowGray ? Colors.grey : accent,
                 );
@@ -364,19 +364,14 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
                           children: [
                             // quadrado com ícone
                             Container(
-                              width: 55,
-                              height: 55,
+                              width: 70,
+                              height: 70,
                               decoration: BoxDecoration(
                                 color: licao.rowGray
                                     ? Colors.grey.shade300
-                                    : Colors.white,
+                                    : accent,
                                 borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 2,
-                                      offset: Offset(0, 1))
-                                ],
+
                                 border: Border.all(
                                   color: licao.isAvailable
                                       ? accent
@@ -386,12 +381,13 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
                               ),
                               child: Center(
                                 child: Icon(
+                                  size: 45,
                                   licao.icon.toLowerCase().contains('book')
                                       ? Icons.menu_book_rounded
                                       : Icons.edit_rounded,
                                   color: licao.rowGray
                                       ? Colors.grey
-                                      : accent,
+                                      : _coresFundoPorModulo[licao.idModulo - 1],
                                 ),
                               ),
                             ),
@@ -400,11 +396,11 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
                             if (index != _licoes.length - 1)
                               Container(
                                 width: 20,
-                                height: 64,
+                                height: 50,
                                 margin: EdgeInsets.only(top: 0),
                                 decoration: BoxDecoration(
                                   color: nextConnectorColored
-                                      ? accent
+                                      ? _coresTituloPorModulo[licao.idModulo - 1]
                                       : Colors.grey.shade400,
                                 ),
                               ),

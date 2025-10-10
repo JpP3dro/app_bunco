@@ -6,7 +6,7 @@ import 'package:app_bunco/uteis/url.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_bunco/uteis/dialogo.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
-import '../uteis/alterar_url.dart';
+//import '../uteis/alterar_url.dart';
 import 'alterarnome.dart' show TelaAlterarNome;
 import 'alterarusername.dart' show TelaAlterarUsername;
 import 'alteraremail.dart' show TelaAlterarEmail;
@@ -265,7 +265,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> with AutomaticKee
         ),
         centerTitle: true,
         toolbarHeight: 80,
-        actions: [
+        /*actions: [
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: IconButton(
@@ -278,7 +278,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> with AutomaticKee
               },
             ),
           ),
-        ],
+        ],*/
       ),
       body: Container(
         height: MediaQuery.of(context).size.height -
