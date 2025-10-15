@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app_bunco/screens/aula.dart';
 import 'package:app_bunco/screens/curso.dart';
 import 'package:app_bunco/uteis/dialogo.dart';
+import 'package:app_bunco/uteis/popup_vidas.dart';
 import 'package:app_bunco/uteis/tipo_dialogo.dart';
 import 'package:app_bunco/uteis/url.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +14,12 @@ class TelaModulo extends StatefulWidget {
   final Map<String, dynamic> usuario;
   final bool modoEscuro;
   final Modulo modulo;
+
   const TelaModulo(
       {super.key,
-        required this.usuario,
-        required this.modoEscuro,
-        required this.modulo});
+      required this.usuario,
+      required this.modoEscuro,
+      required this.modulo});
 
   @override
   State<TelaModulo> createState() => _TelaModuloState();
@@ -58,18 +60,18 @@ class Licao {
       tipo: json['type'] ?? json['tipo'] ?? '',
       ordem: json['order'] ?? json['ordem'] ?? 0,
       isDone: json['is_done'] == true || json['is_done'] == 1,
-      isAvailable:
-      json['is_available'] == true || json['is_available'] == 1,
+      isAvailable: json['is_available'] == true || json['is_available'] == 1,
       rowGray: json['row_gray'] == true || json['row_gray'] == 1,
       connectorColored:
-      json['connector_colored'] == true || json['connector_colored'] == 1,
+          json['connector_colored'] == true || json['connector_colored'] == 1,
       icon: json['icon'] ?? '',
       subtitulo: json['subtitle'] ?? '',
     );
   }
 }
 
-class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMixin{
+class _TelaModuloState extends State<TelaModulo>
+    with AutomaticKeepAliveClientMixin {
   final List<Color> _coresTextoPorModulo = [
     Color(0xFF15D2D6),
     Color(0xFF84C1FF),
@@ -129,8 +131,7 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
       final urlBase = '${await obterUrl()}/api/buscarModulo.php';
       final modulo = widget.modulo.id;
       final usuario = widget.usuario['id'];
-      final uri = Uri.parse(
-          '$urlBase?modulo=$modulo&login=$usuario');
+      final uri = Uri.parse('$urlBase?modulo=$modulo&login=$usuario');
 
       final resposta = await http.get(uri).timeout(Duration(minutes: 2));
       if (resposta.statusCode != 200) {
@@ -157,14 +158,16 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
   }
 
   Color _moduleAccentColor() {
-    final idx = (widget.modulo.id - 1).clamp(0, _coresTextoPorModulo.length - 1);
+    final idx =
+        (widget.modulo.id - 1).clamp(0, _coresTextoPorModulo.length - 1);
     return _coresTextoPorModulo[idx];
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final backgroundColor = widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
+    final backgroundColor =
+        widget.modoEscuro ? Color(0xFF0D141F) : Colors.white;
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -205,20 +208,33 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
               SizedBox(
                 width: 20,
               ),
-              Text(
-                widget.usuario['vidas'].toString(),
-                style: GoogleFonts.baloo2(
-                  color: Color(0xFFEA2B2B),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
+              GestureDetector(
+                onTap: () {
+                  TelaPopupVidas(
+                    context: context,
+                    modoEscuro: widget.modoEscuro,
+                    usuario: widget.usuario,
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      widget.usuario['vidas'].toString(),
+                      style: GoogleFonts.baloo2(
+                        color: Color(0xFFEA2B2B),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      "assets/images/icone/icone-vida.png",
+                      width: 30,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                "assets/images/icone/icone-vida.png",
-                width: 30,
               ),
               SizedBox(
                 width: 20,
@@ -291,156 +307,165 @@ class _TelaModuloState extends State<TelaModulo> with AutomaticKeepAliveClientMi
           ),
           Expanded(
             child: _carregando
-                ? Center(child: CircularProgressIndicator(color: Color(0xFF1CB0F6),))
-                : _erro != null
                 ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Erro: $_erro',
-                    style: TextStyle(
-                      color: Colors.deepPurple
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  ElevatedButton(
-                      onPressed: _fetchLicoes,
-                      child: Text('Tentar novamente'))
-                ],
-              ),
-            )
-                : ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              itemCount: _licoes.length,
-              itemBuilder: (context, index) {
-                final licao = _licoes[index];
-                final nextConnectorColored = licao.connectorColored;
-                final accent = _moduleAccentColor();
-
-                // estilos dependendo se a linha está cinza
-                final titleStyle = GoogleFonts.baloo2(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: licao.rowGray ? Colors.grey : _coresTituloPorModulo[widget.modulo.id - 1],
-                );
-                final subtitleStyle = GoogleFonts.baloo2(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: licao.rowGray ? Colors.grey : accent,
-                );
-
-                return InkWell(
-                  onTap: () async {
-                    if (licao.isAvailable && widget.usuario['vidas'] == 0) {
-                      await exibirResultado(
-                        context: context,
-                        tipo: TipoDialogo.erro,
-                        titulo: "Sem vidas",
-                        conteudo: "Você não tem vida para começar uma nova lição!",
-                      );
-                    } else if (licao.isAvailable) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => TelaAula(
-                            usuario: widget.usuario,
-                            idAula: licao.id,
-                            modoEscuro: widget.modoEscuro,
-                            modulo: widget.modulo,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Coluna do ícone + conector vertical
-                        Column(
+                    child: CircularProgressIndicator(
+                    color: Color(0xFF1CB0F6),
+                  ))
+                : _erro != null
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            // quadrado com ícone
-                            Container(
-                              width: 70,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: licao.rowGray
-                                    ? Colors.grey.shade300
-                                    : accent,
-                                borderRadius: BorderRadius.circular(8),
-
-                                border: Border.all(
-                                  color: licao.isAvailable
-                                      ? accent
-                                      : Colors.grey.shade400,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  size: 45,
-                                  licao.icon.toLowerCase().contains('book')
-                                      ? Icons.menu_book_rounded
-                                      : Icons.edit_rounded,
-                                  color: licao.rowGray
-                                      ? Colors.grey
-                                      : _coresFundoPorModulo[licao.idModulo - 1],
-                                ),
-                              ),
+                            Text(
+                              'Erro: $_erro',
+                              style: TextStyle(color: Colors.deepPurple),
                             ),
-
-                            // conector vertical (somente se não for o último item)
-                            if (index != _licoes.length - 1)
-                              Container(
-                                width: 20,
-                                height: 50,
-                                margin: EdgeInsets.only(top: 0),
-                                decoration: BoxDecoration(
-                                  color: nextConnectorColored
-                                      ? _coresTituloPorModulo[licao.idModulo - 1]
-                                      : Colors.grey.shade400,
-                                ),
-                              ),
+                            SizedBox(height: 12),
+                            ElevatedButton(
+                                onPressed: _fetchLicoes,
+                                child: Text('Tentar novamente'))
                           ],
                         ),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        itemCount: _licoes.length,
+                        itemBuilder: (context, index) {
+                          final licao = _licoes[index];
+                          final nextConnectorColored = licao.connectorColored;
+                          final accent = _moduleAccentColor();
 
-                        SizedBox(width: 16),
+                          // estilos dependendo se a linha está cinza
+                          final titleStyle = GoogleFonts.baloo2(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: licao.rowGray
+                                ? Colors.grey
+                                : _coresTituloPorModulo[widget.modulo.id - 1],
+                          );
+                          final subtitleStyle = GoogleFonts.baloo2(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: licao.rowGray ? Colors.grey : accent,
+                          );
 
-                        // Conteúdo da lição
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                          return InkWell(
+                            onTap: () async {
+                              if (licao.isAvailable &&
+                                  widget.usuario['vidas'] == 0) {
+                                await exibirResultado(
+                                  context: context,
+                                  tipo: TipoDialogo.erro,
+                                  titulo: "Sem vidas",
+                                  conteudo:
+                                      "Você não tem vida para começar uma nova lição!",
+                                );
+                              } else if (licao.isAvailable) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => TelaAula(
+                                      usuario: widget.usuario,
+                                      idAula: licao.id,
+                                      modoEscuro: widget.modoEscuro,
+                                      modulo: widget.modulo,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Flexible(
-                                    child: Text(
-                                      licao.titulo,
-                                      style: titleStyle,
+                                  // Coluna do ícone + conector vertical
+                                  Column(
+                                    children: [
+                                      // quadrado com ícone
+                                      Container(
+                                        width: 70,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color: licao.rowGray
+                                              ? Colors.grey.shade300
+                                              : accent,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                            color: licao.isAvailable
+                                                ? accent
+                                                : Colors.grey.shade400,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: Center(
+                                          child: Icon(
+                                            size: 45,
+                                            licao.icon
+                                                    .toLowerCase()
+                                                    .contains('book')
+                                                ? Icons.menu_book_rounded
+                                                : Icons.edit_rounded,
+                                            color: licao.rowGray
+                                                ? Colors.grey
+                                                : _coresFundoPorModulo[
+                                                    licao.idModulo - 1],
+                                          ),
+                                        ),
+                                      ),
+
+                                      // conector vertical (somente se não for o último item)
+                                      if (index != _licoes.length - 1)
+                                        Container(
+                                          width: 20,
+                                          height: 50,
+                                          margin: EdgeInsets.only(top: 0),
+                                          decoration: BoxDecoration(
+                                            color: nextConnectorColored
+                                                ? _coresTituloPorModulo[
+                                                    licao.idModulo - 1]
+                                                : Colors.grey.shade400,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+
+                                  SizedBox(width: 16),
+
+                                  // Conteúdo da lição
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                licao.titulo,
+                                                style: titleStyle,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 6),
+                                        Text(
+                                          licao.subtitulo,
+                                          style: subtitleStyle,
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 6),
-                              Text(
-                                licao.subtitulo,
-                                style: subtitleStyle,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+                            ),
+                          );
+                        },
+                      ),
           ),
         ],
       ),

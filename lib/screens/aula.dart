@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../uteis/popup_vidas.dart';
 import 'curso.dart';
 
 class TelaAula extends StatefulWidget {
@@ -340,23 +341,34 @@ class _TelaAulaState extends State<TelaAula>
           toolbarHeight: 60,
           title: Padding(
             padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  widget.usuario['vidas'].toString(),
-                  style: GoogleFonts.baloo2(
-                    color: Color(0xFFEA2B2B),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35,
+            child: GestureDetector(
+              onTap: () {
+                TelaPopupVidas(
+                  context: context,
+                  modoEscuro: widget.modoEscuro,
+                  usuario: widget.usuario,
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    widget.usuario['vidas'].toString(),
+                    style: GoogleFonts.baloo2(
+                      color: Color(0xFFEA2B2B),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 35,
+                    ),
                   ),
-                ),
-                SizedBox(width: 5),
-                Image.asset(
-                  "assets/images/icone/icone-vida.png",
-                  width: 30,
-                ),
-              ],
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Image.asset(
+                    "assets/images/icone/icone-vida.png",
+                    width: 30,
+                  ),
+                ],
+              ),
             ),
           ),
           bottom: PreferredSize(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../uteis/popup_vidas.dart';
 import '../uteis/url.dart';
 
 class TelaCurso extends StatefulWidget {
@@ -149,20 +150,33 @@ class _TelaCursoState extends State<TelaCurso> with AutomaticKeepAliveClientMixi
               SizedBox(
                 width: 20,
               ),
-              Text(
-                widget.usuario['vidas'].toString(),
-                style: GoogleFonts.baloo2(
-                  color: Color(0xFFEA2B2B),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
+              GestureDetector(
+                onTap: () {
+                  TelaPopupVidas(
+                    context: context,
+                    modoEscuro: widget.modoEscuro,
+                    usuario: widget.usuario,
+                  );
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      widget.usuario['vidas'].toString(),
+                      style: GoogleFonts.baloo2(
+                        color: Color(0xFFEA2B2B),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 35,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Image.asset(
+                      "assets/images/icone/icone-vida.png",
+                      width: 30,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                "assets/images/icone/icone-vida.png",
-                width: 30,
               ),
               SizedBox(
                 width: 20,
