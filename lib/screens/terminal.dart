@@ -16,7 +16,8 @@ class TelaTerminal extends StatefulWidget {
   State<TelaTerminal> createState() => _TelaTerminalState();
 }
 
-class _TelaTerminalState extends State<TelaTerminal> with AutomaticKeepAliveClientMixin{
+class _TelaTerminalState extends State<TelaTerminal>
+    with AutomaticKeepAliveClientMixin {
   String code = '''# Escreva seu código Python aqui
 print("Olá, mundo!")
 print("Bem-vindo ao Python Console!")
@@ -290,13 +291,6 @@ print("Soma da lista:", sum(numeros))''';
             decoration: BoxDecoration(
               color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: 2,
-                  offset: Offset(7, 7),
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -420,18 +414,11 @@ print("Soma da lista:", sum(numeros))''';
 
           // Console de Saída (Mobile)
           Container(
-            height: 240,
+            //height: 300,
             width: MediaQuery.of(context).size.width * 0.80,
             decoration: BoxDecoration(
               color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: 2,
-                  offset: Offset(7, 7),
-                ),
-              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -564,13 +551,6 @@ print("Soma da lista:", sum(numeros))''';
             decoration: BoxDecoration(
               color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: 2,
-                  offset: Offset(7, 7),
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -709,13 +689,6 @@ print("Soma da lista:", sum(numeros))''';
             decoration: BoxDecoration(
               color: const Color(0xFF1F2433),
               borderRadius: BorderRadius.circular(23),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black,
-                  spreadRadius: 2,
-                  offset: Offset(7, 7),
-                ),
-              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

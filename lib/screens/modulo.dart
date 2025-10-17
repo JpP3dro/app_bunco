@@ -99,13 +99,25 @@ class _TelaModuloState extends State<TelaModulo>
   final List<Color> _coresTituloPorModulo = [
     Color(0xFF0E898B),
     Color(0xFF0888C4),
-    Color(0xFF3E7500),
+    Color(0xFF003E1C),
     Color(0xFFB48C0E),
     Color(0xFF5B3399),
     Color(0xFF4C2F1F),
     Color(0xFF820D0D),
     Color(0xFFE64CA7),
     Color(0xFF2B628C),
+  ];
+
+  final List<Color> _coresConectorPorModulo = [
+    Color(0xFF0E898B),
+    Color(0xFF4DA5FF),
+    Color(0xFF264700),
+    Color(0xFFB08117),
+    Color(0xFF5B3399),
+    Color(0xFF4C2F1F),
+    Color(0xFF420000),
+    Color(0xFFE64CA7),
+    Color(0xFF18364E),
   ];
 
   List<Licao> _licoes = [];
@@ -270,7 +282,7 @@ class _TelaModuloState extends State<TelaModulo>
           Container(
             padding: EdgeInsets.all(10),
             color: _coresFundoPorModulo[widget.modulo.id - 1],
-            height: 130,
+            height: 150,
             child: Row(
               children: [
                 Image.asset(
@@ -295,7 +307,7 @@ class _TelaModuloState extends State<TelaModulo>
                       Text(
                         widget.modulo.descricao.toString(),
                         style: GoogleFonts.baloo2(
-                            fontSize: 12,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700,
                             color: _coresTextoPorModulo[widget.modulo.id - 1]),
                       ),
@@ -338,13 +350,16 @@ class _TelaModuloState extends State<TelaModulo>
                           // estilos dependendo se a linha está cinza
                           final titleStyle = GoogleFonts.baloo2(
                             fontSize: 17,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                             color: licao.rowGray
                                 ? Colors.grey
-                                : _coresTituloPorModulo[widget.modulo.id - 1],
+                                : widget.modoEscuro
+                                    ? _coresFundoPorModulo[widget.modulo.id - 1]
+                                    : _coresTituloPorModulo[
+                                        widget.modulo.id - 1],
                           );
                           final subtitleStyle = GoogleFonts.baloo2(
-                            fontSize: 13,
+                            fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: licao.rowGray ? Colors.grey : accent,
                           );
@@ -396,7 +411,7 @@ class _TelaModuloState extends State<TelaModulo>
                                           border: Border.all(
                                             color: licao.isAvailable
                                                 ? accent
-                                                : Colors.grey.shade400,
+                                                : Colors.grey.shade300,
                                             width: 2,
                                           ),
                                         ),
@@ -424,7 +439,7 @@ class _TelaModuloState extends State<TelaModulo>
                                           margin: EdgeInsets.only(top: 0),
                                           decoration: BoxDecoration(
                                             color: nextConnectorColored
-                                                ? _coresTituloPorModulo[
+                                                ? _coresConectorPorModulo[
                                                     licao.idModulo - 1]
                                                 : Colors.grey.shade400,
                                           ),
