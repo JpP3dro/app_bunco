@@ -250,8 +250,7 @@ class _TelaAulaState extends State<TelaAula>
                 conteudo: "Você perdeu todas as suas vidas!",
                 voltarTelaInicial: true,
                 modoEscuro: widget.modoEscuro,
-                usuario: widget.usuario
-            );
+                usuario: widget.usuario);
           }
           return true;
         } else {
@@ -265,8 +264,7 @@ class _TelaAulaState extends State<TelaAula>
                 conteudo: "Você perdeu todas as suas vidas!",
                 voltarTelaInicial: true,
                 modoEscuro: widget.modoEscuro,
-                usuario: widget.usuario
-            );
+                usuario: widget.usuario);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -308,15 +306,13 @@ class _TelaAulaState extends State<TelaAula>
           context,
           MaterialPageRoute(
               builder: (context) => TelaInicial(
-                usuario: widget.usuario,
-                parametroModoEscuro:
-                MediaQuery.of(context).platformBrightness ==
-                    Brightness.dark,
-              )),
+                  usuario: widget.usuario,
+                  parametroModoEscuro: widget.modoEscuro)),
         );
       },
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
           leading: IconButton(
             icon: Icon(
               Icons.arrow_back_rounded,
@@ -328,11 +324,8 @@ class _TelaAulaState extends State<TelaAula>
                 context,
                 MaterialPageRoute(
                     builder: (context) => TelaInicial(
-                      usuario: widget.usuario,
-                      parametroModoEscuro:
-                      MediaQuery.of(context).platformBrightness ==
-                          Brightness.dark,
-                    )),
+                        usuario: widget.usuario,
+                        parametroModoEscuro: widget.modoEscuro)),
               );
             },
           ),
@@ -371,13 +364,6 @@ class _TelaAulaState extends State<TelaAula>
               ),
             ),
           ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
-            child: Container(
-              color: Color(0xFF2C2F35),
-              height: 4.0,
-            ),
-          ),
         ),
         body: FutureBuilder<AulaDetalhada>(
           future: _futureAula,
@@ -385,8 +371,8 @@ class _TelaAulaState extends State<TelaAula>
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                   child: CircularProgressIndicator(
-                    color: Color(0xFF1CB0F6),
-                  ));
+                color: Color(0xFF1CB0F6),
+              ));
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
@@ -409,35 +395,39 @@ class _TelaAulaState extends State<TelaAula>
   }
 
   Widget _buildAulaContent(AulaDetalhada aula) {
-    return Column(
-      children: [
-        // Barra de progresso
-        LinearProgressIndicator(
-          value: (_currentPage + 1) / aula.conteudo.length,
-          backgroundColor: Colors.grey[300],
-          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1CB0F6)),
-        ),
-
-        // Conteúdo da aula
-        Expanded(
-          child: PageView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            itemCount: aula.conteudo.length,
-            onPageChanged: (int page) {
-              setState(() {
-                _currentPage = page;
-              });
-            },
-            itemBuilder: (context, index) {
-              return _buildTelaConteudo(aula.conteudo[index], index);
-            },
+    return Container(
+      color: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
+      child: Column(
+        children: [
+          // Barra de progresso
+          LinearProgressIndicator(
+            value: (_currentPage + 1) / aula.conteudo.length,
+            backgroundColor:
+                widget.modoEscuro ? Color(0xFF1C283F) : Color(0xFF777777),
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1CB0F6)),
           ),
-        ),
 
-        // Navegação
-        _buildNavigation(aula),
-      ],
+          // Conteúdo da aula
+          Expanded(
+            child: PageView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              itemCount: aula.conteudo.length,
+              onPageChanged: (int page) {
+                setState(() {
+                  _currentPage = page;
+                });
+              },
+              itemBuilder: (context, index) {
+                return _buildTelaConteudo(aula.conteudo[index], index);
+              },
+            ),
+          ),
+
+          // Navegação
+          _buildNavigation(aula),
+        ],
+      ),
     );
   }
 
@@ -470,7 +460,11 @@ class _TelaAulaState extends State<TelaAula>
         children: [
           Text(
             conteudo.conteudo ?? '',
-            style: TextStyle(fontSize: 18, height: 1.5),
+            style: GoogleFonts.baloo2(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
             textAlign: TextAlign.justify,
           ),
           SizedBox(
@@ -480,13 +474,11 @@ class _TelaAulaState extends State<TelaAula>
             child: CldImageWidget(
               publicId: 'image-${widget.idAula}-$telaAtual',
               cloudinary: cloudinary,
-              //height: 300,
               placeholder: (context, url) => Center(
                 child: CircularProgressIndicator(
                   color: Color(0xFF1CB0F6),
                 ),
               ),
-
               errorBuilder: (context, url, error) => Icon(
                 Icons.error,
                 color: Colors.red,
@@ -509,13 +501,24 @@ class _TelaAulaState extends State<TelaAula>
           if (conteudo.titulo != null)
             Text(
               conteudo.titulo!,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: GoogleFonts.baloo2(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+              ),
             ),
           SizedBox(height: 16),
           if (conteudo.passos != null)
             ...conteudo.passos!.map((passo) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Text('• $passo', style: TextStyle(fontSize: 16)),
+                  child: Text('• $passo',
+                      style: GoogleFonts.baloo2(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: widget.modoEscuro
+                            ? Color(0xFFB0C2DE)
+                            : Color(0xFFAFAFAF),
+                      )),
                 )),
           Center(
             child: CldImageWidget(
@@ -554,7 +557,11 @@ class _TelaAulaState extends State<TelaAula>
         children: [
           Text(
             conteudo.pergunta ?? '',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: GoogleFonts.baloo2(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
           ),
           SizedBox(height: 20),
           if (conteudo.opcoes != null)
@@ -575,14 +582,24 @@ class _TelaAulaState extends State<TelaAula>
                             _marcarExercicioConcluido(index, opcaoIndex);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text('Resposta correta!'),
+                                backgroundColor: Color(0xFF58CC02),
+                                  content: Text('Resposta correta!', style: GoogleFonts.baloo2(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700
+                                  ),),
                                   duration: Duration(seconds: 1)),
                             );
                           } else {
                             // Resposta incorreta
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text('Resposta incorreta!'),
+                                  backgroundColor: Color(0xFFFF4B4B),
+                                  content: Text('Resposta incorreta!', style: GoogleFonts.baloo2(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),),
                                   duration: Duration(seconds: 1)),
                             );
                             _perderVida();
@@ -626,7 +643,6 @@ class _TelaAulaState extends State<TelaAula>
   }
 
   Widget _buildTelaVerdadeiroFalso(ConteudoAula conteudo, int index) {
-    // Verifica se respostaCorreta é um booleano
     bool? respostaCerta;
     if (conteudo.respostaCorreta is bool) {
       respostaCerta = conteudo.respostaCorreta;
@@ -639,87 +655,133 @@ class _TelaAulaState extends State<TelaAula>
         children: [
           Text(
             conteudo.pergunta ?? '',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: GoogleFonts.baloo2(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
           ),
           SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton(
-                onPressed: _exerciciosConcluidos[index]
-                    ? null // Desativa o botão se já foi respondido
-                    : () {
-                        // Lógica para verificar resposta verdadeiro
-                        if (respostaCerta != null && respostaCerta == true) {
-                          _marcarExercicioConcluido(index, true);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Resposta correta!'),
-                                duration: Duration(seconds: 1)),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Resposta incorreta!'),
-                                duration: Duration(seconds: 1)),
-                          );
-                          _perderVida();
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(120, 50),
-                  backgroundColor:
-                      _exerciciosConcluidos[index] && _respostas[index] == true
-                          ? (respostaCerta == true ? Colors.green : Colors.red)
-                          : Colors.green,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: !_exerciciosConcluidos[index]
+                          ? Color(0xFF58A700)
+                          : Colors.transparent,
+                      blurRadius: 1,
+                      offset: const Offset(6, 4),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  'Verdadeiro',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: _exerciciosConcluidos[index] &&
+                child: IconButton(
+                  icon: Icon(
+                    Icons.check,
+                    color: Color(0xFFA5ED6E),
+                  ),
+                  iconSize: 120,
+                  onPressed: _exerciciosConcluidos[index]
+                      ? null // Desativa o botão se já foi respondido
+                      : () {
+                          // Lógica para verificar resposta verdadeiro
+                          if (respostaCerta != null && respostaCerta == true) {
+                            _marcarExercicioConcluido(index, true);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: Color(0xFF58CC02),
+                                  content: Text('Resposta correta!', style: GoogleFonts.baloo2(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),),
+                                  duration: Duration(seconds: 1)),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: Color(0xFFFF4B4B),
+                                  content: Text('Resposta incorreta!', style: GoogleFonts.baloo2(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),),
+                                  duration: Duration(seconds: 1)),
+                            );
+                            _perderVida();
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(120, 50),
+                    backgroundColor: _exerciciosConcluidos[index] &&
                             _respostas[index] == true
-                        ? Colors.white
-                        : null,
+                        ? (respostaCerta == true
+                            ? Color(0xFF58CC02)
+                            : Colors.red)
+                        : Color(0xFF58CC02),
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: _exerciciosConcluidos[index]
-                    ? null // Desativa o botão se já foi respondido
-                    : () {
-                        // Lógica para verificar resposta falso
-                        if (respostaCerta != null && respostaCerta == false) {
-                          _marcarExercicioConcluido(index, false);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Resposta correta!'),
-                                duration: Duration(seconds: 1)),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Resposta incorreta!'),
-                                duration: Duration(seconds: 1)),
-                          );
-                          _perderVida();
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(120, 50),
-                  backgroundColor:
-                      _exerciciosConcluidos[index] && _respostas[index] == false
-                          ? (respostaCerta == false ? Colors.green : Colors.red)
-                          : Colors.red,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: !_exerciciosConcluidos[index]
+                          ? Color(0xFFEA2B2B)
+                          : Colors.transparent,
+                      blurRadius: 1,
+                      offset: const Offset(6, 4),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  'Falso',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: _exerciciosConcluidos[index] &&
+                child: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Color(0xFFFFB2B2),
+                  ),
+                  iconSize: 120,
+                  onPressed: _exerciciosConcluidos[index]
+                      ? null // Desativa o botão se já foi respondido
+                      : () {
+                          // Lógica para verificar resposta falso
+                          if (respostaCerta != null && respostaCerta == false) {
+                            _marcarExercicioConcluido(index, false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: Color(0xFF58CC02),
+                                  content: Text('Resposta correta!', style: GoogleFonts.baloo2(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),),
+                                  duration: Duration(seconds: 1)),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  backgroundColor: Color(0xFFFF4B4B),
+                                  content: Text('Resposta incorreta!', style: GoogleFonts.baloo2(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700
+                                  ),),
+                                  duration: Duration(seconds: 1)),
+                            );
+                            _perderVida();
+                          }
+                        },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(120, 50),
+                    backgroundColor: _exerciciosConcluidos[index] &&
                             _respostas[index] == false
-                        ? Colors.white
-                        : null,
+                        ? (respostaCerta == false
+                            ? Colors.green
+                            : Color(0xFFFF4B4B))
+                        : Color(0xFFFF4B4B),
                   ),
                 ),
               ),
@@ -742,7 +804,6 @@ class _TelaAulaState extends State<TelaAula>
   }
 
   Widget _buildTelaComplete(ConteudoAula conteudo, int index) {
-    // Verifica se respostaCorreta é uma string
     String? respostaCerta;
     if (conteudo.respostaCorreta is String) {
       respostaCerta = conteudo.respostaCorreta;
@@ -757,46 +818,87 @@ class _TelaAulaState extends State<TelaAula>
         children: [
           Text(
             conteudo.pergunta ?? '',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: GoogleFonts.baloo2(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
           ),
           SizedBox(height: 20),
           TextField(
             controller: respostaController,
+            cursorColor: Color(0xFF1cB0F6),
+            style: GoogleFonts.baloo2(
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
             enabled: !_exerciciosConcluidos[index],
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Sua resposta',
               suffixIcon: _exerciciosConcluidos[index]
-                  ? Icon(Icons.check_circle, color: Colors.green)
-                  : null,
+                  ? null
+                  : GestureDetector(
+                      onTap: () {
+                        // Lógica para verificar resposta
+                        final respostaUsuario =
+                            respostaController.text.trim().toLowerCase();
+                        if (respostaCerta != null &&
+                            respostaUsuario == respostaCerta.toLowerCase()) {
+                          _marcarExercicioConcluido(index, respostaUsuario);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                backgroundColor: Color(0xFF58CC02),
+                                content: Text('Resposta correta!', style: GoogleFonts.baloo2(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700
+                                ),),
+                                duration: Duration(seconds: 1)),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                backgroundColor: Color(0xFFFF4B4B),
+                                content: Text('Resposta incorreta!', style: GoogleFonts.baloo2(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700
+                                ),),
+                                duration: Duration(seconds: 1)),
+                          );
+                          _perderVida();
+                        }
+                      },
+                      child: Icon(
+                        Icons.send,
+                        color: Color(0xFF1CB0F6),
+                      ),
+                    ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Color(0xFF1CB0F6),
+                  width: 2,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(
+                  color: Color(0xFF1CB0F6),
+                  width: 2,
+                ),
+              ),
+              label: Text(
+                !_exerciciosConcluidos[index] ? "Sua resposta" : "",
+                style: GoogleFonts.baloo2(
+                    fontSize: 20,
+                    color: Color(0xFF135275),
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           SizedBox(height: 20),
-          if (!_exerciciosConcluidos[index])
-            ElevatedButton(
-              onPressed: () {
-                // Lógica para verificar resposta
-                final respostaUsuario =
-                    respostaController.text.trim().toLowerCase();
-                if (respostaCerta != null &&
-                    respostaUsuario == respostaCerta.toLowerCase()) {
-                  _marcarExercicioConcluido(index, respostaUsuario);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('Resposta correta!'),
-                        duration: Duration(seconds: 1)),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('Resposta incorreta!'),
-                        duration: Duration(seconds: 1)),
-                  );
-                  _perderVida();
-                }
-              },
-              child: Text('Verificar'),
-            ),
           if (_exerciciosConcluidos[index])
             Padding(
               padding: EdgeInsets.only(top: 16),
@@ -868,7 +970,11 @@ class _TelaAulaState extends State<TelaAula>
           if (conteudo.pergunta != null)
             Text(
               conteudo.pergunta!,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: GoogleFonts.baloo2(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+              ),
             ),
           SizedBox(height: 16),
           Expanded(
@@ -882,16 +988,39 @@ class _TelaAulaState extends State<TelaAula>
                   itensEstado.insert(newIndex, item);
                 });
               },
+              proxyDecorator: (child, index, animation) {
+                return Material(
+                  color: Colors.transparent,
+                  child: child,
+                );
+              },
               children: [
                 for (int i = 0; i < itensEstado.length; i++)
                   Card(
+                    color: widget.modoEscuro
+                        ? Color(0xFF1F2433)
+                        : Color(0xFFE5E5E5),
                     key: ValueKey('ordenacao_${index}_$i'),
                     margin: EdgeInsets.symmetric(vertical: 6),
                     child: ListTile(
-                      title: Text(itensEstado[i]),
+                      title: Text(
+                        itensEstado[i],
+                        style: GoogleFonts.baloo2(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: widget.modoEscuro
+                              ? Color(0xFFB0C2DE)
+                              : Color(0xFF777777),
+                        ),
+                      ),
                       trailing: ReorderableDragStartListener(
                         index: i,
-                        child: Icon(Icons.drag_handle),
+                        child: Icon(
+                          Icons.drag_handle,
+                          color: widget.modoEscuro
+                              ? Color(0xFFB0C2DE)
+                              : Color(0xFF777777),
+                        ),
                       ),
                     ),
                   )
@@ -900,6 +1029,9 @@ class _TelaAulaState extends State<TelaAula>
           ),
           SizedBox(height: 12),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF58CC02),
+            ),
             onPressed: _exerciciosConcluidos[index]
                 ? null
                 : () {
@@ -923,7 +1055,14 @@ class _TelaAulaState extends State<TelaAula>
                       _perderVida();
                     }
                   },
-            child: Text('Verificar ordenação'),
+            child: Text(
+              !_exerciciosConcluidos[index] ? 'Verificar ordenação' : "",
+              style: GoogleFonts.baloo2(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
           ),
           if (_exerciciosConcluidos[index])
             Padding(
@@ -949,31 +1088,63 @@ class _TelaAulaState extends State<TelaAula>
         children: [
           Text(
             conteudo.titulo ?? 'Desafio',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: GoogleFonts.baloo2(
+              fontSize: 25,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
           ),
           SizedBox(height: 16),
           Text(
             conteudo.pergunta ?? '',
-            style: TextStyle(fontSize: 18, height: 1.5),
+            style: GoogleFonts.baloo2(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF4B4B4B),
+            ),
           ),
           if (conteudo.dica != null) ...[
             SizedBox(height: 20),
-            Card(
-              color: Colors.amber[50],
+            Container(
+              decoration: BoxDecoration(color: Color(0xFFFFC800),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                BoxShadow(
+                    color: Color(0xFFBF9600),
+                  offset: const Offset(5, 5),
+                  blurRadius: 0,
+                ),
+              ]),
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '💡 Dica:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.amber[700],
-                      ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.lightbulb,
+                          color: Color(0xFFFEF6CD),
+                        ),
+                        Text(
+                          'Dica:',
+                          style: GoogleFonts.baloo2(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFFFEF6CD),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 8),
-                    Text(conteudo.dica!),
+                    Text(
+                      conteudo.dica!,
+                      style: GoogleFonts.baloo2(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFFEF6CD),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -995,24 +1166,39 @@ class _TelaAulaState extends State<TelaAula>
     final podeAvancar = !isExercise || _exerciciosConcluidos[_currentPage];
 
     return Container(
-      padding: EdgeInsets.all(16),
-      color: Colors.grey[100],
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: widget.modoEscuro ? Color(0xFF1C283F) : Color(0xFF777777),
+            width: 2,
+          ),
+        ),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          ElevatedButton(
+          IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            iconSize: 50,
             onPressed: _currentPage > 0 ? _voltarTela : null,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF1CB0F6),
-              foregroundColor: Colors.white,
+              foregroundColor: Color(0xFF1CB0F6),
             ),
-            child: Text('Voltar'),
           ),
           Text(
             '${_currentPage + 1}/${aula.conteudo.length}',
-            style: TextStyle(fontSize: 16),
+            style: GoogleFonts.baloo2(
+              fontSize: 30,
+              color: widget.modoEscuro ? Colors.white : Color(0xFF777777),
+              fontWeight: FontWeight.w700,
+            ),
           ),
-          ElevatedButton(
+          IconButton(
+            icon: Icon(_currentPage < aula.conteudo.length - 1
+                ? Icons.arrow_forward_ios
+                : Icons.check),
+            iconSize: 50,
             onPressed: (podeAvancar && !_concluindoAula)
                 ? (_currentPage < aula.conteudo.length - 1
                     ? _proximaTela
@@ -1022,12 +1208,8 @@ class _TelaAulaState extends State<TelaAula>
                       })
                 : null, // Desativa o botão se não pode avançar
             style: ElevatedButton.styleFrom(
-              backgroundColor: podeAvancar ? Color(0xFF1CB0F6) : Colors.grey,
-              foregroundColor: Colors.white,
+              foregroundColor: Color(0xFF1CB0F6),
             ),
-            child: Text(_currentPage < aula.conteudo.length - 1
-                ? 'Próximo'
-                : 'Finalizar'),
           ),
         ],
       ),
