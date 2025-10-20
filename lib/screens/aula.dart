@@ -312,6 +312,7 @@ class _TelaAulaState extends State<TelaAula>
       },
       child: Scaffold(
         appBar: AppBar(
+          surfaceTintColor: Colors.transparent,
           backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
           leading: IconButton(
             icon: Icon(

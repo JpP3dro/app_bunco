@@ -183,6 +183,7 @@ class _TelaModuloState extends State<TelaModulo>
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,

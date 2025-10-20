@@ -123,6 +123,7 @@ class _TelaCursoState extends State<TelaCurso> with AutomaticKeepAliveClientMixi
     return Scaffold(
       backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
         automaticallyImplyLeading: false,
         centerTitle: true,

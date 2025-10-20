@@ -103,6 +103,7 @@ class _TelaRankingState extends State<TelaRanking>
     return Scaffold(
       backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: widget.modoEscuro ? Color(0xFF0D141F) : Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,7 +133,7 @@ class _TelaRankingState extends State<TelaRanking>
       body: Center(
         child: Column(
           children: [
-            Image.asset('assets/images/icone/trofeu.png', height: 200),
+            Image.asset('assets/images/icone/trofeu.png', height: 180),
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
