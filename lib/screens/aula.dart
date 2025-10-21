@@ -571,7 +571,7 @@ class _TelaAulaState extends State<TelaAula>
               final opcao = entry.value;
 
               return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
+                padding: EdgeInsets.symmetric(vertical: 12),
                 child: ElevatedButton(
                   onPressed: _exerciciosConcluidos[index]
                       ? null // Desativa o botão se já foi respondido
@@ -607,21 +607,28 @@ class _TelaAulaState extends State<TelaAula>
                           }
                         },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                    backgroundColor: _exerciciosConcluidos[index] &&
-                            _respostas[index] == opcaoIndex
-                        ? (opcaoIndex == respostaCerta
-                            ? Colors.green
-                            : Colors.red)
-                        : null,
+                    elevation: 0,
+                    minimumSize: Size(double.infinity, 60),
+                    backgroundColor: widget.modoEscuro ? Color(0xFF1F2433)
+                        : Color(0xFFE5E5E5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(23),
+                      side: BorderSide(
+                        color: widget.modoEscuro ? Color(0xFF0A0F17) : Color(0xFF777777),
+                        width: 5,
+                      ),
+                    ),
                   ),
                   child: Text(
                     opcao,
-                    style: TextStyle(
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.baloo2(
                       color: _exerciciosConcluidos[index] &&
                               _respostas[index] == opcaoIndex
                           ? Colors.white
-                          : null,
+                          : widget.modoEscuro ? Color(0xFFB0C2DE)
+                      : Color(0xFF777777),
+                      fontWeight: FontWeight.w700
                     ),
                   ),
                 ),
