@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+int parseVidas(dynamic valor) {
+  if (valor == null) return 0;
+  if (valor is int) return valor;
+  return int.tryParse(valor.toString()) ?? 0;
+}
+
 String tempoRecuperacao() {
   // Define o timezone de Brasília
   final agora = DateTime.now().toUtc().add(const Duration(hours: -3)); // UTC-3
@@ -37,6 +43,7 @@ Future<void> TelaPopupVidas({
   required bool modoEscuro,
   required Map<String, dynamic> usuario,
 }) {
+  final int vidas = parseVidas(usuario['vidas']);
   return showDialog(
     barrierDismissible: false,
     context: context,
@@ -77,7 +84,7 @@ Future<void> TelaPopupVidas({
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Image.asset(
-                          usuario["vidas"] > 0
+                          vidas > 0
                               ? "assets/images/icone/icone-vida.png"
                               : modoEscuro
                                   ? "assets/images/icone/icone-vida-vazia-escuro.png"
@@ -86,7 +93,7 @@ Future<void> TelaPopupVidas({
                         ),
                         SizedBox(width: 5),
                         Image.asset(
-                          usuario["vidas"] > 1
+                          vidas > 1
                               ? "assets/images/icone/icone-vida.png"
                               : modoEscuro
                                   ? "assets/images/icone/icone-vida-vazia-escuro.png"
@@ -95,7 +102,7 @@ Future<void> TelaPopupVidas({
                         ),
                         SizedBox(width: 5),
                         Image.asset(
-                          usuario["vidas"] > 2
+                          vidas > 2
                               ? "assets/images/icone/icone-vida.png"
                               : modoEscuro
                                   ? "assets/images/icone/icone-vida-vazia-escuro.png"
@@ -104,7 +111,7 @@ Future<void> TelaPopupVidas({
                         ),
                         SizedBox(width: 5),
                         Image.asset(
-                          usuario["vidas"] > 3
+                          vidas > 3
                               ? "assets/images/icone/icone-vida.png"
                               : modoEscuro
                                   ? "assets/images/icone/icone-vida-vazia-escuro.png"
@@ -113,7 +120,7 @@ Future<void> TelaPopupVidas({
                         ),
                         SizedBox(width: 5),
                         Image.asset(
-                          usuario["vidas"] > 4
+                          vidas > 4
                               ? "assets/images/icone/icone-vida.png"
                               : modoEscuro
                                   ? "assets/images/icone/icone-vida-vazia-escuro.png"
@@ -130,7 +137,7 @@ Future<void> TelaPopupVidas({
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    usuario["vidas"] < 5
+                    vidas < 5
                         ? "Próxima vida em "
                         : "Você está com todas as vidas!",
                     style: GoogleFonts.baloo2(
@@ -140,7 +147,7 @@ Future<void> TelaPopupVidas({
                     ),
                   ),
                   Text(
-                    usuario["vidas"] < 5 ? tempoRecuperacao() : "",
+                    vidas < 5 ? tempoRecuperacao() : "",
                     style: GoogleFonts.baloo2(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,

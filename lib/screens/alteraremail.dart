@@ -16,8 +16,10 @@ Future<String?> TelaAlterarEmail({
   final regex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
   bool botaoPressionado = false;
   bool botaoHabilitado = false;
+  bool permitirSaida = true;
 
   return showDialog<String>(
+    barrierDismissible: permitirSaida,
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -39,6 +41,7 @@ Future<String?> TelaAlterarEmail({
                 });
               }
             }
+
             controllerEmail.addListener(validarCampo);
 
             return GestureDetector(
@@ -51,10 +54,12 @@ Future<String?> TelaAlterarEmail({
                 children: [
                   // ======== 1) BARRA DE TÍTULO ========
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xFF4D4D4D),
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -79,8 +84,7 @@ Future<String?> TelaAlterarEmail({
                           style: GoogleFonts.baloo2(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: Colors.white
-                          ),
+                              color: Colors.white),
                         ),
                       ],
                     ),
@@ -97,8 +101,7 @@ Future<String?> TelaAlterarEmail({
                       style: GoogleFonts.baloo2(
                           color: Colors.white,
                           fontSize: 16,
-                          fontWeight: FontWeight.w600
-                      ),
+                          fontWeight: FontWeight.w600),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: const Color(0xFF4D4D4D),
@@ -117,8 +120,7 @@ Future<String?> TelaAlterarEmail({
                         labelStyle: GoogleFonts.baloo2(
                             color: Color(0xFF878787),
                             fontSize: 20,
-                            fontWeight: FontWeight.w700
-                        ),
+                            fontWeight: FontWeight.w700),
                         icon: const Icon(
                           Icons.email,
                           color: Color(0xFF1CB0F6),
@@ -141,29 +143,34 @@ Future<String?> TelaAlterarEmail({
                       onTapUp: (_) async {
                         setState(() => botaoPressionado = false);
                         if (botaoHabilitado) {
-                          bool sucesso = await _alterarEmail(context, username, controllerEmail.text.trim());
+                          bool sucesso = await _alterarEmail(
+                              context, username, controllerEmail.text.trim());
                           if (sucesso) {
-                            Navigator.of(context).pop(controllerEmail.text.trim());
+                            Navigator.of(context)
+                                .pop(controllerEmail.text.trim());
                           }
                         }
                       },
-                      onTapCancel: () => setState(() => botaoPressionado = false),
+                      onTapCancel: () =>
+                          setState(() => botaoPressionado = false),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         transform: Matrix4.identity()
                           ..translate(0.0, botaoPressionado ? 5.0 : 0.0),
                         decoration: BoxDecoration(
-                          color: botaoHabilitado ? const Color(0xFF1CB0F6) : Color(0xFF505050),
+                          color: botaoHabilitado
+                              ? const Color(0xFF1CB0F6)
+                              : Color(0xFF505050),
                           borderRadius: BorderRadius.circular(40),
                           boxShadow: botaoPressionado || !botaoHabilitado
                               ? null
                               : [
-                            BoxShadow(
-                              color: const Color(0xFF1453A3),
-                              offset: const Offset(6, 6),
-                              blurRadius: 0,
-                            )
-                          ],
+                                  BoxShadow(
+                                    color: const Color(0xFF1453A3),
+                                    offset: const Offset(6, 6),
+                                    blurRadius: 0,
+                                  )
+                                ],
                         ),
                         child: SizedBox(
                           width: double.infinity,
@@ -174,7 +181,9 @@ Future<String?> TelaAlterarEmail({
                               style: GoogleFonts.baloo2(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 26,
-                                color: botaoHabilitado ? Colors.white : Color(0xFF333333),
+                                color: botaoHabilitado
+                                    ? Colors.white
+                                    : Color(0xFF333333),
                               ),
                             ),
                           ),
@@ -193,14 +202,15 @@ Future<String?> TelaAlterarEmail({
   );
 }
 
-Future<bool> _alterarEmail(BuildContext context, String username, String novoEmail) async {
+Future<bool> _alterarEmail(
+    BuildContext context, String username, String novoEmail) async {
   if (!await verificarConexao()) {
     await exibirResultado(
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Sem conexão",
-        conteudo: "Seu dispositivo está sem internet. Tente novamente quando tiver internet."
-    );
+        conteudo:
+            "Seu dispositivo está sem internet. Tente novamente quando tiver internet.");
     return false;
   }
   try {
@@ -214,25 +224,25 @@ Future<bool> _alterarEmail(BuildContext context, String username, String novoEma
     var response = jsonDecode(res.body);
     await exibirResultado(
         context: context,
-        tipo: response["sucesso"] == "true" ? TipoDialogo.sucesso : TipoDialogo.erro,
-        titulo: response["sucesso"] == "true" ? "Email alterado com sucesso!" : "Algo deu errado!",
-        conteudo: response["mensagem"]
-    );
+        tipo: response["sucesso"] == "true"
+            ? TipoDialogo.sucesso
+            : TipoDialogo.erro,
+        titulo: response["sucesso"] == "true"
+            ? "Email alterado com sucesso!"
+            : "Algo deu errado!",
+        conteudo: response["mensagem"]);
 
     if (response["sucesso"] == "true") {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
-  }
-  catch(e) {
+  } catch (e) {
     await exibirResultado(
         context: context,
         tipo: TipoDialogo.erro,
         titulo: "Erro ao cadastrar o email novo",
-        conteudo: "Tente de novo daqui a pouco!"
-    );
+        conteudo: "Tente de novo daqui a pouco!");
     return false;
   }
 }
