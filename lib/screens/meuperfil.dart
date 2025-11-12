@@ -21,7 +21,8 @@ class TelaPerfil extends StatefulWidget {
   State<TelaPerfil> createState() => _TelaPerfilState();
 }
 
-class _TelaPerfilState extends State<TelaPerfil> with AutomaticKeepAliveClientMixin{
+class _TelaPerfilState extends State<TelaPerfil>
+    with AutomaticKeepAliveClientMixin {
   late List<_Cards> cards;
   late String exibirDias;
   late String exibirVidas;
@@ -295,7 +296,10 @@ class _TelaPerfilState extends State<TelaPerfil> with AutomaticKeepAliveClientMi
                             );
                             if (escolha != null) {
                               setState(() {
-                                int teste = escolha.toARGB32();
+                                int teste = (escolha.alpha << 24) |
+                                    (escolha.red << 16) |
+                                    (escolha.green << 8) |
+                                    escolha.blue;
                                 corFundo = escolha;
                                 widget.usuario['cor'] =
                                     teste.toRadixString(16).substring(2);
