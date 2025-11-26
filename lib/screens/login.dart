@@ -116,7 +116,7 @@ class _TelaLoginState extends State<TelaLogin> with AutomaticKeepAliveClientMixi
       },
       behavior: HitTestBehavior.opaque,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Color(0xFF0D141F),
         appBar: AppBar(
           automaticallyImplyLeading: false,

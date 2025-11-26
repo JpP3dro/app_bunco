@@ -156,7 +156,7 @@ class _TelaCadastroState extends State<TelaCadastro> with AutomaticKeepAliveClie
       },
       behavior: HitTestBehavior.opaque,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: Color(0xFF0D141F),
         appBar: AppBar(
           automaticallyImplyLeading: false,
