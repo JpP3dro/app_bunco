@@ -101,4 +101,4 @@ lib/
 
 - João Pedro - mobile e APIs - [JpP3dro](https://github.com/JpP3dro)
 - Matheus Cordeiro - site - [Matheus](https://github.com/CordeiroMatheus)
-- Gabriel Linhares - design e prototipação - [Gabriel](https://github.com/Linhares-Gab)
+- Gabriel Linhares - design e prototipação - [Gabriel](https://github.com/devlinhares)
